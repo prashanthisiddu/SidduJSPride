@@ -1,22 +1,64 @@
-
-
-////Requirement::Changemanagement record Name///onsave
-function setname(context) {
+function basedOnWhetherTestField(context) {
     var formContext = context.getFormContext();
-    var createFormType = 1;
+ var userSettings = Xrm.Utility.getGlobalContext().userSettings;
+
+    var username = userSettings.userName;
+    var approver = formContext.getAttribute("pg_approver").getValue();
+if (approver && approver.length > 0) {
+            var approverName = approver[0].name;
+}
+    var testStatus = formContext.getControl("pg_teststatus");
+    var whetherTestHasMetExpectedOutcome = formContext.getAttribute("pg_whethertesthasmetexpectedoutcome").getValue();
+   var changeevaluated = formContext.getAttribute("pg_changeevaluated").getValue();
+    testStatus.clearOptions();
+  
+    if (whetherTestHasMetExpectedOutcome == 140310000) {
+        testStatus.removeOption(140310001); // Failed
+        testStatus.addOption({ text: 'Successful', value: 140310000 });
+        testStatus.addOption({ text: 'Partially Successful', value: 140310002 });
+    } else if (whetherTestHasMetExpectedOutcome == 140310001) {
+        testStatus.addOption({ text: 'Failed', value: 140310001 });
+        testStatus.removeOption(140310000);
+        testStatus.removeOption(140310002);
+    }
+if(changeevaluated==140310001){
+    formContext.getControl("pg_remarks").setVisible(true);
+  formContext.getControl("pg_whethertesthasmetexpectedoutcome").setDisabled(true);
+                    formContext.getControl("pg_teststatus").setDisabled(true);
+                    formContext.getControl("pg_nextchangeproposalcycleifanyfailure").setDisabled(true);
+                    formContext.getControl("pg_testresults").setDisabled(true);
+                    formContext.getControl("pg_anyimprovisesupportrequired").setDisabled(true);
+}
+if(changeevaluated==140310000 &&  username !=approverName ) {
+    formContext.getControl("pg_remarks").setVisible(false);
+  formContext.getControl("pg_whethertesthasmetexpectedoutcome").setDisabled(false);
+                    formContext.getControl("pg_teststatus").setDisabled(false);
+                    formContext.getControl("pg_nextchangeproposalcycleifanyfailure").setDisabled(false);
+                    formContext.getControl("pg_testresults").setDisabled(false);
+                    formContext.getControl("pg_anyimprovisesupportrequired").setDisabled(false);
+}
+}
+
+
+
+
+
+function setname(context) {
+  var formContext = context.getFormContext();
+  var createFormType = 1;
     var formType = formContext.ui.getFormType();
 
     if (formType != createFormType) {
-        var ticketnum = formContext.getAttribute("pg_ticketid").getValue();
-        var owner = formContext.getAttribute("ownerid").getValue();
-        var ownerName = owner[0].name;
-        if (ticketnum != null) {
+var ticketnum = formContext.getAttribute("pg_ticketid").getValue();
+var owner = formContext.getAttribute("ownerid").getValue();
+ var ownerName = owner[0].name; 
+       if (ticketnum!=null) {
 
-            var Name = ticketnum + " - " + "Change Management - " + ownerName;
-            formContext.getAttribute("pg_name").setValue(Name);
+          var Name = ticketnum + " - " + "Change Management - " + ownerName;
+formContext.getAttribute("pg_name").setValue(Name);
         }
+      }
     }
-}
 
 
 
@@ -25,26 +67,26 @@ function setname(context) {
 
 
 
-//Requirement::Show & Hide complete button based on form and also checking the logging user with approver field value//
+
 function completeSandH(primaryControl) {  //main form
-    debugger;
-    var formContext = primaryControl;
-    var createform = 1;
-    var Type = formContext.ui.getFormType();
-    var userSettings = Xrm.Utility.getGlobalContext().userSettings;
-    var username = userSettings.userName;
-    var approver = formContext.getAttribute("pg_approver").getValue();
-    var approverName = approver[0].name;
+  debugger;
+  var formContext = primaryControl;
+  var createform = 1;
+  var Type = formContext.ui.getFormType();
+  var userSettings = Xrm.Utility.getGlobalContext().userSettings;
+  var username = userSettings.userName;
+  var approver = formContext.getAttribute("pg_approver").getValue();
+  var approverName = approver[0].name; 
 
-    var approversecond = formContext.getAttribute("pg_approversecond").getValue();
-    var approversecondName = approversecond[0].name;
+  var approversecond = formContext.getAttribute("pg_approversecond").getValue();
+  var approversecondName = approversecond[0].name; 
 
-    if ((Type != createform && username == approverName) || (Type != createform && username == approversecondName)) {
-        return true;
-    }
-    else {
-        return false;
-    }
+  if ((Type != createform && username ==approverName) || (Type != createform && username ==approversecondName)) {
+   return true;
+  }
+  else {
+      return false;
+  }
 
 }
 
@@ -52,28 +94,28 @@ function completeSandH(primaryControl) {  //main form
 
 
 
-///Requirement::when user click on complete button display a dialog box and and if it is ok set the status as inactive//
+
 function complete(primaryControl) {   //customize js action
-    debugger;
-    var formContext = primaryControl;
-    var confirmStrings = { text: "Confirm to Resolve?", confirmButtonLabel: "Ok", cancelButtonLabel: "Cancel" };
-    var confirmOptions = { height: 250, width: 300 };
+  debugger;
+  var formContext = primaryControl;
+  var confirmStrings = { text: "Confirm to Resolve?", confirmButtonLabel: "Ok", cancelButtonLabel: "Cancel" };
+  var confirmOptions = { height: 250, width: 300 };
 
-    Xrm.Navigation.openConfirmDialog(confirmStrings, confirmOptions).then(
-        function (success) {
-            if (success.confirmed) {
-                var status = formContext.getAttribute("statecode").getValue();
-                formContext.getAttribute("statecode").setValue(1)
-                // formContext.getAttribute("stauscode").setValue(2)
-                formContext.data.entity.save("saveandclose");
-
-            }
-        },
-        function (error) {
-
-            console.error(error.message);
-        }
-    );
+  Xrm.Navigation.openConfirmDialog(confirmStrings, confirmOptions).then(
+      function (success) {
+          if (success.confirmed) {
+        var status=formContext.getAttribute("statecode").getValue();
+            formContext.getAttribute("statecode").setValue(1) 
+  // formContext.getAttribute("stauscode").setValue(2)
+              formContext.data.entity.save("saveandclose");
+            
+          }
+      },
+      function (error) {
+         
+          console.error(error.message);
+      }
+  );
 }
 
 
@@ -92,7 +134,7 @@ function complete(primaryControl) {   //customize js action
 
 
 
-//Requirement::Based on condition need to Show/Hide the resubmit button//
+
 function Resubmitform(primaryControl) {  //main form
     debugger;
     var formContext = primaryControl;
@@ -101,10 +143,17 @@ function Resubmitform(primaryControl) {  //main form
     var userSettings = Xrm.Utility.getGlobalContext().userSettings;
     var username = userSettings.userName;
     var approver = formContext.getAttribute("pg_approver").getValue();
-    var approverName = approver[0].name;
-    var decision = formContext.getAttribute("pg_decision").getValue();
-    if (Type != createform && username != approverName && decision == 140310003) {
-        return true;
+    var approverName = approver[0].name; 
+var owner = formContext.getAttribute("ownerid").getValue();
+ var ownerName = owner[0].name; 
+ var secondapprover = formContext.getAttribute("pg_approversecond").getValue();
+
+if(secondapprover!=null){
+ var secondapproverName = secondapprover[0].name;
+} 
+       var decision = formContext.getAttribute("pg_decision").getValue(); 
+   if (Type != createform && username ==ownerName  && decision!=null){//// || (Type != createform && username !=secondapproverName && decision!=null)) {
+     return true;
     }
     else {
         return false;
@@ -122,8 +171,9 @@ function Resubmitform(primaryControl) {  //main form
 
 
 
-//Requirement::whenever changes happens in existing form in history tab need to display the old and new values of the forms that are changed//
+
 var originalValues = {};
+
 function onLoadEvent(executionContext) {
     var formContext = executionContext.getFormContext();
     var attributes = formContext.data.entity.attributes.get();
@@ -132,28 +182,44 @@ function onLoadEvent(executionContext) {
         var attributeName = attribute.getName();
         var attributeControl = formContext.getControl(attributeName);
         var attributeValue;
-        var attributeType = formContext.data.entity.attributes.get(attributeName).getAttributeType();
 
-        if (attributeType === "optionset") {
+        var attributeType = attribute.getAttributeType();
 
-            attributeValue = typeof attribute.getFormattedValue === 'function'
-                ? attribute.getFormattedValue()
-                : attribute.getText();
-            var formattedValueProperty = attributeName + "@OData.Community.Display.V1.FormattedValue";
-            var formattedValueObject = {};
-            formattedValueObject[formattedValueProperty] = attributeValue;
+      if (attributeType === "optionset"){
+            attributeValue = getFormattedValueOrText(attribute);
+              }      
 
-            Object.assign(originalValues, formattedValueObject);
-        } else {
-            attributeValue = attribute.getValue();
-        }
+            if (attributeType === "lookup") {
+                attributeValue = getFormattedValueOrText(attribute);
+  if (attributeValue && attributeValue.length > 0) {
+        attributeValue = attributeValue[0].name;
+    } 
+        } if(attributeType == "string" || attributeType == "memo" || attributeType == "datetime" || attributeType == "boolean" || attributeType == "integer" || attributeType == "money") {
+          attributeValue = attribute.getValue();
+      }
+
+        var formattedValueProperty = attributeName + "@OData.Community.Display.V1.FormattedValue";
+        var formattedValueObject = {};
+        formattedValueObject[formattedValueProperty] = attributeValue;
+
+        Object.assign(originalValues, formattedValueObject);
 
         if (attributeControl) {
             var attributeLabel = attributeControl.getLabel();
             originalValues[attributeLabel] = attributeValue;
         }
-
     });
+}
+
+function getFormattedValueOrText(attribute) {
+    if (typeof attribute.getFormattedValue === 'function') {
+        return attribute.getFormattedValue();
+    } else if (typeof attribute.getText === 'function') {
+        return attribute.getText();
+    } else {
+      
+        return attribute.getValue();
+    }
 }
 
 function getoldvalues(primaryControl) {
@@ -161,7 +227,6 @@ function getoldvalues(primaryControl) {
     var formContext = primaryControl;
     if (formContext.data) {
         var attributes = formContext.data.entity.attributes.get();
-
         var changedAttributes = {};
 
         attributes.forEach(function (attribute) {
@@ -169,23 +234,20 @@ function getoldvalues(primaryControl) {
             var attributeControl = formContext.getControl(attributeName);
 
             var attributeValue;
+            var attributeType = attribute.getAttributeType();
+  if (attributeType === "optionset"){
+            attributeValue = getFormattedValueOrText(attribute);
+              }      
 
-            var attributeType = formContext.data.entity.attributes.get(attributeName).getAttributeType();
+            if (attributeType === "lookup") {
+                attributeValue = getFormattedValueOrText(attribute);
+  if (attributeValue && attributeValue.length > 0) {
+        attributeValue = attributeValue[0].name;
+    } 
 
-            if (attributeType === "optionset") {
-                attributeValue = typeof attribute.getFormattedValue === 'function'
-                    ? attribute.getFormattedValue()
-                    : attribute.getText();
-
-                var formattedValueProperty = attributeName + "@OData.Community.Display.V1.FormattedValue";
-                var formattedValueObject = {};
-                formattedValueObject[formattedValueProperty] = attributeValue;
-
-                if (attribute.getIsDirty()) {
-                }
-            } else {
-                attributeValue = attribute.getValue();
-            }
+            } if(attributeType == "string" || attributeType == "memo" || attributeType == "datetime" || attributeType == "boolean" || attributeType == "integer" || attributeType == "money") {
+          attributeValue = attribute.getValue();
+      }
 
             if (attributeControl && attribute.getIsDirty()) {
                 var attributeLabel = attributeControl.getLabel();
@@ -214,124 +276,123 @@ function getoldvalues(primaryControl) {
 function updateTextField(formContext, changedAttributes) {
     var textField = formContext.getControl("pg_changedattributes");
     var newField = formContext.getControl("pg_newvalues");
-    if (textField) {
-        var textValue = "";
 
-        for (var attributeName in changedAttributes) {
-            if (changedAttributes.hasOwnProperty(attributeName)) {
-                var changeInfo = changedAttributes[attributeName];
-                textValue += attributeName + ": " + changeInfo.oldValue + "\n";///+ " -> " + changeInfo.newValue + 
-            }
-        }
-        textField.getAttribute().setValue(textValue.trim());
-    }
-    if (newField) {
+    if (textField || newField) {
+        var textValue = "";
         var newValue = "";
 
         for (var attributeName in changedAttributes) {
             if (changedAttributes.hasOwnProperty(attributeName)) {
                 var changeInfo = changedAttributes[attributeName];
-                newValue += attributeName + ": " + changeInfo.newValue + "\n";//+ changeInfo.oldValue + " -> " + 
+             ///   textValue += attributeName + ": " + changeInfo.oldValue + "\n";
+             ///   newValue += attributeName + ": " + changeInfo.newValue + "\n";
             }
+ if (Object.keys(changedAttributes).indexOf(attributeName) < Object.keys(changedAttributes).length - 1) {
+            textValue += attributeName + ": " + changeInfo.oldValue + " ;" + "\n";
+                newValue += attributeName + ": " + changeInfo.newValue +" ;" + "\n";
+        } else {
+            textValue += attributeName + ": " + changeInfo.oldValue + "\n";
+                newValue += attributeName + ": " + changeInfo.newValue + "\n";
         }
-        newField.getAttribute().setValue(newValue.trim());
+        }
+
+        if (textField) {
+            textField.getAttribute().setValue(textValue.trim());
+        }
+
+        if (newField) {
+            newField.getAttribute().setValue(newValue.trim());
+        }
     }
 }
 
 
-///////////////////
-
-for (var i = 0; i < results.entities.attributeName; i++) {
-    var pg_name = results.entities[i]["pg_name"];
-    if (i < (results.entities.length - 1)) {
-        employees += (pg_name + ", ");
-    }
-    else employees += pg_name;
-}
-if(attributeName.length-1){
-    newValue += attributeName + ": " + changeInfo.newValue + ";"+ "\n";
-}
-else{
-    newValue += attributeName + ": " + changeInfo.newValue + "\n";
-}
-    ///////////////
 
 
 
 
-//Requirement::Bsed on condition need to disable the fields//
+
+
+
+
 function approveAndLogCurrentUser(context) {
     var formContext = context.getFormContext();
-    var changedattributes = formContext.getAttribute("pg_changedattributes").getValue();
+var changedattributes = formContext.getAttribute("pg_changedattributes").getValue();
 
-    var decision = formContext.getAttribute("pg_decision").getValue();
+  var decision = formContext.getAttribute("pg_decision").getValue();
     var decisiondate = formContext.getAttribute("pg_decisiondate").getValue();
-    var decisionexplanation = formContext.getAttribute("pg_decisionexplanation").getValue();
+  var decisionexplanation = formContext.getAttribute("pg_decisionexplanation").getValue();
     var anytermsconditions = formContext.getAttribute("pg_anytermsconditions").getValue();
 
     var userSettings = Xrm.Utility.getGlobalContext().userSettings;
     var username = userSettings.userName;
     var managerDecisionTab = formContext.ui.tabs.get("tab_3");
-    var Tab4 = formContext.ui.tabs.get("tab_4");
+ var Tab4 = formContext.ui.tabs.get("tab_4");
+var Changeevalutiontab = formContext.ui.tabs.get("tab_5");///tab_5
     var createFormType = 1;
     var formType = formContext.ui.getFormType();
-    var GeneralInfo = formContext.ui.tabs.get("General_Information");
+ var GeneralInfo = formContext.ui.tabs.get("General_Information");   
     var generalinfodecisionsec = GeneralInfo.sections.get("Section_2");
-    if (formType != createFormType) {
+    if (formType !== createFormType) {
         var approver = formContext.getAttribute("pg_approver").getValue();
-        if (approver != null) {
+        var approversecond = formContext.getAttribute("pg_approversecond").getValue();
+
+        if (approver && approver.length > 0) {
             var approverName = approver[0].name;
+            var approversecondName = approversecond && approversecond.length > 0 ? approversecond[0].name : null;
 
-            var approversecond = formContext.getAttribute("pg_approversecond").getValue();
-            if (approverName != null) {
-                var approversecondName = approversecond[0].name;
-            }
-            if (username == approverName || username == approversecondName) {
-                managerDecisionTab.setVisible(true);
-                generalinfodecisionsec.setVisible(false);
+        if (username == approverName || username == approversecondName) {
+            managerDecisionTab.setVisible(true);
+ generalinfodecisionsec.setVisible(false);
 
-                if (decision == 140310000 || decision == 140310001 || decision == 140310002) {
-                    formContext.getControl("pg_decision1").setDisabled(true);
-                    formContext.getControl("pg_decisiondate1").setDisabled(true);
-                    formContext.getControl("pg_decisionexplanation1").setDisabled(true);
-                    formContext.getControl("pg_anytermsconditions1").setDisabled(true);
-                }
-                else {
-                    formContext.getControl("pg_decision1").setDisabled(false);
-                    formContext.getControl("pg_decisiondate1").setDisabled(false);
-                    formContext.getControl("pg_decisionexplanation1").setDisabled(false);
-                    formContext.getControl("pg_anytermsconditions1").setDisabled(false);
+if(decision==140310000 ||decision==140310001 ||decision==140310002){
+ formContext.getControl("pg_decision1").setDisabled(true);
+  formContext.getControl("pg_decisiondate1").setDisabled(true);
+    formContext.getControl("pg_decisionexplanation1").setDisabled(true);
+    formContext.getControl("pg_anytermsconditions1").setDisabled(true);
+}
+else{
+ formContext.getControl("pg_decision1").setDisabled(false);
+  formContext.getControl("pg_decisiondate1").setDisabled(false);
+    formContext.getControl("pg_decisionexplanation1").setDisabled(false);
+    formContext.getControl("pg_anytermsconditions1").setDisabled(false);
 
-                }
+}
 
-            } else {
-                managerDecisionTab.setVisible(false);
-                if (decision != null || decisiondate != null || decisionexplanation != null || anytermsconditions != null) {
-                    generalinfodecisionsec.setVisible(true);
-                    formContext.getControl("pg_decision").setDisabled(true);
-                    formContext.getControl("pg_decisiondate").setDisabled(true);
-                    formContext.getControl("pg_decisionexplanation").setDisabled(true);
-                    formContext.getControl("pg_anytermsconditions").setDisabled(true);
-                }
-                else {
-                    generalinfodecisionsec.setVisible(false);
-                    formContext.getControl("pg_decision").setDisabled(true);
-                    formContext.getControl("pg_decisiondate").setDisabled(true);
-                    formContext.getControl("pg_decisionexplanation").setDisabled(true);
-                    formContext.getControl("pg_anytermsconditions").setDisabled(true);
-                }
-            }
+        } else {
+            managerDecisionTab.setVisible(false);
+if(decision!=null || decisiondate!=null || decisionexplanation!=null || anytermsconditions!=null){
+ generalinfodecisionsec.setVisible(true);
+ formContext.getControl("pg_decision").setDisabled(true);
+    formContext.getControl("pg_decisiondate").setDisabled(true);
+    formContext.getControl("pg_decisionexplanation").setDisabled(true);
+    formContext.getControl("pg_anytermsconditions").setDisabled(true);
+}
+else{
+  generalinfodecisionsec.setVisible(false);
+ formContext.getControl("pg_decision").setDisabled(true);
+    formContext.getControl("pg_decisiondate").setDisabled(true);
+    formContext.getControl("pg_decisionexplanation").setDisabled(true);
+    formContext.getControl("pg_anytermsconditions").setDisabled(true);
+}
         }
     }
-    else {
+    }
+    else{
 
     }
-    if (decision == 140310003 && changedattributes != null) {
+if(decision==140310003 && changedattributes!=null){
 
-        Tab4.setVisible(true);
-    }
-    else {
-        Tab4.setVisible(false);
+Tab4.setVisible(true);
+}
+else{
+Tab4.setVisible(false);
+}
+if(decision!=null && username !=approverName || decision!=null && username ==approverName || decision!=null && username ==approversecondName){///decision==140310003 (moreinfo)
+    Changeevalutiontab.setVisible(true);
+}
+else{
+    Changeevalutiontab.setVisible(false);
     }
 }
 
@@ -349,8 +410,7 @@ function approveAndLogCurrentUser(context) {
 
 
 
-//Requirement::1)Based on application subtype value set the approver1 and approver2 field values as Default before that need to check wheather loggedin user is in teams or not//
-//2).Get the Team members need to display the display the applicationsubtype values also//
+
 function changemanagement(context) {
     var formContext = context.getFormContext();
     var userSettings = Xrm.Utility.getGlobalContext().userSettings;
@@ -365,16 +425,16 @@ function changemanagement(context) {
         //if(applicationtype==140310000){
         var internalemailaddress;
         var teamIds = [
-            "6cdab5df-1457-ee11-be6f-000d3a55fb1c",
-            "779c1100-e157-ee11-be6f-002248257fd7",
-            "2a78ad43-e157-ee11-be6f-002248257fd7",
-            "41ad32aa-e157-ee11-be6f-002248257fd7",
-            "876f2ee0-e157-ee11-be6f-002248257fd7",
-            "b5183913-e257-ee11-be6f-002248257fd7",
-            "46f1b546-e257-ee11-be6f-002248257fd7",
-            "d4efa26c-e257-ee11-be6f-002248257fd7",
-            "a8ed0a9a-e257-ee11-be6f-002248257fd7",
-            "47f1b546-e257-ee11-be6f-002248257fd7"
+            "868b2be1-b987-ee11-8179-000d3a170a76",
+            "778123b2-c187-ee11-8179-000d3a170a76",
+            "6d17a901-c387-ee11-8179-000d3a170a76",
+            "6e1e0851-c387-ee11-8179-000d3a170a76",
+            "1fedd029-c487-ee11-8179-000d3a170a76",
+            "24cf2e72-c487-ee11-8179-000d3a170a76 ",
+            "425ec4ac-c487-ee11-8179-000d3a170a76",
+            "d32858a6-c687-ee11-8179-000d3a170a76",
+            "f81c5031-c787-ee11-8179-000d3a170a76",
+            "60fd5a73-c787-ee11-8179-000d3a170a76"
         ];
 
         for (var i = 0; i < teamIds.length; i++) {
@@ -406,7 +466,7 @@ function changemanagement(context) {
                             for (var i = 0; i < response.value.length; i++) {
                                 internalemailaddress = response.value[i]["internalemailaddress"];
                                 if (internalemailaddress2 === internalemailaddress) {
-                                    if (teamId === "6cdab5df-1457-ee11-be6f-000d3a55fb1c") {
+                                    if (teamId === "868b2be1-b987-ee11-8179-000d3a170a76") {
                                         applicationsubtype.addOption({ text: 'Vendor Management', value: 140310000 });
                                         applicationsubtype.addOption({ text: 'Organizational Change', value: 140310001 });
                                         applicationsubtype.addOption({ text: 'BPO Operations', value: 140310002 });
@@ -422,12 +482,15 @@ function changemanagement(context) {
                                             //   var entityType = "systemuser";
                                             //   var entityId = "{0516E8CD-FD87-EB11-B1AD-000D3A8C9195}";
                                             //   var employeeName = "Ramesh Mahalingam";
-                                            //  var entityType = "systemuser";                            
-                                            //var entityId ="{B624FB83-538B-ED11-81AD-000D3A55FB1C}"
-                                            // var employeeName = "Jayakumar MG"
-                                            var entityType = "systemuser";
-                                            var entityId = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
-                                            var employeeName = "Srinivasan Sukumar";
+                                           var entityType = "systemuser";   
+                       //  var entityId ="{24FA036B-A362-EE11-BE6E-000D3A55FB1C}"
+                                         //   var employeeName = "Jakir Shaik"
+
+                                            var entityId ="{5107bbc4-568b-ed11-81ac-6045bda8aa87}"
+                                            var employeeName = "Jayakumar MG"
+                                         //   var entityType = "systemuser";
+                                         //   var entityId = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
+                                          //  var employeeName = "Srinivasan Sukumar";
 
                                             var lookupValue = [{
                                                 entityType: entityType,
@@ -442,10 +505,12 @@ function changemanagement(context) {
                                             if (includesecondapprover == true) {
                                                 formContext.getControl("pg_approversecond").setVisible(true);
                                                 var entityType1 = "systemuser";
-                                                var entityId1 = "{B624FB83-538B-ED11-81AD-000D3A55FB1C}"
-                                                var employeeName1 = "Jayakumar MG"
-                                                // var entityId1 = "{0516E8CD-FD87-EB11-B1AD-000D3A8C9195}";
-                                                //  var employeeName1 = "Ramesh Mahalingam";
+var entityId1 = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
+                                            var employeeName1 = "Srinivasan Sukumar";
+      // var entityId1 ="{B624FB83-538B-ED11-81AD-000D3A55FB1C}"
+                                        //    var employeeName1 = "Jayakumar MG"
+                                             //   var entityId1 = "{0516E8CD-FD87-EB11-B1AD-000D3A8C9195}";
+                                            //  var employeeName1 = "Ramesh Mahalingam";
                                                 var lookupValue1 = [{
                                                     entityType: entityType1,
                                                     id: entityId1,
@@ -459,9 +524,9 @@ function changemanagement(context) {
                                             }
 
                                         }
-                                    } else if (teamId === "779c1100-e157-ee11-be6f-002248257fd7") {
-                                        applicationsubtype.addOption({ text: 'Technology-Related Changes (SW/NW/Firewall/)', value: 140310006 });
-                                        applicationsubtype.addOption({ text: 'Asset/IT Management', value: 140310007 });
+                                    } else if (teamId === "24cf2e72-c487-ee11-8179-000d3a170a76") {
+                                        applicationsubtype.addOption({ text: 'IT Infrastructure Changes(SW/NW/Firewall/)', value: 140310006 });
+                                        applicationsubtype.addOption({ text: 'IT - Asset Management', value: 140310007 });
                                         if (aplitionsubtype == 140310006 || aplitionsubtype == 140310007) {
 
 
@@ -500,21 +565,21 @@ function changemanagement(context) {
                                             }
 
                                         }
-                                    } else if (teamId === "2a78ad43-e157-ee11-be6f-002248257fd7") {
-                                        applicationsubtype.addOption({ text: 'HR Corporate Support', value: 140310008 });
+                                    } else if (teamId === "6e1e0851-c387-ee11-8179-000d3a170a76") {
+                                     //   applicationsubtype.addOption({ text: 'HR Corporate Support', value: 140310008 });
                                         applicationsubtype.addOption({ text: 'HR Corporate HR Ops', value: 140310009 });
-                                        applicationsubtype.addOption({ text: 'HR BP', value: 140310010 });
-                                        applicationsubtype.addOption({ text: 'Talent Development', value: 140310011 });
-                                        applicationsubtype.addOption({ text: 'Employee Engagement', value: 140310012 });
-                                        if (aplitionsubtype == 140310008 || aplitionsubtype == 140310009 || aplitionsubtype == 140310010 || aplitionsubtype == 140310011 || aplitionsubtype == 140310012) {
+                                        applicationsubtype.addOption({ text: 'HR Corporate BP', value: 140310010 });
+                                        applicationsubtype.addOption({ text: 'HR Corporate Talent Development', value: 140310011 });
+                                        applicationsubtype.addOption({ text: 'HR Corporate Employee Engagement', value: 140310012 });
+                                        if (aplitionsubtype == 140310009 || aplitionsubtype == 140310010 || aplitionsubtype == 140310011 || aplitionsubtype == 140310012) {//aplitionsubtype == 140310008 removed
 
 
                                             //     var entityType = "systemuser";
-                                            //     var entityId = "{11588FEA-FF87-EB11-B1AD-000D3A8C9195}";
+                                            //     var entityId = "{2da93203-2088-ec11-93b0-000d3a4d783b}";
                                             //     var employeeName = "Aarthi Ilangovan";
 
                                             var entityType = "systemuser";
-                                            var entityId = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
+                                            var entityId = "{9ce8df14-59ef-ed11-8848-000d3a114691}";
                                             var employeeName = "Srinivasan Sukumar";
 
                                             var lookupValue = [{
@@ -544,8 +609,8 @@ function changemanagement(context) {
 
 
                                         }
-                                    } else if (teamId === "41ad32aa-e157-ee11-be6f-002248257fd7") {
-                                        applicationsubtype.addOption({ text: 'Payroll & Benefits', value: 140310013 });
+                                    } else if (teamId === "f81c5031-c787-ee11-8179-000d3a170a76") {
+                                        applicationsubtype.addOption({ text: 'Payroll & Benefits - Shared Services', value: 140310013 });
                                         if (aplitionsubtype == 140310013) {
 
 
@@ -585,8 +650,8 @@ function changemanagement(context) {
 
 
                                         }
-                                    } else if (teamId === "876f2ee0-e157-ee11-be6f-002248257fd7") {
-                                        applicationsubtype.addOption({ text: 'Audit', value: 140310014 });
+                                    } else if (teamId === "778123b2-c187-ee11-8179-000d3a170a76") {
+                                        applicationsubtype.addOption({ text: 'Audit & Compliance Internal', value: 140310014 });
                                         if (aplitionsubtype == 140310014) {
 
 
@@ -623,8 +688,8 @@ function changemanagement(context) {
                                                 formContext.getControl("pg_approversecond").clear();
                                             }
                                         }
-                                    } else if (teamId === "b5183913-e257-ee11-be6f-002248257fd7") {
-                                        applicationsubtype.addOption({ text: 'Operations Management', value: 140310015 });
+                                    } else if (teamId === "d32858a6-c687-ee11-8179-000d3a170a76 ") {
+                                        applicationsubtype.addOption({ text: 'HR Operations Management - Shared Services', value: 140310015 });
                                         if (aplitionsubtype == 140310015) {
 
 
@@ -666,8 +731,8 @@ function changemanagement(context) {
 
 
                                         }
-                                    } else if (teamId === "46f1b546-e257-ee11-be6f-002248257fd7") {
-                                        applicationsubtype.addOption({ text: 'Finance Management', value: 140310016 });
+                                    } else if (teamId === "6d17a901-c387-ee11-8179-000d3a170a76") {
+                                        applicationsubtype.addOption({ text: 'Finance & Accounts Management', value: 140310016 });
                                         if (aplitionsubtype == 140310016) {
 
 
@@ -710,8 +775,8 @@ function changemanagement(context) {
 
 
                                         }
-                                    } else if (teamId === "d4efa26c-e257-ee11-be6f-002248257fd7") {
-                                        applicationsubtype.addOption({ text: 'L&D Related', value: 140310017 });
+                                    } else if (teamId === "425ec4ac-c487-ee11-8179-000d3a170a76") {
+                                        applicationsubtype.addOption({ text: 'Learning & Development', value: 140310017 });
                                         if (aplitionsubtype == 140310017) {
 
 
@@ -753,8 +818,8 @@ function changemanagement(context) {
 
 
                                         }
-                                    } else if (teamId === "a8ed0a9a-e257-ee11-be6f-002248257fd7") {
-                                        applicationsubtype.addOption({ text: 'HR Recruitment', value: 140310018 });
+                                    } else if (teamId === "1fedd029-c487-ee11-8179-000d3a170a76") {
+                                        applicationsubtype.addOption({ text: 'RTA Staffing Domestic', value: 140310018 });
                                         if (aplitionsubtype == 140310018) {
 
 
@@ -799,7 +864,7 @@ function changemanagement(context) {
 
 
                                         }
-                                    } else if (teamId === "47f1b546-e257-ee11-be6f-002248257fd7") {
+                                    } else if (teamId === "60fd5a73-c787-ee11-8179-000d3a170a76") {
                                         applicationsubtype.addOption({ text: 'Financial Reporting', value: 140310019 });
                                         if (aplitionsubtype == 140310019) {
 
@@ -866,6 +931,7 @@ function changemanagement(context) {
         formContext.getAttribute("pg_scheduleimpactwbs").setRequiredLevel("required");
         formContext.getAttribute("pg_currency").setRequiredLevel("required");
         formContext.getAttribute("pg_comments").setRequiredLevel("required");
+   
     }
     if (Type == createform) {
         formContext.getControl("pg_applicationsubtype").setDisabled(false);
@@ -876,12 +942,15 @@ function changemanagement(context) {
 }
 
 
-//Requirement::Based on currency field s/h the field//
+
 function currencySH(executionContext) {                       //mainFORM
     debugger;
     var formContext = executionContext.getFormContext();
     var currency = formContext.getAttribute("pg_currency").getValue();
-    var Estimatedcost = formContext.getAttribute("pg_estimatedcostoption").getValue();
+  var Estimatedcost = formContext.getAttribute("pg_estimatedcostoption").getValue();
+   var teststatus = formContext.getAttribute("pg_teststatus").getValue();///teststatus field
+  var changeproposalforcompleteenvironment = formContext.getAttribute("pg_changeproposalforcompleteenvironment").getValue();//changeproposalforcompleteenvironment
+
     if (currency == 140310000) {//currency==INR
         formContext.getControl("pg_curency_inr").setVisible(true);
     }
@@ -895,7 +964,7 @@ function currencySH(executionContext) {                       //mainFORM
     else {
         formContext.getControl("pg_costimpact").setVisible(false);
     }
-    if (Estimatedcost == 140310000) {//Estimatedcost==INR
+  if (Estimatedcost == 140310000) {//Estimatedcost==INR
         formContext.getControl("pg_estimatedcost").setVisible(true);
     }
     else {
@@ -908,157 +977,64 @@ function currencySH(executionContext) {                       //mainFORM
     else {
         formContext.getControl("pg_estimatedcostdollar").setVisible(false);
     }
-}
-//Requirement::Based on condition set the fields as disabled// 
-function approversetdisbled(context) {
-    var formContext = context.getFormContext();
-    var userSettings = Xrm.Utility.getGlobalContext().userSettings;
-    //var currentuserid = userSettings.userId;
-    var username = userSettings.userName;
-    var decision = formContext.getAttribute("pg_decision").getValue();
-    //var loggedinUserId = Xrm.Utility.getGlobalContext().userSettings.userId.replace("{", "").replace("}", "");
-    var createform = 1;
-    var Type = formContext.ui.getFormType();
-    if (Type != createform) {
-        var approver = formContext.getAttribute("pg_approver").getValue();
-        if (approver != null) {
-            var approverName = approver[0].name;
-            if (username == approverName || (decision == 140310000 || decision == 140310001 || decision == 140310002)) {
-                formContext.getControl("pg_whychangeisrequired").setDisabled(true);
-                formContext.getControl("pg_projectprograminitiative").setDisabled(true);
-                formContext.getControl("pg_estimatedcostoption").setDisabled(true);
-                formContext.getControl("pg_estimatedcost").setDisabled(true);
-                formContext.getControl("pg_estimatedcostdollar").setDisabled(true);
-                formContext.getControl("pg_priority").setDisabled(true);
-                formContext.getControl("pg_intendedoutcome").setDisabled(true);
-                formContext.getControl("pg_hours").setDisabled(true);
-
-                formContext.getControl("pg_durationimpact").setDisabled(true);
-                formContext.getControl("pg_recommendations").setDisabled(true);
-                formContext.getControl("pg_scheduleimpactwbs").setDisabled(true);
-                formContext.getControl("pg_currency").setDisabled(true);
-                formContext.getControl("pg_costimpact").setDisabled(true);
-                formContext.getControl("pg_curency_inr").setDisabled(true);
-                formContext.getControl("pg_comments").setDisabled(true);
-                formContext.getControl("pg_applicationtype").setDisabled(true);
-                // formContext.getControl("pg_applicationsubtype").setDisabled(true);
-                formContext.getControl("pg_approver").setDisabled(true);
-                formContext.getControl("pg_prioritytype").setDisabled(true);
-                formContext.getControl("pg_description").setDisabled(true);
-
-                formContext.getControl("pg_includesecondapprover").setDisabled(true);
-                formContext.getControl("pg_approversecond").setDisabled(true);
-
-            }
-            else {
-                formContext.getControl("pg_whychangeisrequired").setDisabled(false);
-                formContext.getControl("pg_projectprograminitiative").setDisabled(false);
-                formContext.getControl("pg_estimatedcostoption").setDisabled(false);
-                formContext.getControl("pg_estimatedcost").setDisabled(false);
-                formContext.getControl("pg_estimatedcostdollar").setDisabled(false);
-                formContext.getControl("pg_priority").setDisabled(false);
-                formContext.getControl("pg_intendedoutcome").setDisabled(false);
-                formContext.getControl("pg_hours").setDisabled(false);
-
-                formContext.getControl("pg_durationimpact").setDisabled(false);
-                formContext.getControl("pg_recommendations").setDisabled(false);
-                formContext.getControl("pg_scheduleimpactwbs").setDisabled(false);
-                formContext.getControl("pg_currency").setDisabled(false);
-                formContext.getControl("pg_costimpact").setDisabled(false);
-                formContext.getControl("pg_curency_inr").setDisabled(false);
-                formContext.getControl("pg_comments").setDisabled(false);
-                formContext.getControl("pg_applicationtype").setDisabled(false);
-                // formContext.getControl("pg_applicationsubtype").setDisabled(false);
-                formContext.getControl("pg_approver").setDisabled(false);
-                formContext.getControl("pg_prioritytype").setDisabled(false);
-                formContext.getControl("pg_description").setDisabled(false);
-
-                formContext.getControl("pg_includesecondapprover").setDisabled(false);
-                formContext.getControl("pg_approversecond").setDisabled(false);
-
-            }
-        }
+   if (teststatus == 140310001 || teststatus == 140310002) { // iif teststatus==partial failed
+        formContext.getControl("pg_ifpartialfailed").setVisible(true);
     }
-}
-
-
-
-function secondapproversetdisbled(context) {
-    var formContext = context.getFormContext();
-    var userSettings = Xrm.Utility.getGlobalContext().userSettings;
-    //var currentuserid = userSettings.userId;
-    var username = userSettings.userName;
-    var createform = 1;
-    var Type = formContext.ui.getFormType();
-    if (Type != createform) {
-        var approver1 = formContext.getAttribute("pg_approver").getValue();
-        var approver = approver1[0].name;
-        var secondapprover = formContext.getAttribute("pg_approversecond").getValue();//approversecond
-        if (secondapprover != null && username == approver) {
-
-            formContext.getControl("pg_decision1").setDisabled(true);
-            formContext.getControl("pg_decisiondate1").setDisabled(true);
-            formContext.getControl("pg_decisionexplanation1").setDisabled(true);
-            formContext.getControl("pg_anytermsconditions1").setDisabled(true);
-            alert("This ticket is assigned to Second Approver due to your PTO leave");
-        }
-        else {
-            formContext.getControl("pg_decision1").setDisabled(false);
-            formContext.getControl("pg_decisiondate1").setDisabled(false);
-            formContext.getControl("pg_decisionexplanation1").setDisabled(false);
-            formContext.getControl("pg_anytermsconditions1").setDisabled(false);
-
-        }
+    else {
+        formContext.getControl("pg_ifpartialfailed").setVisible(false);
     }
-}
+  if (changeproposalforcompleteenvironment == 140310001) { // iif changeproposalforcompleteenvironment==no
+        formContext.getControl("pg_ifno").setVisible(true);
+    }
+    else {
+        formContext.getControl("pg_ifno").setVisible(false);
+    }
 
+}
 
 function approversetdisbled(context) {
     var formContext = context.getFormContext();
-    var userSettings = Xrm.Utility.getGlobalContext().userSettings;
-    //var currentuserid = userSettings.userId;
-    var username = userSettings.userName;
-    var decision = formContext.getAttribute("pg_decision").getValue();
-    //var loggedinUserId = Xrm.Utility.getGlobalContext().userSettings.userId.replace("{", "").replace("}", "");
-    var createform = 1;
-    var Type = formContext.ui.getFormType();
-    if (Type != createform) {
-        var approver = formContext.getAttribute("pg_approver").getValue();
-        var secondapprover = formContext.getAttribute("pg_approversecond").getValue();
-        if (approver != null) {
-            var approverName = approver[0].name;
-            if (secondapprover != null) {
-                var secondapproverName = secondapprover[0].name;
-                if (username == approverName || username == secondapproverName || (decision == 140310000 || decision == 140310001 || decision == 140310002)) {
-                    formContext.getControl("pg_whychangeisrequired").setDisabled(true);
-                    formContext.getControl("pg_projectprograminitiative").setDisabled(true);
-                    formContext.getControl("pg_estimatedcostoption").setDisabled(true);
-                    formContext.getControl("pg_estimatedcost").setDisabled(true);
-                    formContext.getControl("pg_estimatedcostdollar").setDisabled(true);
-                    formContext.getControl("pg_priority").setDisabled(true);
-                    formContext.getControl("pg_intendedoutcome").setDisabled(true);
-                    formContext.getControl("pg_hours").setDisabled(true);
+      var userSettings = Xrm.Utility.getGlobalContext().userSettings;
+      //var currentuserid = userSettings.userId;
+      var username = userSettings.userName;
+  var decision = formContext.getAttribute("pg_decision").getValue();
+     //var loggedinUserId = Xrm.Utility.getGlobalContext().userSettings.userId.replace("{", "").replace("}", "");
+      var createform = 1;
+      var Type = formContext.ui.getFormType();
+      if (Type != createform) {
+    var approver = formContext.getAttribute("pg_approver").getValue();
+ var secondapprover = formContext.getAttribute("pg_approversecond").getValue();
+if(approver != null){
+      var approverName = approver[0].name; 
+if(secondapprover!=null){
+ var secondapproverName = secondapprover[0].name; 
+}
+  if(username==approverName || username==secondapproverName){/// (decision==140310000 ||decision==140310001 ||decision==140310002)
+    formContext.getControl("pg_whychangeisrequired").setDisabled(true);          
+    formContext.getControl("pg_projectprograminitiative").setDisabled(true);
+    formContext.getControl("pg_estimatedcostoption").setDisabled(true);
+    formContext.getControl("pg_estimatedcost").setDisabled(true);
+    formContext.getControl("pg_estimatedcostdollar").setDisabled(true);
+    formContext.getControl("pg_priority").setDisabled(true);
+    formContext.getControl("pg_intendedoutcome").setDisabled(true);
+    formContext.getControl("pg_hours").setDisabled(true);
+  
+    formContext.getControl("pg_durationimpact").setDisabled(true);
+    formContext.getControl("pg_recommendations").setDisabled(true);
+    formContext.getControl("pg_scheduleimpactwbs").setDisabled(true);
+    formContext.getControl("pg_currency").setDisabled(true);
+    formContext.getControl("pg_costimpact").setDisabled(true);
+    formContext.getControl("pg_curency_inr").setDisabled(true);
+    formContext.getControl("pg_comments").setDisabled(true);
+    formContext.getControl("pg_applicationtype").setDisabled(true);
+   // formContext.getControl("pg_applicationsubtype").setDisabled(true);
+    formContext.getControl("pg_approver").setDisabled(true);
+    formContext.getControl("pg_prioritytype").setDisabled(true);
+    formContext.getControl("pg_description").setDisabled(true);
 
-                    formContext.getControl("pg_durationimpact").setDisabled(true);
-                    formContext.getControl("pg_recommendations").setDisabled(true);
-                    formContext.getControl("pg_scheduleimpactwbs").setDisabled(true);
-                    formContext.getControl("pg_currency").setDisabled(true);
-                    formContext.getControl("pg_costimpact").setDisabled(true);
-                    formContext.getControl("pg_curency_inr").setDisabled(true);
-                    formContext.getControl("pg_comments").setDisabled(true);
-                    formContext.getControl("pg_applicationtype").setDisabled(true);
-                    // formContext.getControl("pg_applicationsubtype").setDisabled(true);
-                    formContext.getControl("pg_approver").setDisabled(true);
-                    formContext.getControl("pg_prioritytype").setDisabled(true);
-                    formContext.getControl("pg_description").setDisabled(true);
-
-                    formContext.getControl("pg_includesecondapprover").setDisabled(true);
-                    formContext.getControl("pg_approversecond").setDisabled(true);
-
-
-
-                    
-                    formContext.getControl("pg_evaluationdate").setDisabled(true);
+   formContext.getControl("pg_includesecondapprover").setDisabled(true);
+    formContext.getControl("pg_approversecond").setDisabled(true);
+  formContext.getControl("pg_evaluationdate").setDisabled(true);
                     formContext.getControl("pg_evaluationplanexplanation").setDisabled(true);
                     formContext.getControl("pg_changeevaluated").setDisabled(true);
                     formContext.getControl("pg_whethertesthasmetexpectedoutcome").setDisabled(true);
@@ -1066,152 +1042,58 @@ function approversetdisbled(context) {
                     formContext.getControl("pg_changeproposalforcompleteenvironment").setDisabled(true);
                     formContext.getControl("pg_ifno").setDisabled(true);
                     formContext.getControl("pg_anyimprovisesupportrequired").setDisabled(true);
-                    formContext.getControl("pg_intendedoutcome1").setDisabled(true);
-                    formContext.getControl("pg_requirementsrecommendations").setDisabled(true);
-                    formContext.getControl("pg_requirementsrecommendations").setDisabled(true);
+                   // formContext.getControl("pg_intendedoutcome1").setDisabled(true);
+                  //  formContext.getControl("pg_requirementsrecommendations").setDisabled(true);
+                //    formContext.getControl("pg_requirementsrecommendations").setDisabled(true);
                     formContext.getControl("pg_testresults").setDisabled(true);
                     formContext.getControl("pg_attachment").setDisabled(true);
-                  
+ formContext.getControl("pg_ifpartialfailed").setDisabled(true);
+                    formContext.getControl("pg_nextchangeproposalcycleifanyfailure").setDisabled(true);
+  }
+  else{
+    formContext.getControl("pg_whychangeisrequired").setDisabled(false);          
+    formContext.getControl("pg_projectprograminitiative").setDisabled(false);
+    formContext.getControl("pg_estimatedcostoption").setDisabled(false);
+   formContext.getControl("pg_estimatedcost").setDisabled(false);
+    formContext.getControl("pg_estimatedcostdollar").setDisabled(false);
+    formContext.getControl("pg_priority").setDisabled(false);
+    formContext.getControl("pg_intendedoutcome").setDisabled(false);
+    formContext.getControl("pg_hours").setDisabled(false);
+  
+    formContext.getControl("pg_durationimpact").setDisabled(false);
+    formContext.getControl("pg_recommendations").setDisabled(false);
+    formContext.getControl("pg_scheduleimpactwbs").setDisabled(false);
+    formContext.getControl("pg_currency").setDisabled(false);
+    formContext.getControl("pg_costimpact").setDisabled(false);
+    formContext.getControl("pg_curency_inr").setDisabled(false);
+    formContext.getControl("pg_comments").setDisabled(false);
+    formContext.getControl("pg_applicationtype").setDisabled(false);
+   // formContext.getControl("pg_applicationsubtype").setDisabled(false);
+    formContext.getControl("pg_approver").setDisabled(false);
+    formContext.getControl("pg_prioritytype").setDisabled(false);
+    formContext.getControl("pg_description").setDisabled(false);
 
-                }
-                else {
-                    formContext.getControl("pg_whychangeisrequired").setDisabled(false);
-                    formContext.getControl("pg_projectprograminitiative").setDisabled(false);
-                    formContext.getControl("pg_estimatedcostoption").setDisabled(false);
-                    formContext.getControl("pg_estimatedcost").setDisabled(false);
-                    formContext.getControl("pg_estimatedcostdollar").setDisabled(false);
-                    formContext.getControl("pg_priority").setDisabled(false);
-                    formContext.getControl("pg_intendedoutcome").setDisabled(false);
-                    formContext.getControl("pg_hours").setDisabled(false);
+   formContext.getControl("pg_includesecondapprover").setDisabled(false);
+    formContext.getControl("pg_approversecond").setDisabled(false);
 
-                    formContext.getControl("pg_durationimpact").setDisabled(false);
-                    formContext.getControl("pg_recommendations").setDisabled(false);
-                    formContext.getControl("pg_scheduleimpactwbs").setDisabled(false);
-                    formContext.getControl("pg_currency").setDisabled(false);
-                    formContext.getControl("pg_costimpact").setDisabled(false);
-                    formContext.getControl("pg_curency_inr").setDisabled(false);
-                    formContext.getControl("pg_comments").setDisabled(false);
-                    formContext.getControl("pg_applicationtype").setDisabled(false);
-                    // formContext.getControl("pg_applicationsubtype").setDisabled(false);
-                    formContext.getControl("pg_approver").setDisabled(false);
-                    formContext.getControl("pg_prioritytype").setDisabled(false);
-                    formContext.getControl("pg_description").setDisabled(false);
-
-                    formContext.getControl("pg_includesecondapprover").setDisabled(false);
-                    formContext.getControl("pg_approversecond").setDisabled(false);
-
-
-
-                    formContext.getControl("pg_evaluationdate").setDisabled(false);
+formContext.getControl("pg_evaluationdate").setDisabled(false);
                     formContext.getControl("pg_evaluationplanexplanation").setDisabled(false);
                     formContext.getControl("pg_changeevaluated").setDisabled(false);
                     formContext.getControl("pg_whethertesthasmetexpectedoutcome").setDisabled(false);
                     formContext.getControl("pg_teststatus").setDisabled(false);
                     formContext.getControl("pg_changeproposalforcompleteenvironment").setDisabled(false);
                     formContext.getControl("pg_ifno").setDisabled(false);
-                    formContext.getControl("pg_ifpartialfailed").setDisabled(false);
-                    formContext.getControl("pg_nextchangeproposalcycleifanyfailure").setDisabled(false);
                     formContext.getControl("pg_anyimprovisesupportrequired").setDisabled(false);
-                    formContext.getControl("pg_intendedoutcome1").setDisabled(false);
-                    formContext.getControl("pg_requirementsrecommendations").setDisabled(false);
-                    formContext.getControl("pg_requirementsrecommendations").setDisabled(false);
+                //    formContext.getControl("pg_intendedoutcome1").setDisabled(false);
+                   // formContext.getControl("pg_requirementsrecommendations").setDisabled(false);
+                //    formContext.getControl("pg_requirementsrecommendations").setDisabled(false);
                     formContext.getControl("pg_testresults").setDisabled(false);
                     formContext.getControl("pg_attachment").setDisabled(false);
-                }
-            }
-        }
-    }
+ formContext.getControl("pg_ifpartialfailed").setDisabled(false);
+                    formContext.getControl("pg_nextchangeproposalcycleifanyfailure").setDisabled(false);
+}
+  }
+}
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function Resubmitform(primaryControl) {  //main form
-    debugger;
-    var formContext = primaryControl;
-    var createform = 1;
-    var Type = formContext.ui.getFormType();
-    var userSettings = Xrm.Utility.getGlobalContext().userSettings;
-    var username = userSettings.userName;
-    var approver = formContext.getAttribute("pg_approver").getValue();
-    var approverName = approver[0].name; 
-
- var secondapprover = formContext.getAttribute("pg_approversecond").getValue();
-
-if(secondapprover!=null){
- var secondapproverName = secondapprover[0].name;
-} 
-       var decision = formContext.getAttribute("pg_decision").getValue(); 
-    if (Type != createform && (username !=approverName || username !=secondapproverName) && decision==140310003) {
-     return true;
-    }
-    else {
-        return false;
-    }
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-function secondapproversetdisbled(context) {
-    var formContext = context.getFormContext();
-    var userSettings = Xrm.Utility.getGlobalContext().userSettings;
-    //var currentuserid = userSettings.userId;
-    var username = userSettings.userName;
-    var createform = 1;
-    var Type = formContext.ui.getFormType();
-    if (Type != createform) {
-        var approver1 = formContext.getAttribute("pg_approver").getValue();
-        var approver = approver1[0].name;
-        var secondapprover = formContext.getAttribute("pg_approversecond").getValue();//approversecond
-        if (secondapprover != null) {
-            var secondapproverName = secondapprover[0].name;
-            if (secondapprover != null && username == approver) {
-
-                formContext.getControl("pg_decision1").setDisabled(true);
-                formContext.getControl("pg_decisiondate1").setDisabled(true);
-                formContext.getControl("pg_decisionexplanation1").setDisabled(true);
-                formContext.getControl("pg_anytermsconditions1").setDisabled(true);
-                alert("This ticket is assigned to Second Approver due to your PTO leave");
-            }
-            if (username == secondapproverName) {
-                formContext.getControl("pg_decision1").setDisabled(false);
-                formContext.getControl("pg_decisiondate1").setDisabled(false);
-                formContext.getControl("pg_decisionexplanation1").setDisabled(false);
-                formContext.getControl("pg_anytermsconditions1").setDisabled(false);
-            }
-            else {
-                formContext.getControl("pg_decision1").setDisabled(false);
-                formContext.getControl("pg_decisiondate1").setDisabled(false);
-                formContext.getControl("pg_decisionexplanation1").setDisabled(false);
-                formContext.getControl("pg_anytermsconditions1").setDisabled(false);
-
-            }
-        }
-    }  
-}  
