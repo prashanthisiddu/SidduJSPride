@@ -96,6 +96,8 @@ function Resolvebtn(primaryControl) {
 
     }
 }
+
+
 if (country == 140310002 && Name.includes("Offboarding PHP - Admin")) {
     var a = formContext.getAttribute("pg_assetcollected").getValue();
     var b = formContext.getAttribute("pg_assetresetcoordinedwithit").getValue();
@@ -233,9 +235,31 @@ Xrm.Navigation.openConfirmDialog(confirmStrings, confirmOptions).then(
 
 
 
+function ApprovalSection(context) {
+    debugger;
+    var formcontext = context.getFormContext();
+    var activeStage = formcontext.data.process.getActiveStage();
+    var stageId = activeStage.getId();
+    var Country = formcontext.getAttribute("pg_country").getValue();
+var offboardingTab = formcontext.ui.tabs.get("tab_1");
+var offindiaapproval = offboardingTab.sections.get("tab_1_section_31");
+var offindia = offboardingTab.sections.get("tab_1_section_30");
+if (Country == 140310000){//india
+  
+    offindia.setVisible(true);
+}
+else{
+    offindia.setVisible(false);
+}
+if (stageId == "4b984d5e-0c1e-4ceb-ad04-56df205822d6"){//Approval
+  
+    offindiaapproval.setVisible(true);
+}
+else{
+    offindiaapproval.setVisible(false);
+}
 
-
-
+}
 
 function SetCurrentstage(context) {
     debugger;
@@ -243,6 +267,7 @@ function SetCurrentstage(context) {
     var activeStage = formContext.data.process.getActiveStage();
     var stageId = activeStage.getId();
     var Country = formContext.getAttribute("pg_country").getText();
+  
     if (stageId == "d6f762b1-d70b-4076-95f6-66793cfbc34a"){//Identity
         formContext.getAttribute("pg_currentstage").setValue(140310000);
     }
@@ -263,6 +288,7 @@ function SetCurrentstage(context) {
     }
     if (stageId == "4b984d5e-0c1e-4ceb-ad04-56df205822d6"){//Approval
         formContext.getAttribute("pg_currentstage").setValue(140310006);
+     
     }
     if (stageId == "de2ea5e9-e671-42e0-8884-3d4237f3a0f8"){//Resolve
         formContext.getAttribute("pg_currentstage").setValue(140310007);
@@ -325,6 +351,25 @@ Onboarding.formEvents = {
             }
 
         }
+        if (bpfstage == "Approval") {
+			var hrcompleted = formcontext.getAttribute("pg_hrreviewcompleted").getValue();
+			var admincompleted = formcontext.getAttribute("pg_adminreviewcompleted").getValue();
+			var itcamreviewcompleted = formcontext.getAttribute("pg_itcamreviewcompleted").getValue();
+			var ithelpdeskcompleted = formcontext.getAttribute("pg_ithelpdeskreviewcompleted").getValue();
+			var employeedevelopmentreviewcompleted = formcontext.getAttribute("pg_employeedevelopmentreviewcompleted").getValue();
+			var employeeengagementreviewcompleted = formcontext.getAttribute("pg_employeeengagementreviewcompleted").getValue();
+			var learningdevelopmentreviewcompleted = formcontext.getAttribute("pg_learningdevelopmentreviewcompleted").getValue();
+			var financereviewcompleted = formcontext.getAttribute("pg_financereviewcompleted").getValue();
+			if (bpfArguments.getDirection() === "Next" && country == 140310000 && (hrcompleted || admincompleted || itcamreviewcompleted || ithelpdeskcompleted || employeedevelopmentreviewcompleted || learningdevelopmentreviewcompleted || employeeengagementreviewcompleted || financereviewcompleted) == 1){
+                bpfArguments.preventDefault();
+                alertStrings = { confirmButtonLabel: "OK", text: "Please complete audit of all requests.", title: "Cannot Move to Next Stage" };
+				alertOptions = { height: 200, width: 300 };
+				Xrm.Navigation.openAlertDialog(alertStrings, alertOptions);
+				return;
+			}
+		
+		
+		}
     }
 }
 
@@ -420,7 +465,7 @@ function ChildRecordsonload(context) {
       var ITAssetandBackup = offboardingTab.sections.get("tab_12_section_1");
       var ITAccessandDL = offboardingTab.sections.get("tab_12_section_9");
       var LearningANDDevelopment = offboardingTab.sections.get("tab_12_section_4");
-    
+      var Financeindia = offboardingTab.sections.get("tab_1_section_32");
       var PHPAdmin = offboardingTab.sections.get("tab_2_section_19");
       var PHPEmployeeDevelopment = offboardingTab.sections.get("tab_2_section_20");
       var PHPEmployeeEngagement = offboardingTab.sections.get("tab_2_section_21");
@@ -521,6 +566,12 @@ childgrid.setVisible(false);
         transferownershipto.setVisible(false);
 childgrid.setVisible(false);
         }
+        if (country == 140310000 && Name.includes("Offboarding India - Finance")) {
+            Financeindia.setVisible(true);
+            employeeinformation.setVisible(false);
+            transferownershipto.setVisible(false);
+    childgrid.setVisible(false);
+            }  
         if (country== 140310002 && Name.includes("Offboarding PHP - Admin")) {
             PHPAdmin.setVisible(true);
         employeeinformation.setVisible(false);

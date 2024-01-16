@@ -1,4 +1,133 @@
 
+function annivarsarywithout90days(context) {///Main one on dojo entity
+    debugger;
+    try{
+        formcontext = context.getFormContext();
+      var  review = formcontext.getAttribute("pg_review").getValue()[0].id;
+Xrm.WebApi.online.retrieveRecord("new_employee",review , "?$select=pg_performanceperiod").then(
+    function success(result) {
+        var pg_performanceperiod = result["pg_performanceperiod"];
+   var performance = new Array();
+    
+            performance[0] = new Object();
+   performance[0].id =pg_performanceperiod;
+  var performance =pg_performanceperiod;
+var Q1 = performance.split('-');
+var Quater=Q1[0];
+var yearsomex= Q1[1];
+ var startdateforQ1 = new Date();
+var Qua1 = "1-jan"; 
+  var dt1 = Qua1.split('-');
+  var day1 = dt1[0];
+    var month1 = dt1[1].toLocaleLowerCase();
+     var year1 = yearsomex;
+var QuaterQ1 = year1 + "-" + month1+ "-"+day1;
+     startdateforQ1 = new Date(QuaterQ1.replace(/-/g, "/")); 
+
+ var startdateforQ2 = new Date();
+   var Qua2 = "1-apr"; 
+   var dt2 = Qua2.split('-');
+   var day2 =  dt2[0];
+          var month2 = dt2[1].toLocaleLowerCase();
+          var year2 = yearsomex;
+          var QuaterQ2 = year2 + "-" + month2+ "-"+day2;
+          startdateforQ2 = new Date(QuaterQ2.replace(/-/g, "/"));
+ var startdateforQ3 = new Date();
+var Qua3 = "1-jul"; 
+   var dt3 = Qua3.split('-');
+   var day3 = dt3[0];
+   var month3 = dt3[1].toLocaleLowerCase();
+   var year3 =yearsomex;
+   var QuaterQ3 = year3 + "-" + month3+ "-"+day3;
+startdateforQ3 = new Date(QuaterQ3.replace(/-/g, "/"));
+ var startdateforQ4 = new Date();
+   var Qua4 = "1-oct"; 
+ var dt4 = Qua4.split('-');
+ var day4 = dt4[0];
+ var month4 = dt4[1].toLocaleLowerCase();
+ var year4 =yearsomex;
+var QuaterQ4 = year4 + "-" + month4+ "-"+day4;
+startdateforQ4 = new Date(QuaterQ4.replace(/-/g, "/"));
+
+var quaterstartdate={};
+// var quaterenddate = new Date();
+     if(Quater=="Q4"){
+        var quaterstartdate=startdateforQ4;
+     }
+   else if(Quater == "Q3"){
+       var quaterstartdate=startdateforQ3;
+     }
+else if(Quater == "Q2"){
+  quaterstartdate=startdateforQ2;
+     }
+   else if(Quater == "Q1"){
+    quaterstartdate=startdateforQ1;
+     }
+  Xrm.WebApi.online.retrieveRecord("new_employee",review , "?$select=_pg_workerreviewid_value").then(
+    function success(result) {
+        var _pg_workerreviewid_value = result["_pg_workerreviewid_value"];
+        var _pg_workerreviewid_value_formatted = result["_pg_workerreviewid_value@OData.Community.Display.V1.FormattedValue"];
+        var _pg_workerreviewid_value_lookuplogicalname = result["_pg_workerreviewid_value@Microsoft.Dynamics.CRM.lookuplogicalname"];
+  
+          
+            var worker = new Array();
+    
+            worker[0] = new Object();
+    
+            worker[0].id = _pg_workerreviewid_value;
+          
+            worker[0].name =_pg_workerreviewid_value_formatted;
+            worker[0].entity =_pg_workerreviewid_value_lookuplogicalname;
+          
+    Xrm.WebApi.online.retrieveRecord("cdm_worker",  worker[0].id , "?$select=cdm_anniversarydatetime").then(
+         function success(result) {
+        var cdm_anniversarydatetime = result["cdm_anniversarydatetime"];
+       
+        var annivarsary = new Array();
+    
+        annivarsary[0] = new Object();
+    annivarsary[0].id = cdm_anniversarydatetime;
+var anivarsary = new Date(annivarsary[0].id);
+   
+        if(anivarsary.getFullYear()+'/'+anivarsary.getMonth()+'/'+anivarsary.getDate()<quaterstartdate.getFullYear()+'/'+quaterstartdate.getMonth()+'/'+quaterstartdate.getDate())  {
+   
+                            formcontext.getControl("pg_elevate").setDisabled(false);
+   formcontext.ui.clearFormNotification("EmployeeNotEligibleNotification");
+   
+                            
+                           
+                        }
+                  if(anivarsary.getFullYear()+'/'+anivarsary.getMonth()+'/'+anivarsary.getDate()>=quaterstartdate.getFullYear()+'/'+quaterstartdate.getMonth()+'/'+quaterstartdate.getDate()) {
+                            formcontext.getControl("pg_elevate").setDisabled(true);
+  formcontext.ui.setFormNotification("This employee is not eligible for elevation", "ERROR","EmployeeNotEligibleNotification");
+            
+            
+}
+},
+
+   
+    function(error) {
+        console.log(error.message);
+    }
+);
+},
+function (error) {
+console.log(error.message);
+}
+);
+
+},
+function (error) {
+console.log(error.message);
+}
+  );
+}
+
+catch(err)  {
+} 
+console.log(review); 
+}
+
 
 function setalert(context) {
     debugger;
