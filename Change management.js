@@ -1,3 +1,49 @@
+function validateActualStartTime(executionContext) {
+    var formContext = executionContext.getFormContext();
+
+    var actualStartTime = formContext.getAttribute("pg_actualstarttime").getValue();
+    var plannedStartDate = formContext.getAttribute("pg_plannedstartdate").getValue();
+    var plannedEndDate = formContext.getAttribute("pg_plannedenddate").getValue();
+
+    if (actualStartTime && plannedStartDate && plannedEndDate) {
+        if (actualStartTime < plannedStartDate || actualStartTime > plannedEndDate) {
+            formContext.getControl("pg_actualstarttime").setNotification(
+                "Actual Start date should be greater than planned start date and less than planned end date"
+            );
+        } else {
+            formContext.getControl("pg_actualstarttime").clearNotification();
+        }
+    }
+}
+
+// Function to disable all form fields
+function disableAllFormFields(formContext, fieldStatus) {
+    "use strict";
+    formContext.ui.controls.forEach(function (control) {
+        if (control && control.getDisabled && !control.getDisabled()) {
+            control.setDisabled(fieldStatus);
+        }
+    });
+}
+
+// Function to check if the status reason is inactive and disable all fields if true
+function checkStatusAndDisableFields(formContext) {
+    "use strict";
+    var status = formContext.getAttribute("statecode").getValue();
+   
+    if (status === 1) {
+        disableAllFormFields(formContext, true);
+    }
+}
+
+// Main function to be called on form load
+function onFormLoad(context) {
+    var formContext = context.getFormContext();
+    checkStatusAndDisableFields(formContext);
+}
+
+
+
 function basedOnWhetherTestField(context) {
     var formContext = context.getFormContext();
  var userSettings = Xrm.Utility.getGlobalContext().userSettings;
@@ -63,11 +109,6 @@ formContext.getAttribute("pg_name").setValue(Name);
 
 
 
-
-
-
-
-
 function completeSandH(primaryControl) {  //main form
   debugger;
   var formContext = primaryControl;
@@ -89,9 +130,6 @@ function completeSandH(primaryControl) {  //main form
   }
 
 }
-
-
-
 
 
 
@@ -122,19 +160,6 @@ function complete(primaryControl) {   //customize js action
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 function Resubmitform(primaryControl) {  //main form
     debugger;
     var formContext = primaryControl;
@@ -160,12 +185,6 @@ if(secondapprover!=null){
     }
 
 }
-
-
-
-
-
-
 
 
 
@@ -401,16 +420,6 @@ else{
 
 
 
-
-
-
-
-
-
-
-
-
-
 function changemanagement(context) {
     var formContext = context.getFormContext();
     var userSettings = Xrm.Utility.getGlobalContext().userSettings;
@@ -474,23 +483,11 @@ function changemanagement(context) {
                                         applicationsubtype.addOption({ text: 'Facility Management', value: 140310004 });
                                         applicationsubtype.addOption({ text: 'Others', value: 140310005 });
                                         if (aplitionsubtype == 140310000 || aplitionsubtype == 140310001 || aplitionsubtype == 140310002 || aplitionsubtype == 140310003 || aplitionsubtype == 140310004 || aplitionsubtype == 140310005) {
-
-
-
-
-
-                                            //   var entityType = "systemuser";
-                                            //   var entityId = "{0516E8CD-FD87-EB11-B1AD-000D3A8C9195}";
-                                            //   var employeeName = "Ramesh Mahalingam";
                                            var entityType = "systemuser";   
-                       //  var entityId ="{24FA036B-A362-EE11-BE6E-000D3A55FB1C}"
-                                         //   var employeeName = "Jakir Shaik"
 
                                             var entityId ="{5107bbc4-568b-ed11-81ac-6045bda8aa87}"
                                             var employeeName = "Jayakumar MG"
-                                         //   var entityType = "systemuser";
-                                         //   var entityId = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
-                                          //  var employeeName = "Srinivasan Sukumar";
+                                       
 
                                             var lookupValue = [{
                                                 entityType: entityType,
@@ -498,19 +495,11 @@ function changemanagement(context) {
                                                 name: employeeName
                                             }];
                                             formContext.getAttribute("pg_approver").setValue(lookupValue);
-
-
-
-
                                             if (includesecondapprover == true) {
                                                 formContext.getControl("pg_approversecond").setVisible(true);
                                                 var entityType1 = "systemuser";
 var entityId1 = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
                                             var employeeName1 = "Srinivasan Sukumar";
-      // var entityId1 ="{B624FB83-538B-ED11-81AD-000D3A55FB1C}"
-                                        //    var employeeName1 = "Jayakumar MG"
-                                             //   var entityId1 = "{0516E8CD-FD87-EB11-B1AD-000D3A8C9195}";
-                                            //  var employeeName1 = "Ramesh Mahalingam";
                                                 var lookupValue1 = [{
                                                     entityType: entityType1,
                                                     id: entityId1,
@@ -528,11 +517,6 @@ var entityId1 = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
                                         applicationsubtype.addOption({ text: 'IT Infrastructure Changes(SW/NW/Firewall/)', value: 140310006 });
                                         applicationsubtype.addOption({ text: 'IT - Asset Management', value: 140310007 });
                                         if (aplitionsubtype == 140310006 || aplitionsubtype == 140310007) {
-
-
-                                            //     var entityType = "systemuser";
-                                            //     var entityId = "{9E786F29-0488-EB11-B1AD-000D3A8C9195}";
-                                            //    var employeeName = "Suresh Stephen";
 
                                             var entityType = "systemuser";
                                             var entityId = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
@@ -573,11 +557,6 @@ var entityId1 = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
                                         applicationsubtype.addOption({ text: 'HR Corporate Employee Engagement', value: 140310012 });
                                         if (aplitionsubtype == 140310009 || aplitionsubtype == 140310010 || aplitionsubtype == 140310011 || aplitionsubtype == 140310012) {//aplitionsubtype == 140310008 removed
 
-
-                                            //     var entityType = "systemuser";
-                                            //     var entityId = "{2da93203-2088-ec11-93b0-000d3a4d783b}";
-                                            //     var employeeName = "Aarthi Ilangovan";
-
                                             var entityType = "systemuser";
                                             var entityId = "{9ce8df14-59ef-ed11-8848-000d3a114691}";
                                             var employeeName = "Srinivasan Sukumar";
@@ -612,13 +591,6 @@ var entityId1 = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
                                     } else if (teamId === "f81c5031-c787-ee11-8179-000d3a170a76") {
                                         applicationsubtype.addOption({ text: 'Payroll & Benefits - Shared Services', value: 140310013 });
                                         if (aplitionsubtype == 140310013) {
-
-
-
-                                            //     var entityType = "systemuser";
-                                            //       var entityId = "{29BA86F1-FF87-EB11-B1AD-000D3A8C9195}";
-                                            //     var employeeName = "Cyril Bosco";
-
                                             var entityType = "systemuser";
                                             var entityId = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
                                             var employeeName = "Srinivasan Sukumar";
@@ -653,12 +625,6 @@ var entityId1 = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
                                     } else if (teamId === "778123b2-c187-ee11-8179-000d3a170a76") {
                                         applicationsubtype.addOption({ text: 'Audit & Compliance Internal', value: 140310014 });
                                         if (aplitionsubtype == 140310014) {
-
-
-
-                                            //  var entityType = "systemuser";                            
-                                            //var entityId ="{B624FB83-538B-ED11-81AD-000D3A55FB1C}"
-                                            // var employeeName = "Jayakumar MG"
                                             var entityType = "systemuser";
                                             var entityId = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
                                             var employeeName = "Srinivasan Sukumar";
@@ -691,14 +657,6 @@ var entityId1 = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
                                     } else if (teamId === "d32858a6-c687-ee11-8179-000d3a170a76 ") {
                                         applicationsubtype.addOption({ text: 'HR Operations Management - Shared Services', value: 140310015 });
                                         if (aplitionsubtype == 140310015) {
-
-
-
-
-
-                                            //        var entityType = "systemuser";
-                                            //       var entityId = "{E625254F-F0F6-EB11-94EF-000D3A566004}";
-                                            //       var employeeName = "Sai Pradeep Indiran";
 
                                             var entityType = "systemuser";
                                             var entityId = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
@@ -735,14 +693,6 @@ var entityId1 = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
                                         applicationsubtype.addOption({ text: 'Finance & Accounts Management', value: 140310016 });
                                         if (aplitionsubtype == 140310016) {
 
-
-
-
-
-                                            //           var entityType = "systemuser";
-                                            //          var entityId = "{487E1751-E710-EC11-B6E6-000D3A145DE8}";
-                                            //        var employeeName = "Sangeetha Lakshmi";
-
                                             var entityType = "systemuser";
                                             var entityId = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
                                             var employeeName = "Srinivasan Sukumar";
@@ -753,8 +703,6 @@ var entityId1 = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
                                                 name: employeeName
                                             }];
                                             formContext.getAttribute("pg_approver").setValue(lookupValue);
-
-
 
                                             if (includesecondapprover == true) {
                                                 formContext.getControl("pg_approversecond").setVisible(true);
@@ -778,14 +726,6 @@ var entityId1 = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
                                     } else if (teamId === "425ec4ac-c487-ee11-8179-000d3a170a76") {
                                         applicationsubtype.addOption({ text: 'Learning & Development', value: 140310017 });
                                         if (aplitionsubtype == 140310017) {
-
-
-
-
-
-                                            //            var entityType = "systemuser";
-                                            //            var entityId = "{031EBA50-7709-EC11-B6E6-002248254DBF}";
-                                            //           var employeeName = "Jim Jacob";
 
                                             var entityType = "systemuser";
                                             var entityId = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
@@ -821,15 +761,6 @@ var entityId1 = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
                                     } else if (teamId === "1fedd029-c487-ee11-8179-000d3a170a76") {
                                         applicationsubtype.addOption({ text: 'RTA Staffing Domestic', value: 140310018 });
                                         if (aplitionsubtype == 140310018) {
-
-
-
-
-
-
-                                            //      var entityType = "systemuser";
-                                            //      var entityId = "{0C11824D-EFF6-EB11-94EF-000D3A566004}";
-                                            //      var employeeName = "ArunKumar Sankaran";
 
                                             var entityType = "systemuser";
                                             var entityId = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
@@ -868,14 +799,6 @@ var entityId1 = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
                                         applicationsubtype.addOption({ text: 'Financial Reporting', value: 140310019 });
                                         if (aplitionsubtype == 140310019) {
 
-
-
-
-
-                                            //           var entityType = "systemuser";
-                                            //          var entityId = "{1016E8CD-FD87-EB11-B1AD-000D3A8C9195}";
-                                            //            var employeeName = "Venkatesh Chandiraraj";
-
                                             var entityType = "systemuser";
                                             var entityId = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
                                             var employeeName = "Srinivasan Sukumar";
@@ -887,9 +810,6 @@ var entityId1 = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
                                                 name: employeeName
                                             }];
                                             formContext.getAttribute("pg_approver").setValue(lookupValue);
-
-
-
                                             if (includesecondapprover == true) {
                                                 formContext.getControl("pg_approversecond").setVisible(true);
                                                 var entityType1 = "systemuser";
@@ -1097,3 +1017,78 @@ formContext.getControl("pg_evaluationdate").setDisabled(false);
 }
 
 
+
+
+// To Calculate Time Period when a record is created until it is closed.
+function calculateTime(context)
+{
+   debugger;
+   var formContext = context.getFormContext();
+
+   var formType = formContext.ui.getFormType();
+
+   if(formType == 2)
+   {
+   var createdOn = formContext.getAttribute("createdon").getValue();
+   var status = formContext.getAttribute("statecode").getValue();
+   var currentTime = new Date();
+   var timeDifference = currentTime - createdOn;
+
+   if (status == 0)
+   {
+   var days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+   var hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+   var minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+
+   formContext.getAttribute("pg_timeperiod").setValue(days + "D  " +  hours + "H  " +  minutes + "M");
+   formContext.getControl("pg_timeperiod").setDisabled(true);
+   }
+  }
+}
+// On Click of RE OPEN button, record moves from InACTIVE to ACTIVE State
+function confirmAndActivateRecord(primaryControl) {   
+  debugger;
+  var formContext = primaryControl;
+  var confirmStrings = { title: "Confirm ReOpen", text: "Are You Sure You Want to Reopen This Record?", confirmButtonLabel: "Ok", cancelButtonLabel: "Cancel" };
+  var confirmOptions = { height: 250, width: 300 };
+
+  Xrm.Navigation.openConfirmDialog(confirmStrings, confirmOptions).then(
+      function (success) {
+          if (success.confirmed) {
+        var status=formContext.getAttribute("statecode").getValue();
+            formContext.getAttribute("statecode").setValue(0);
+  // formContext.getAttribute("stauscode").setValue(2)
+              formContext.data.entity.save("saveandclose");
+            
+          }
+      },
+      function (error) {
+         
+          console.error(error.message);
+      }
+  );
+}
+
+// on click of ONHOLD Button, record status changes from Active to On-Hold
+function OnHoldButton(primaryControl) {  
+  debugger;
+  var formContext = primaryControl;
+  var confirmStrings = { title: "Confirm OnHold", text: "Are You Sure You Want to OnHold This Record?", confirmButtonLabel: "Ok", cancelButtonLabel: "Cancel" };
+  var confirmOptions = { height: 250, width: 300 };
+
+  Xrm.Navigation.openConfirmDialog(confirmStrings, confirmOptions).then(
+      function (success) {
+          if (success.confirmed) {
+       var statusReason=formContext.getAttribute("statuscode").getValue();
+           // formContext.getAttribute("statecode").setValue(0);
+           formContext.getAttribute("statuscode").setValue(140310000);
+           //   formContext.data.entity.save("saveandclose");
+            
+          }
+      },
+      function (error) {
+         
+          console.error(error.message);
+      }
+  );
+}
