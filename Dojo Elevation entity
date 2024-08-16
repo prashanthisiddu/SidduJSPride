@@ -1,0 +1,643 @@
+function ShowRelatedContacts(primaryControl)
+{
+    var formContext = primaryControl;
+Xrm.Navigation.openAlertDialog({text: "Thank You!  Your nomination has been submitted" });
+   // var windowOptions = { height: 300, width: 400 };
+  Xrm.Page.getControl("WebResource_notification").setVisible(true);
+
+}
+
+
+ function showandhide(primaryControl)
+   {
+    // Xrm.Page.data.entity.save("saveandclose")
+                  Xrm.Page.ui.close();
+               }
+
+
+function departmentgetset(executionContext) {
+    debugger;
+    var formContext = executionContext.getFormContext();
+    var employeeid = formContext.getAttribute("pg_name").getValue();///"?$filter=title eq '" + name + "'&$top=1").then(
+    Xrm.WebApi.online.retrieveMultipleRecords("cdm_worker", "?$filter=cdm_fullname eq '" + employeeid + "'&$top=1").then(
+            function success(results) {
+                for (var i = 0; i < results.entities.length; i++) {
+                    var _pg_pe_value = results.entities[i]["_pg_pe_value"];
+                    var _pg_pe_value_formatted = results.entities[i]["_pg_pe_value@OData.Community.Display.V1.FormattedValue"];
+                    var _pg_pe_value_lookuplogicalname = results.entities[i]["_pg_pe_value@Microsoft.Dynamics.CRM.lookuplogicalname"];
+                }                       
+                Xrm.WebApi.online.retrieveMultipleRecords("pg_prideemployee", "?$filter=pg_name eq '" + _pg_pe_value_formatted + "'&$top=1").then().then(
+                    function success(results) {
+                        for (var i = 0; i < results.entities.length; i++) {
+                            var _pg_primaryrole_value = results.entities[i]["_pg_primaryrole_value"];
+                            var _pg_primaryrole_value_formatted = results.entities[i]["_pg_primaryrole_value@OData.Community.Display.V1.FormattedValue"];
+                            var _pg_primaryrole_value_lookuplogicalname = results.entities[i]["_pg_primaryrole_value@Microsoft.Dynamics.CRM.lookuplogicalname"];
+                        }
+
+                        Xrm.WebApi.online.retrieveMultipleRecords("pg_role", "?$filter=pg_name eq '" + _pg_primaryrole_value_formatted + "'&$top=1").then().then(
+                            function success(results) {
+                                for (var i = 0; i < results.entities.length; i++) {
+                                    var pg_department = results.entities[i]["pg_department"];
+                                    var pg_department_formatted = results.entities[i]["pg_department@OData.Community.Display.V1.FormattedValue"];
+                                    formContext.getAttribute("pg_department").setValue(pg_department_formatted);
+                               
+                                }
+                            },
+                            function(error) {
+                                Xrm.Utility.alertDialog(error.message);
+                            }
+                        );
+                    },
+
+                    function(error) {
+                        Xrm.Utility.alertDialog(error.message);
+                    }
+                );
+            },
+            function(error) {
+                Xrm.Utility.alertDialog(error.message);
+            }
+        );
+}
+
+
+
+function Employeeidgetset(executionContext) {
+    debugger;
+    var formContext = executionContext.getFormContext();
+    var name = formContext.getAttribute("pg_name").getValue();
+ Xrm.WebApi.online.retrieveMultipleRecords("cdm_worker", "?$filter=cdm_fullname eq '" + name + "'&$top=1").then(
+            function success(results) {
+                for (var i = 0; i < results.entities.length; i++) {
+                    var cdm_employeeid_custom = results.entities[i]["cdm_employeeid_custom"];
+ formContext.getAttribute("pg_employeeidindia").setValue(cdm_employeeid_custom);
+                }
+            },
+            function(error) {
+                Xrm.Utility.alertDialog(error.message);
+            }
+        );
+}
+
+
+
+function annivarsarywithout90days(context) {
+    debugger;
+    try{
+        formcontext = context.getFormContext();
+      var  review = formcontext.getAttribute("pg_review").getValue()[0].id;
+Xrm.WebApi.online.retrieveRecord("new_employee",review , "?$select=pg_performanceperiod").then(
+    function success(result) {
+        var pg_performanceperiod = result["pg_performanceperiod"];
+   var performance = new Array();
+    
+            performance[0] = new Object();
+   performance[0].id =pg_performanceperiod;
+  var performance =pg_performanceperiod;
+var Q1 = performance.split('-');
+var Quater=Q1[0];
+var yearsomex= Q1[1];
+ var startdateforQ1 = new Date();
+var Qua1 = "1-jan"; 
+  var dt1 = Qua1.split('-');
+  var day1 = dt1[0];
+    var month1 = dt1[1].toLocaleLowerCase();
+     var year1 = yearsomex;
+var QuaterQ1 = year1 + "-" + month1+ "-"+day1;
+     startdateforQ1 = new Date(QuaterQ1.replace(/-/g, "/")); 
+
+ var startdateforQ2 = new Date();
+   var Qua2 = "1-apr"; 
+   var dt2 = Qua2.split('-');
+   var day2 =  dt2[0];
+          var month2 = dt2[1].toLocaleLowerCase();
+          var year2 = yearsomex;
+          var QuaterQ2 = year2 + "-" + month2+ "-"+day2;
+          startdateforQ2 = new Date(QuaterQ2.replace(/-/g, "/"));
+ var startdateforQ3 = new Date();
+var Qua3 = "1-jul"; 
+   var dt3 = Qua3.split('-');
+   var day3 = dt3[0];
+   var month3 = dt3[1].toLocaleLowerCase();
+   var year3 =yearsomex;
+   var QuaterQ3 = year3 + "-" + month3+ "-"+day3;
+startdateforQ3 = new Date(QuaterQ3.replace(/-/g, "/"));
+ var startdateforQ4 = new Date();
+   var Qua4 = "1-oct"; 
+ var dt4 = Qua4.split('-');
+ var day4 = dt4[0];
+ var month4 = dt4[1].toLocaleLowerCase();
+ var year4 =yearsomex;
+var QuaterQ4 = year4 + "-" + month4+ "-"+day4;
+startdateforQ4 = new Date(QuaterQ4.replace(/-/g, "/"));
+
+var enddateforQ5 = new Date();
+var Qua5 = "31-mar"; 
+var dt5 = Qua5.split('-');
+var day5 = dt5[0];
+var month5 = dt5[1].toLocaleLowerCase();
+var year5 = yearsomex;
+var QuaterQ5 = year5 + "-" + month5+ "-"+day5;
+enddateforQ5 = new Date(QuaterQ5.replace(/-/g, "/")); 
+
+var enddateforQ6 = new Date();
+var Qua6 = "30-june"; 
+var dt6 = Qua6.split('-');
+var day6 =  dt6[0];
+  var month6 = dt6[1].toLocaleLowerCase();
+  var year6 = yearsomex;
+  var QuaterQ6 = year6 + "-" + month6+ "-"+day6;
+  enddateforQ6 = new Date(QuaterQ6.replace(/-/g, "/"));
+var enddateforQ7 = new Date();
+var Qua7 = "30-sep"; 
+var dt7 = Qua7.split('-');
+var day7 = dt7[0];
+var month7 = dt7[1].toLocaleLowerCase();
+var year7 =yearsomex;
+var QuaterQ7 = year7 + "-" + month7+ "-"+day7;
+enddateforQ7 = new Date(QuaterQ7.replace(/-/g, "/"));
+var enddateforQ8 = new Date();
+var Qua8 = "31-dec"; 
+var dt8 = Qua8.split('-');
+var day8 = dt8[0];
+var month8 = dt8[1].toLocaleLowerCase();
+var year8 =yearsomex;
+var QuaterQ8 = year8 + "-" + month8+ "-"+day8;
+enddateforQ8 = new Date(QuaterQ8.replace(/-/g, "/"));
+
+var quaterenddate={};
+var quaterstartdate={};
+	 var quaterenddate = new Date();
+		 if(Quater=="Q4"){
+			var quaterstartdate=startdateforQ4;
+			var quaterenddate=enddateforQ8;
+		 }
+	   else if(Quater == "Q3"){
+		   var quaterstartdate=startdateforQ3;
+		   var quaterenddate=enddateforQ7;
+		 }
+	else if(Quater == "Q2"){
+	  quaterstartdate=startdateforQ2;
+	  quaterenddate=enddateforQ6;
+		 }
+	   else if(Quater == "Q1"){
+		quaterstartdate=startdateforQ1;
+		quaterenddate=enddateforQ5;
+		 } 
+
+  Xrm.WebApi.online.retrieveRecord("new_employee",review , "?$select=_pg_workerreviewid_value").then(
+    function success(result) {
+        var _pg_workerreviewid_value = result["_pg_workerreviewid_value"];
+        var _pg_workerreviewid_value_formatted = result["_pg_workerreviewid_value@OData.Community.Display.V1.FormattedValue"];
+        var _pg_workerreviewid_value_lookuplogicalname = result["_pg_workerreviewid_value@Microsoft.Dynamics.CRM.lookuplogicalname"];
+  
+          
+            var worker = new Array();
+    
+            worker[0] = new Object();
+    
+            worker[0].id = _pg_workerreviewid_value;
+          
+            worker[0].name =_pg_workerreviewid_value_formatted;
+            worker[0].entity =_pg_workerreviewid_value_lookuplogicalname;
+          
+    Xrm.WebApi.online.retrieveRecord("cdm_worker",  worker[0].id , "?$select=cdm_anniversarydatetime").then(
+         function success(result) {
+        var cdm_anniversarydatetime = result["cdm_anniversarydatetime"];
+       
+       // var annivarsary = new Array();
+    
+       // annivarsary[0] = new Object();
+   // annivarsary[0].id = cdm_anniversarydatetime;
+var anivarsary = new Date(cdm_anniversarydatetime);
+var cutoffDateenddate = new Date(quaterenddate);
+var cutoffDatestartdate = new Date(quaterstartdate);
+        if(anivarsary<cutoffDatestartdate)  {
+   
+                            formcontext.getControl("pg_elevate").setDisabled(false);
+   formcontext.ui.clearFormNotification("EmployeeNotEligibleNotification");
+         }
+						else if (anivarsary >= new Date(cutoffDatestartdate)){
+							formcontext.getControl("pg_elevate").setDisabled(true);
+  formcontext.ui.setFormNotification("This employee is not eligible for elevation", "ERROR","EmployeeNotEligibleNotification");
+						}
+                 else if(anivarsary <= new Date(cutoffDateenddate)) {
+                            formcontext.getControl("pg_elevate").setDisabled(true);
+  formcontext.ui.setFormNotification("This employee is not eligible for elevation", "ERROR","EmployeeNotEligibleNotification");
+            
+            
+}
+//else {
+	//formcontext.getControl("pg_elevate").setDisabled(false);
+	//formcontext.ui.clearFormNotification("EmployeeNotEligibleNotification");
+//}
+},
+
+   
+    function(error) {
+        console.log(error.message);
+    }
+);
+},
+function (error) {
+console.log(error.message);
+}
+);
+
+},
+function (error) {
+console.log(error.message);
+}
+  );
+}
+
+catch(err)  {
+} 
+console.log(review); 
+}
+
+
+
+
+
+
+function openDojoElevationForm(primarycontrol) {
+    var reviewId = primarycontrol.data.entity.getId();
+    reviewId = reviewId.replace("{", "").replace("}", "");
+    if (primarycontrol.getAttribute("pg_dojoelevation").getValue() != null) {
+        var pageInput = {
+            pageType: "entityrecord",
+            entityName: "pg_dojoelevations",
+            entityId: primarycontrol.getAttribute("pg_dojoelevation").getValue()[0].id
+            //createFromEntity: createFrom
+        };
+
+        var navigationOption = {
+            target: 2,
+            height: { value: 70, unit: "%" },
+            width: { value: 50, unit: "%" },
+            position: 1
+        };
+
+        Xrm.Navigation.navigateTo(pageInput, navigationOption).then(
+            function success() {
+                console.log("Success");
+            },
+            function error() {
+                console.log("Failed");
+            }
+        );
+    }
+    else {
+        var createFrom = {
+            entityType: "new_employee",
+            id: reviewId
+        };
+
+        var pageInput = {
+            pageType: "entityrecord",
+            entityName: "pg_dojoelevations",
+            createFromEntity: createFrom
+        };
+
+        var navigationOption = {
+            target: 2,
+            height: { value: 70, unit: "%" },
+            width: { value: 50, unit: "%" },
+            position: 1
+        };
+
+        Xrm.Navigation.navigateTo(pageInput, navigationOption).then(
+            function success() {
+                console.log("Success");
+            },
+            function error() {
+                console.log("Failed");
+            }
+        );
+    }
+}
+
+function onloadDojoElevations(context) {
+    /*
+    140310006 - White
+    140310007 - Yellow
+    140310004 - Orange
+    140310003 - Green
+    140310005 - Purple
+    140310000 - Black
+
+    140310000 - 1st Degree
+    140310001 - 2nd Degree
+    140310002 - 3rd Degree
+    140310003 - No Degree
+    */
+    var formContext = context.getFormContext();
+    var currentdojolevel = formContext.getAttribute("pg_currentdojolevel").getValue();
+    var currentdojodegree = formContext.getAttribute("pg_currentdojodegree").getValue();
+    var dojolevel = formContext.getControl("pg_dojobeltlevel");
+    var dojodegree = formContext.getControl("pg_dojobeltdegree");
+
+    var dojoleveloptions = dojolevel.getOptions();
+    var dojodegreeoptions = dojodegree.getOptions();
+
+    //Hide Last Elevated Date
+    var lastElevatedDate = formContext.getControl("pg_dojolastelevated");
+    var year = formContext.getAttribute("pg_dojolastelevated").getValue().getYear();
+    if (year < 80) {
+        lastElevatedDate.setVisible(false);
+    }
+
+    //Clear OptionSets
+    for (let i = 0; i < dojoleveloptions.length; i++) {
+        dojolevel.removeOption(dojoleveloptions[i].value);
+    }
+    /*
+    for (let i = 0; i < dojodegreeoptions.length; i++) {
+        dojodegree.removeOption(dojodegreeoptions[i].value);
+    }
+    */
+
+    //Add two level elevation
+
+    //White - No Degree
+    if ((currentdojolevel == 140310006) && (currentdojodegree == 140310003)) {
+        dojolevel.addOption({ text: 'Blue', value: 140310001 });
+        dojolevel.addOption({ text: 'Yellow', value: 140310007 });
+    }
+    //Blue - 1st Degree
+    else if ((currentdojolevel == 140310001) && (currentdojodegree == 140310000  || currentdojodegree == 140310003)) {
+        dojolevel.addOption({ text: 'Blue', value: 140310001 });
+    }
+    //Blue - 2nd Degree
+    else if ((currentdojolevel == 140310001) && (currentdojodegree == 140310001)) {
+        dojolevel.addOption({ text: 'Blue', value: 140310001 });
+        dojolevel.addOption({ text: 'Yellow', value: 140310007 });
+    }
+    //Blue - 3rd Degree
+    else if ((currentdojolevel == 140310001) && (currentdojodegree == 140310002)) {
+        dojolevel.addOption({ text: 'Yellow', value: 140310007 });
+    }
+    //Yellow - 1st Degree
+    else if ((currentdojolevel == 140310007) && (currentdojodegree == 140310000 || currentdojodegree == 140310003)) {
+        dojolevel.addOption({ text: 'Yellow', value: 140310007 });
+    }
+    //Yellow - 2nd Degree
+    else if ((currentdojolevel == 140310007) && (currentdojodegree == 140310001)) {
+        dojolevel.addOption({ text: 'Yellow', value: 140310007 });
+        dojolevel.addOption({ text: 'Orange', value: 140310004 });
+    }
+    //Yellow - 3rd Degree
+    else if ((currentdojolevel == 140310007) && (currentdojodegree == 140310002)) {
+        dojolevel.addOption({ text: 'Orange', value: 140310004 });
+    }
+    //Orange - 1st Degree
+    else if ((currentdojolevel == 140310004) && (currentdojodegree == 140310000 || currentdojodegree == 140310003)) {
+        dojolevel.addOption({ text: 'Orange', value: 140310004 });
+    }
+    //Orange - 2nd Degree
+    else if ((currentdojolevel == 140310004) && (currentdojodegree == 140310001)) {
+        dojolevel.addOption({ text: 'Orange', value: 140310004 });
+        dojolevel.addOption({ text: 'Green', value: 140310003 });
+    }
+    //Orange - 3rd Degree
+    else if ((currentdojolevel == 140310004) && (currentdojodegree == 140310002)) {
+        dojolevel.addOption({ text: 'Green', value: 140310003 });
+    }
+    //Green - 1st Degree
+    else if ((currentdojolevel == 140310003) && (currentdojodegree == 140310000 || currentdojodegree == 140310003)) {
+        dojolevel.addOption({ text: 'Green', value: 140310003 });
+    }
+    //Green - 2nd Degree
+    else if ((currentdojolevel == 140310003) && (currentdojodegree == 140310001)) {
+        dojolevel.addOption({ text: 'Green', value: 140310003 });
+        dojolevel.addOption({ text: 'Purple', value: 140310005 });
+    }
+    //Green - 3rd Degree
+    else if ((currentdojolevel == 140310003) && (currentdojodegree == 140310002)) {
+        dojolevel.addOption({ text: 'Purple', value: 140310005 });
+    }
+    //Purple - 1st Degree
+    else if ((currentdojolevel == 140310005) && (currentdojodegree == 140310000 || currentdojodegree == 140310003)) {
+        dojolevel.addOption({ text: 'Purple', value: 140310005 });
+    }
+    //Purple -2nd Degree
+    else if ((currentdojolevel == 140310005) && (currentdojodegree == 140310001)) {
+        dojolevel.addOption({ text: 'Purple', value: 140310005 });
+        dojolevel.addOption({ text: 'Black', value: 140310000 });
+    }
+    //Purple - 3rd Degree
+    else if ((currentdojolevel == 140310005) && (currentdojodegree == 140310002)) {
+        dojolevel.addOption({ text: 'Black', value: 140310000 });
+    }
+    //Black Belt - not needed
+
+    //update DojoDegreeOptionset
+    onChangeDojoDegree(context);
+}
+
+function onChangeDojoDegree(context){
+    //Check Dojo Level vs Current
+    var formContext = context.getFormContext();
+    var currentdojolevel = formContext.getAttribute("pg_currentdojolevel").getValue();
+    var currentdojodegree = formContext.getAttribute("pg_currentdojodegree").getValue();
+    var dojolevel = formContext.getAttribute("pg_dojobeltlevel").getValue();
+    var dojodegree = formContext.getControl("pg_dojobeltdegree");
+
+    var dojodegreeoptions = dojodegree.getOptions();
+
+    for (let i = 0; i < dojodegreeoptions.length; i++) {
+        dojodegree.removeOption(dojodegreeoptions[i].value);
+    }
+
+    if (dojolevel != null) {
+        if (currentdojolevel == dojolevel) {
+            if (currentdojodegree == 140310000) {
+                dojodegree.addOption({ text: '2nd Degree', value: 140310001 });
+                dojodegree.addOption({ text: '3rd Degree', value: 140310002 });
+            }
+            else if (currentdojodegree == 140310003) {
+                dojodegree.addOption({ text: '1st Degree', value: 140310000 });
+                dojodegree.addOption({ text: '2nd Degree', value: 140310001 });
+            }
+            else dojodegree.addOption({ text: '3rd Degree', value: 140310002 });
+        }
+        else if (currentdojolevel != dojolevel) {
+            dojodegree.addOption({ text: 'No Degree', value: 140310003 });
+            if (currentdojodegree == 140310002) {
+                dojodegree.addOption({ text: '2nd Degree', value: 140310001 });
+            }
+            if (currentdojodegree == 140310003 && currentdojolevel == 140310006 && dojolevel == 140310001) {
+                dojodegree.addOption({ text: '1st Degree', value: 140310000 });
+                dojodegree.addOption({ text: '2nd Degree', value: 140310001 });
+                dojodegree.addOption({ text: '3rd Degree', value: 140310002 });
+            }
+        }
+    }
+}
+
+	function enableDojoElevation(primarycontrol) {
+try{
+		debugger;
+		var formContext = primarycontrol;
+	///////////
+	var usersettings = Xrm.Utility.getGlobalContext().userSettings;
+	//var currentstage = formContext.getAttribute("pg_currentstatus").getValue();
+	var currentstage = formContext.data.process.getActiveStage().getName();
+	var enable = formContext.getAttribute("pg_enabledojoelevation").getValue();
+	var finalizeCheck = formContext.getAttribute("pg_finalreview").getValue();
+	/////////////////
+
+
+	////////////////
+	var pg_performanceperiod = formContext.getAttribute("pg_performanceperiod").getValue();
+	//performance[0] = new Object();
+	//performance[0].id =pg_performanceperiod;
+	//var performance =pg_performanceperiod;
+	//var performance = new Array();
+	var Q1 = pg_performanceperiod.split('-');
+var Quater=Q1[0];
+var yearsomex= Q1[1];
+
+
+	//var Q1 = performance.split('-');
+	//var Quater=Q1[0];
+	//var yearsomex= Q1[1];
+	 var startdateforQ1 = new Date();
+	var Qua1 = "1-jan"; 
+	  var dt1 = Qua1.split('-');
+	  var day1 = dt1[0];
+		var month1 = dt1[1].toLocaleLowerCase();
+		 var year1 = yearsomex;
+	var QuaterQ1 = year1 + "-" + month1+ "-"+day1;
+		 startdateforQ1 = new Date(QuaterQ1.replace(/-/g, "/")); 
+	
+	 var startdateforQ2 = new Date();
+	   var Qua2 = "1-apr"; 
+	   var dt2 = Qua2.split('-');
+	   var day2 =  dt2[0];
+			  var month2 = dt2[1].toLocaleLowerCase();
+			  var year2 = yearsomex;
+			  var QuaterQ2 = year2 + "-" + month2+ "-"+day2;
+			  startdateforQ2 = new Date(QuaterQ2.replace(/-/g, "/"));
+	 var startdateforQ3 = new Date();
+	var Qua3 = "1-jul"; 
+	   var dt3 = Qua3.split('-');
+	   var day3 = dt3[0];
+	   var month3 = dt3[1].toLocaleLowerCase();
+	   var year3 =yearsomex;
+	   var QuaterQ3 = year3 + "-" + month3+ "-"+day3;
+	startdateforQ3 = new Date(QuaterQ3.replace(/-/g, "/"));
+	 var startdateforQ4 = new Date();
+	   var Qua4 = "1-oct"; 
+	 var dt4 = Qua4.split('-');
+	 var day4 = dt4[0];
+	 var month4 = dt4[1].toLocaleLowerCase();
+	 var year4 =yearsomex;
+	var QuaterQ4 = year4 + "-" + month4+ "-"+day4;
+	startdateforQ4 = new Date(QuaterQ4.replace(/-/g, "/"));
+	
+
+    
+//////////
+var enddateforQ5 = new Date();
+var Qua5 = "31-mar"; 
+var dt5 = Qua5.split('-');
+var day5 = dt5[0];
+var month5 = dt5[1].toLocaleLowerCase();
+var year5 = yearsomex;
+var QuaterQ5 = year5 + "-" + month5+ "-"+day5;
+enddateforQ5 = new Date(QuaterQ5.replace(/-/g, "/")); 
+
+var enddateforQ6 = new Date();
+var Qua6 = "30-june"; 
+var dt6 = Qua6.split('-');
+var day6 =  dt6[0];
+  var month6 = dt6[1].toLocaleLowerCase();
+  var year6 = yearsomex;
+  var QuaterQ6 = year6 + "-" + month6+ "-"+day6;
+  enddateforQ6 = new Date(QuaterQ6.replace(/-/g, "/"));
+var enddateforQ7 = new Date();
+var Qua7 = "30-sep"; 
+var dt7 = Qua7.split('-');
+var day7 = dt7[0];
+var month7 = dt7[1].toLocaleLowerCase();
+var year7 =yearsomex;
+var QuaterQ7 = year7 + "-" + month7+ "-"+day7;
+enddateforQ7 = new Date(QuaterQ7.replace(/-/g, "/"));
+var enddateforQ8 = new Date();
+var Qua8 = "31-dec"; 
+var dt8 = Qua8.split('-');
+var day8 = dt8[0];
+var month8 = dt8[1].toLocaleLowerCase();
+var year8 =yearsomex;
+var QuaterQ8 = year8 + "-" + month8+ "-"+day8;
+enddateforQ8 = new Date(QuaterQ8.replace(/-/g, "/"));
+
+var quaterenddate={};
+var quaterstartdate={};
+	 var quaterenddate = new Date();
+		 if(Quater=="Q4"){
+			var quaterstartdate=startdateforQ4;
+			var quaterenddate=enddateforQ8;
+		 }
+	   else if(Quater == "Q3"){
+		   var quaterstartdate=startdateforQ3;
+		   var quaterenddate=enddateforQ7;
+		 }
+	else if(Quater == "Q2"){
+	  quaterstartdate=startdateforQ2;
+	  quaterenddate=enddateforQ6;
+		 }
+	   else if(Quater == "Q1"){
+		quaterstartdate=startdateforQ1;
+		quaterenddate=enddateforQ5;
+		 } 
+
+
+	////////////////
+		var employeeid=formContext.getAttribute("new_name").getValue();///"?$filter=title eq '" + name + "'&$top=1").then(
+	Xrm.WebApi.online.retrieveMultipleRecords("cdm_worker", "?$filter=cdm_fullname eq '" + employeeid + "'&$top=1").then(
+		function success(results) {
+			//Xrm.WebApi.online.retrieveMultipleRecords("cdm_worker", "?$filter=cdm_anniversarydatetime le 2023-09-30T15:24:00.000Z").then(
+				//function success(results) {
+					console.log(results);
+					for (var i = 0; i < results.entities.length; i++) {
+						var result = results.entities[i];
+					
+						var cdm_workerid = result["cdm_workerid"]; // Guid
+								var cdm_anniversarydatetime = result["cdm_anniversarydatetime"]; // Date Time
+								var cdm_anniversarydatetime_formatted = result["cdm_anniversarydatetime@OData.Community.Display.V1.FormattedValue"];
+								var anniversaryDate = new Date(cdm_anniversarydatetime);
+								//var cutoffDate = new Date("2023-09-30T15:24:00.000Z");
+
+								var cutoffDateenddate = new Date(quaterenddate);
+								var cutoffDatestartdate = new Date(quaterstartdate);
+				
+			 if (cdm_anniversarydatetime >= new Date(cutoffDatestartdate) && (usersettings.userId == formContext.getAttribute("pg_manager").getValue()[0].id) && currentstage == "90 Day / Finalize Review" && enable && finalizeCheck == 140310002) {
+									// Enable the dojobutton
+									//var finalizeCheck = formContext.getAttribute("pg_finalreview").getValue();
+									//formContext.getControl("pg_finalreview").setDisabled(true);
+									return true;
+								} 
+								else{
+									return false;
+								}
+}
+				},
+				function (error) {
+					console.log(error.message);
+				}
+			);
+
+ if ((usersettings.userId == formContext.getAttribute("pg_manager").getValue()[0].id) && currentstage == "90 Day / Finalize Review" && enable && finalizeCheck == 140310002) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+		catch (err) {
+		}
+
+}
