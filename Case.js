@@ -1,3 +1,53 @@
+function GetandSetSubCategory(context) {///how to get and set the multioption select field in from one entity to another
+    var formContext = context.getFormContext();
+    var title = formContext.getAttribute("title").getValue();
+    var ticketnumber = formContext.getAttribute("ticketnumber").getValue();
+    var var_pg_subcategoryy = formContext.getControl("pg_subcategoryy");
+    var filter = "?$select=pg_subcategory,pg_subcategoryy&$filter=pg_name eq '" + title + "' and pg_casenumber eq '" + ticketnumber + "'";
+ 
+    Xrm.WebApi.online.retrieveMultipleRecords("pg_supportticket", filter).then(
+        function success(results) {
+            if (results.entities.length > 0) {
+ 
+                var pg_subcategory = results.entities[0]["pg_subcategory"];
+                var pg_subcategory_formatted = results.entities[0]["pg_subcategory@OData.Community.Display.V1.FormattedValue"];
+                var pg_subcategoryy = results.entities[0]["pg_subcategoryy"];
+                var pg_subcategoryy_formatted = results.entities[0]["pg_subcategoryy@OData.Community.Display.V1.FormattedValue"];
+                formContext.getAttribute("pg_subcategory").setValue(pg_subcategory);
+                if (pg_subcategoryy.includes(",")) {
+                    let operationSubcategory = Array.from(pg_subcategoryy.split(","), Number);
+                    formContext.getAttribute("pg_subcategoryy").setValue(operationSubcategory);
+                    //formContext.getAttribute("pg_subcategoryy").setValue([Number(value)]);              
+                } else {
+                    formContext.getAttribute("pg_subcategoryy").setValue([Number(pg_subcategoryy)]);
+                }
+            } else {
+                console.log("No records found for the provided criteria.");
+            }
+        },
+        function (error) {
+            Xrm.Utility.alertDialog(error.message);
+        }
+    );
+}
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
  function gettoolaccess(context) {
     debugger;
     try{
