@@ -1,3 +1,67 @@
+function switchProcess(executionContext) {
+    var formContext = executionContext.getFormContext();
+    var CREATE_FORM_TYPE = 1;
+
+    var formType = formContext.ui.getFormType();
+    if (formType !== CREATE_FORM_TYPE) {
+      
+        var statusAttribute = formContext.getAttribute("statuscode");
+        var status = statusAttribute ? statusAttribute.getSelectedOption().value : null;    
+        var currentStageAttribute = formContext.getAttribute("pg_currentstage");
+        var currentStage = currentStageAttribute ? currentStageAttribute.getValue() : null;
+var Dropoutintiated =formContext.getAttribute("pg_dropoutintiated").getValue();
+
+        if (currentStage === 140310002 && Dropoutintiated==1 || currentStage === 140310003 && Dropoutintiated==1 || currentStage === 140310004 && Dropoutintiated==1) {
+
+            formContext.data.process.setActiveProcess("83A416A9-66B5-45DC-A548-0953CDB2C0B2");
+formContext.getAttribute("pg_currentstage").setValue(140310002);
+formContext.getAttribute("pg_dropoutintiated").setValue(true);//booleanfield type
+formContext.getAttribute("statuscode").setValue(140310001);
+        } else {
+            formContext.data.process.setActiveProcess("B01B7179-497B-476D-BA6E-1D589CDC189C");
+        }
+    }
+}
+
+
+////Requirement::Get the loggedin user name and checking if he is a team member or not if he is team member then show the dropout button else hide///
+function ShowHideDropoutforTeams(primaryControl) {
+    var formContext = primaryControl;
+var formType = formContext.ui.getFormType();
+    var type = formContext.getAttribute("pg_type").getValue();
+    var status = formContext.getAttribute("statuscode").getValue();
+    var loggedinUserId = Xrm.Utility.getGlobalContext().userSettings.userId.replace("{", "").replace("}", "");
+  var ownerid = formContext.getAttribute("ownerid").getValue()[0].id.replace("{", "").replace("}", "");
+    if (formType !==1 && type == 140310000 && status == 1) {
+        return Xrm.WebApi.online.retrieveRecord("systemuser", loggedinUserId, "?$select=internalemailaddress")
+            .then(function success(result1) {
+                var internalemailaddress2 = result1["internalemailaddress"];
+                var teamId = "11e576cb-3bec-ee11-904c-002248333ee8";
+
+                // Retrieve team membership using Xrm.WebApi.online.retrieveRecord
+                return Xrm.WebApi.online.retrieveRecord("team", teamId, "?$expand=teammembership_association($select=internalemailaddress)")
+                    .then(function success(result2) {
+                        var teamMembers = result2.teammembership_association;
+
+                        var isTeamMember = teamMembers.some(function (member) {
+                            return member.internalemailaddress === internalemailaddress2 || ownerid === loggedinUserId;
+                        });
+
+                        return isTeamMember;
+                    },
+                    function (error) {
+                        console.error("Error retrieving team membership: " + error.message);
+                        return false; // Return false in case of an error
+                    });
+            },
+            function (error) {
+                console.error("Error retrieving user details: " + error.message);
+                return false; // Return false in case of an error
+            });
+    }
+
+    return false; // Return false if the type or status conditions are not met
+}
 
 ///Requirement::Need to get the QMG Tab values and if all the fields values are set to yes/true then display a alert Message to the user//
 
@@ -548,7 +612,50 @@ function processtonextstageSandH(primaryControl) {  //main form
   }
 }
 
+function resolveifok(primaryControl) {   //mainform
+    debugger;
+    var formContext = primaryControl;
+    var recordId = formContext.data.entity.getId();
+    var confirmStrings = { text: "Confirm to Resolve?", confirmButtonLabel: "Ok", cancelButtonLabel: "Cancel" };
+    var confirmOptions = { height: 250, width: 300 };
+Xrm.Navigation.openConfirmDialog(confirmStrings, confirmOptions).then(
+    function (success) {
+        if (success.confirmed) {
+            debugger;
 
+            var workflowId = "452d6d63-3377-4634-8607-9daf233e95a9";
+
+            var functionName = "executeWorkflow >>";
+            var query = "workflows(" + workflowId + ")/Microsoft.Dynamics.CRM.ExecuteWorkflow";
+            var data = {
+                "EntityId": recordId
+            };
+            var req = new XMLHttpRequest();
+            req.open("POST", encodeURI(Xrm.Utility.getGlobalContext().getClientUrl() + "/api/data/v8.1/" + query), true);
+            req.setRequestHeader("Accept", "application/json");
+            req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            req.setRequestHeader("OData-MaxVersion", "4.0");
+            req.setRequestHeader("OData-Version", "4.0");
+
+            req.onreadystatechange = function () {
+                if (this.readyState == 4 /* complete */) {
+
+                    if (this.status == 200 || this.status == 204) {
+
+                        formContext.data.entity.save("saveandclose");
+
+                    } else {
+                        //error callback
+                    }
+
+                }
+            };
+            req.send(JSON.stringify(data));
+        }
+        else {
+        }
+    })
+}
 
 ////Requirement::Show & hide button based on condition
 function resolveifok(primaryControl) {   //mainform
@@ -935,6 +1042,9 @@ function SubmittoHR(primaryControl) {   //mainform
           }
       })
 }
+
+
+
 
 
 ///////////////////////////////////////////////////
@@ -1613,6 +1723,45 @@ else{
 }
 
 
+function processtonextstage(primaryControl) {
+    var formContext = primaryControl;
+    var recordId = formContext.data.entity.getId();
+
+    var confirmStrings = {
+        text: "Please review all information for completeness prior to submission as this data will be used by the support departments to enable the onboarding setup for your candidate. Do you want to proceed?",
+        confirmButtonLabel: "Yes",
+        cancelButtonLabel: "No"
+    };
+
+    var confirmOptions = {
+        height: 200,
+        width: 500
+    };
+
+    Xrm.Navigation.openConfirmDialog(confirmStrings, confirmOptions).then(function (success) {
+        if (success.confirmed) {
+            formContext.data.process.moveNext(function(result) {
+                if (result === "success") {
+                    if (formContext.data.entity.getIsDirty()) {
+                        formContext.data.entity.save("saveandclose").then(function() {
+                          
+                        }).catch(function(error) {
+                            console.log("Error saving and closing the record: " + error.message);
+                        });
+                    } else {
+                        console.log("No changes to save.");
+                        formContext.ui.close();
+                    }
+                } 
+            }).catch(function(error) {
+                console.log("Error moving to the next stage: " + error.message);
+            });
+        } 
+        
+    }).catch(function(error) {
+        console.log("Error opening confirmation dialog: " + error.message);
+    });
+}
 
 
 

@@ -21,7 +21,7 @@ function updateName(executionContext){              ///mainForm
 //var country = formContext.getAttribute("pg_country").getText();
  var ratetype = formContext.getAttribute('pg_ratetype').getValue();
  var prideinbalance = formContext.getAttribute('pg_prideinbalance').getValue();
- var candidatesfullname = candidatesfullname;
+ //var candidatesfullname = candidatesfullname;
  var Name =country +" - "+ " Internal Onboarding  -  " + candidatesfullname;  
  var Name = formContext.getAttribute("pg_name").setValue(Name);
 if(ratetype==1)  { // iif ratetype==salaried
@@ -1009,12 +1009,9 @@ var workmodesec =  datachange.sections.get("tab_13_section_6");
  worklocsec.setVisible(false);
     salaryrevisionsec.setVisible(false);
 }
-
-
 else if ( applicationselect==10 && subject == 2000) {
          datachange.setVisible(true);
-       
-        reportingmanagersec.setVisible(false);    
+ reportingmanagersec.setVisible(false);    
     employeereportingtypesec.setVisible(true);
     teamrsec.setVisible(false);
     dojosec.setVisible(false);

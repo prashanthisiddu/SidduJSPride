@@ -1,6 +1,6 @@
 
 
-
+//used to refresh the form//
 function xymebutton(context) {
     Xrm.Navigation.navigateTo({
         pageType: "custom",
@@ -13,9 +13,31 @@ function xymebutton(context) {
         height: 300
     }
 
-    ).then(console.log).catch(console.error);
+    ).
+    then(function(){
+        context.data.refresh();
+    })
+    .catch(console.error);
 }
+//if it is grid/subgrid
+function xymebutton(context,selectedID) {
+    Xrm.Navigation.navigateTo({
+        pageType: "custom",
+        name: "pg_xymebutton_57778",
+        entityName: context.getEntityName(),
+        recordId: selectedID
+    }, {
+        target: 2,
+        width: 600,
+        height: 300
+    }
 
+    ).
+    then(function(){
+        context.refresh();
+    })
+    .catch(console.error);
+}
 
 
 

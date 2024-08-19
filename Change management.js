@@ -1,3 +1,536 @@
+function changemanagement(context) {//prodution one team ids are changed 
+    var formContext = context.getFormContext();
+    var userSettings = Xrm.Utility.getGlobalContext().userSettings;
+    var applicationsubtype = formContext.getControl("pg_applicationsubtype");
+    var aplitionsubtype = formContext.getAttribute("pg_applicationsubtype").getValue();
+    var applicationtype = formContext.getAttribute("pg_applicationtype").getValue();
+    var includesecondapprover = formContext.getAttribute("pg_includesecondapprover").getValue();
+    var createform = 1;
+    var Type = formContext.ui.getFormType();
+
+    if (Type == createform || Type != createform) {
+        //if(applicationtype==140310000){
+        var internalemailaddress;
+        var teamIds = [
+            "6cdab5df-1457-ee11-be6f-000d3a55fb1c",
+            "779c1100-e157-ee11-be6f-002248257fd7",
+            "2a78ad43-e157-ee11-be6f-002248257fd7",
+            "41ad32aa-e157-ee11-be6f-002248257fd7",
+            "876f2ee0-e157-ee11-be6f-002248257fd7",
+            "b5183913-e257-ee11-be6f-002248257fd7",
+            "46f1b546-e257-ee11-be6f-002248257fd7",
+            "d4efa26c-e257-ee11-be6f-002248257fd7",
+            "a8ed0a9a-e257-ee11-be6f-002248257fd7",
+            "47f1b546-e257-ee11-be6f-002248257fd7"
+        ];
+
+        for (var i = 0; i < teamIds.length; i++) {
+            retrieveTeamMembership(teamIds[i]);
+        }
+    }
+
+    applicationsubtype.clearOptions();
+
+    function retrieveTeamMembership(teamId) {
+        var loggedinUserId = userSettings.userId.replace("{", "").replace("}", "");
+        Xrm.WebApi.online.retrieveRecord("systemuser", loggedinUserId, "?$select=internalemailaddress").then(
+            function success(result1) {
+                var internalemailaddress2 = result1["internalemailaddress"];
+                var req = new XMLHttpRequest();
+                var requestUrl = Xrm.Page.context.getClientUrl() + "/api/data/v9.1/teams(" + teamId + ")/teammembership_association";
+                req.open("GET", requestUrl, true);
+                req.setRequestHeader("OData-MaxVersion", "4.0");
+                req.setRequestHeader("OData-Version", "4.0");
+                req.setRequestHeader("Accept", "application/json");
+                req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                req.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
+                req.onreadystatechange = function () {
+                    if (this.readyState === 4) {
+                        req.onreadystatechange = null;
+                        if (this.status === 200) {
+                            var response = JSON.parse(this.response);
+
+                            for (var i = 0; i < response.value.length; i++) {
+                                internalemailaddress = response.value[i]["internalemailaddress"];
+                                if (internalemailaddress2 === internalemailaddress) {
+                                    if (teamId === "6cdab5df-1457-ee11-be6f-000d3a55fb1c") {
+                                        applicationsubtype.addOption({ text: 'Vendor Management', value: 140310000 });
+                                        applicationsubtype.addOption({ text: 'Organizational Change', value: 140310001 });
+                                        applicationsubtype.addOption({ text: 'BPO Operations', value: 140310002 });
+                                        applicationsubtype.addOption({ text: 'Administration Management', value: 140310003 });
+                                        applicationsubtype.addOption({ text: 'Facility Management', value: 140310004 });
+                                        applicationsubtype.addOption({ text: 'Others', value: 140310005 });
+                                        if (aplitionsubtype == 140310000 || aplitionsubtype == 140310001 || aplitionsubtype == 140310002 || aplitionsubtype == 140310003 || aplitionsubtype == 140310004 || aplitionsubtype == 140310005) {
+
+
+
+
+
+                                            //   var entityType = "systemuser";
+                                            //   var entityId = "{0516E8CD-FD87-EB11-B1AD-000D3A8C9195}";
+                                            //   var employeeName = "Ramesh Mahalingam";
+                                           var entityType = "systemuser";   
+                       //  var entityId ="{24FA036B-A362-EE11-BE6E-000D3A55FB1C}"
+                                         //   var employeeName = "Jakir Shaik"
+
+                                            var entityId ="{B624FB83-538B-ED11-81AD-000D3A55FB1C}"
+                                            var employeeName = "Jayakumar MG"
+                                         //   var entityType = "systemuser";
+                                         //   var entityId = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
+                                          //  var employeeName = "Srinivasan Sukumar";
+
+                                            var lookupValue = [{
+                                                entityType: entityType,
+                                                id: entityId,
+                                                name: employeeName
+                                            }];
+                                            formContext.getAttribute("pg_approver").setValue(lookupValue);
+
+
+
+
+                                            if (includesecondapprover == true) {
+                                                formContext.getControl("pg_approversecond").setVisible(true);
+                                                var entityType1 = "systemuser";
+var entityId1 = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
+                                            var employeeName1 = "Srinivasan Sukumar";
+      // var entityId1 ="{B624FB83-538B-ED11-81AD-000D3A55FB1C}"
+                                        //    var employeeName1 = "Jayakumar MG"
+                                             //   var entityId1 = "{0516E8CD-FD87-EB11-B1AD-000D3A8C9195}";
+                                            //  var employeeName1 = "Ramesh Mahalingam";
+                                                var lookupValue1 = [{
+                                                    entityType: entityType1,
+                                                    id: entityId1,
+                                                    name: employeeName1
+                                                }];
+                                                formContext.getAttribute("pg_approversecond").setValue(lookupValue1);
+                                            }
+                                            else {
+                                                formContext.getControl("pg_approversecond").setVisible(false);
+                                                formContext.getControl("pg_approversecond").clear();
+                                            }
+
+                                        }
+                                    } else if (teamId === "779c1100-e157-ee11-be6f-002248257fd7") {
+                                        applicationsubtype.addOption({ text: 'IT Infrastructure Changes(SW/NW/Firewall/)', value: 140310006 });
+                                        applicationsubtype.addOption({ text: 'IT - Asset Management', value: 140310007 });
+                                        if (aplitionsubtype == 140310006 || aplitionsubtype == 140310007) {
+
+
+                                            //     var entityType = "systemuser";
+                                            //     var entityId = "{9E786F29-0488-EB11-B1AD-000D3A8C9195}";
+                                            //    var employeeName = "Suresh Stephen";
+
+                                            var entityType = "systemuser";
+                                            var entityId = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
+                                            var employeeName = "Srinivasan Sukumar";
+
+                                            var lookupValue = [{
+                                                entityType: entityType,
+                                                id: entityId,
+                                                name: employeeName
+                                            }];
+                                            formContext.getAttribute("pg_approver").setValue(lookupValue);
+
+
+
+                                            if (includesecondapprover == true) {
+                                                formContext.getControl("pg_approversecond").setVisible(true);
+                                                var entityType1 = "systemuser";
+                                                var entityId1 = "{0516E8CD-FD87-EB11-B1AD-000D3A8C9195}";
+                                                var employeeName1 = "Ramesh Mahalingam";
+                                                var lookupValue1 = [{
+                                                    entityType: entityType1,
+                                                    id: entityId1,
+                                                    name: employeeName1
+                                                }];
+                                                formContext.getAttribute("pg_approversecond").setValue(lookupValue1);
+                                            }
+                                            else {
+                                                formContext.getControl("pg_approversecond").setVisible(false);
+                                                formContext.getControl("pg_approversecond").clear();
+                                            }
+
+                                        }
+                                    } else if (teamId === "2a78ad43-e157-ee11-be6f-002248257fd7") {
+                                     //   applicationsubtype.addOption({ text: 'HR Corporate Support', value: 140310008 });
+                                        applicationsubtype.addOption({ text: 'HR Corporate HR Ops', value: 140310009 });
+                                        applicationsubtype.addOption({ text: 'HR Corporate BP', value: 140310010 });
+                                        applicationsubtype.addOption({ text: 'HR Corporate Talent Development', value: 140310011 });
+                                        applicationsubtype.addOption({ text: 'HR Corporate Employee Engagement', value: 140310012 });
+                                        if (aplitionsubtype == 140310009 || aplitionsubtype == 140310010 || aplitionsubtype == 140310011 || aplitionsubtype == 140310012) {//aplitionsubtype == 140310008 removed
+
+
+                                            //     var entityType = "systemuser";
+                                            //     var entityId = "{11588FEA-FF87-EB11-B1AD-000D3A8C9195}";
+                                            //     var employeeName = "Aarthi Ilangovan";
+
+                                            var entityType = "systemuser";
+                                            var entityId = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
+                                            var employeeName = "Srinivasan Sukumar";
+
+                                            var lookupValue = [{
+                                                entityType: entityType,
+                                                id: entityId,
+                                                name: employeeName
+                                            }];
+                                            formContext.getAttribute("pg_approver").setValue(lookupValue);
+
+
+                                            if (includesecondapprover == true) {
+                                                formContext.getControl("pg_approversecond").setVisible(true);
+                                                var entityType1 = "systemuser";
+                                                var entityId1 = "{0516E8CD-FD87-EB11-B1AD-000D3A8C9195}";
+                                                var employeeName1 = "Ramesh Mahalingam";
+                                                var lookupValue1 = [{
+                                                    entityType: entityType1,
+                                                    id: entityId1,
+                                                    name: employeeName1
+                                                }];
+                                                formContext.getAttribute("pg_approversecond").setValue(lookupValue1);
+                                            }
+                                            else {
+                                                formContext.getControl("pg_approversecond").setVisible(false);
+                                                formContext.getControl("pg_approversecond").clear();
+                                            }
+
+
+                                        }
+                                    } else if (teamId === "41ad32aa-e157-ee11-be6f-002248257fd7") {
+                                        applicationsubtype.addOption({ text: 'Payroll & Benefits - Shared Services', value: 140310013 });
+                                        if (aplitionsubtype == 140310013) {
+
+
+
+                                            //     var entityType = "systemuser";
+                                            //       var entityId = "{29BA86F1-FF87-EB11-B1AD-000D3A8C9195}";
+                                            //     var employeeName = "Cyril Bosco";
+
+                                            var entityType = "systemuser";
+                                            var entityId = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
+                                            var employeeName = "Srinivasan Sukumar";
+
+                                            var lookupValue = [{
+                                                entityType: entityType,
+                                                id: entityId,
+                                                name: employeeName
+                                            }];
+                                            formContext.getAttribute("pg_approver").setValue(lookupValue);
+
+
+                                            if (includesecondapprover == true) {
+                                                formContext.getControl("pg_approversecond").setVisible(true);
+                                                var entityType1 = "systemuser";
+                                                var entityId1 = "{0516E8CD-FD87-EB11-B1AD-000D3A8C9195}";
+                                                var employeeName1 = "Ramesh Mahalingam";
+                                                var lookupValue1 = [{
+                                                    entityType: entityType1,
+                                                    id: entityId1,
+                                                    name: employeeName1
+                                                }];
+                                                formContext.getAttribute("pg_approversecond").setValue(lookupValue1);
+                                            }
+                                            else {
+                                                formContext.getControl("pg_approversecond").setVisible(false);
+                                                formContext.getControl("pg_approversecond").clear();
+                                            }
+
+
+                                        }
+                                    } else if (teamId === "876f2ee0-e157-ee11-be6f-002248257fd7") {
+                                        applicationsubtype.addOption({ text: 'Audit & Compliance Internal', value: 140310014 });
+                                        if (aplitionsubtype == 140310014) {
+
+
+
+                                            //  var entityType = "systemuser";                            
+                                            //var entityId ="{B624FB83-538B-ED11-81AD-000D3A55FB1C}"
+                                            // var employeeName = "Jayakumar MG"
+                                            var entityType = "systemuser";
+                                            var entityId = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
+                                            var employeeName = "Srinivasan Sukumar";
+
+                                            var lookupValue = [{
+                                                entityType: entityType,
+                                                id: entityId,
+                                                name: employeeName
+                                            }];
+                                            formContext.getAttribute("pg_approver").setValue(lookupValue);
+
+
+                                            if (includesecondapprover == true) {
+                                                formContext.getControl("pg_approversecond").setVisible(true);
+                                                var entityType1 = "systemuser";
+                                                var entityId1 = "{0516E8CD-FD87-EB11-B1AD-000D3A8C9195}";
+                                                var employeeName1 = "Ramesh Mahalingam";
+                                                var lookupValue1 = [{
+                                                    entityType: entityType1,
+                                                    id: entityId1,
+                                                    name: employeeName1
+                                                }];
+                                                formContext.getAttribute("pg_approversecond").setValue(lookupValue1);
+                                            }
+                                            else {
+                                                formContext.getControl("pg_approversecond").setVisible(false);
+                                                formContext.getControl("pg_approversecond").clear();
+                                            }
+                                        }
+                                    } else if (teamId === "b5183913-e257-ee11-be6f-002248257fd7") {
+                                        applicationsubtype.addOption({ text: 'HR Operations Management - Shared Services', value: 140310015 });
+                                        if (aplitionsubtype == 140310015) {
+
+
+
+
+
+                                            //        var entityType = "systemuser";
+                                            //       var entityId = "{E625254F-F0F6-EB11-94EF-000D3A566004}";
+                                            //       var employeeName = "Sai Pradeep Indiran";
+
+                                            var entityType = "systemuser";
+                                            var entityId = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
+                                            var employeeName = "Srinivasan Sukumar";
+
+                                            var lookupValue = [{
+                                                entityType: entityType,
+                                                id: entityId,
+                                                name: employeeName
+                                            }];
+                                            formContext.getAttribute("pg_approver").setValue(lookupValue);
+
+
+                                            if (includesecondapprover == true) {
+                                                formContext.getControl("pg_approversecond").setVisible(true);
+                                                var entityType1 = "systemuser";
+                                                var entityId1 = "{0516E8CD-FD87-EB11-B1AD-000D3A8C9195}";
+                                                var employeeName1 = "Ramesh Mahalingam";
+                                                var lookupValue1 = [{
+                                                    entityType: entityType1,
+                                                    id: entityId1,
+                                                    name: employeeName1
+                                                }];
+                                                formContext.getAttribute("pg_approversecond").setValue(lookupValue1);
+                                            }
+                                            else {
+                                                formContext.getControl("pg_approversecond").setVisible(false);
+                                                formContext.getControl("pg_approversecond").clear();
+                                            }
+
+
+                                        }
+                                    } else if (teamId === "46f1b546-e257-ee11-be6f-002248257fd7") {
+                                        applicationsubtype.addOption({ text: 'Finance & Accounts Management', value: 140310016 });
+                                        if (aplitionsubtype == 140310016) {
+
+
+
+
+
+                                            //           var entityType = "systemuser";
+                                            //          var entityId = "{487E1751-E710-EC11-B6E6-000D3A145DE8}";
+                                            //        var employeeName = "Sangeetha Lakshmi";
+
+                                            var entityType = "systemuser";
+                                            var entityId = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
+                                            var employeeName = "Srinivasan Sukumar";
+
+                                            var lookupValue = [{
+                                                entityType: entityType,
+                                                id: entityId,
+                                                name: employeeName
+                                            }];
+                                            formContext.getAttribute("pg_approver").setValue(lookupValue);
+
+
+
+                                            if (includesecondapprover == true) {
+                                                formContext.getControl("pg_approversecond").setVisible(true);
+                                                var entityType1 = "systemuser";
+                                                var entityId1 = "{0516E8CD-FD87-EB11-B1AD-000D3A8C9195}";
+                                                var employeeName1 = "Ramesh Mahalingam";
+                                                var lookupValue1 = [{
+                                                    entityType: entityType1,
+                                                    id: entityId1,
+                                                    name: employeeName1
+                                                }];
+                                                formContext.getAttribute("pg_approversecond").setValue(lookupValue1);
+                                            }
+                                            else {
+                                                formContext.getControl("pg_approversecond").setVisible(false);
+                                                formContext.getControl("pg_approversecond").clear();
+                                            }
+
+
+                                        }
+                                    } else if (teamId === "d4efa26c-e257-ee11-be6f-002248257fd7") {
+                                        applicationsubtype.addOption({ text: 'Learning & Development', value: 140310017 });
+                                        if (aplitionsubtype == 140310017) {
+
+
+
+
+
+                                            //            var entityType = "systemuser";
+                                            //            var entityId = "{031EBA50-7709-EC11-B6E6-002248254DBF}";
+                                            //           var employeeName = "Jim Jacob";
+
+                                            var entityType = "systemuser";
+                                            var entityId = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
+                                            var employeeName = "Srinivasan Sukumar";
+
+                                            var lookupValue = [{
+                                                entityType: entityType,
+                                                id: entityId,
+                                                name: employeeName
+                                            }];
+                                            formContext.getAttribute("pg_approver").setValue(lookupValue);
+
+
+                                            if (includesecondapprover == true) {
+                                                formContext.getControl("pg_approversecond").setVisible(true);
+                                                var entityType1 = "systemuser";
+                                                var entityId1 = "{0516E8CD-FD87-EB11-B1AD-000D3A8C9195}";
+                                                var employeeName1 = "Ramesh Mahalingam";
+                                                var lookupValue1 = [{
+                                                    entityType: entityType1,
+                                                    id: entityId1,
+                                                    name: employeeName1
+                                                }];
+                                                formContext.getAttribute("pg_approversecond").setValue(lookupValue1);
+                                            }
+                                            else {
+                                                formContext.getControl("pg_approversecond").setVisible(false);
+                                                formContext.getControl("pg_approversecond").clear();
+                                            }
+
+
+                                        }
+                                    } else if (teamId === "a8ed0a9a-e257-ee11-be6f-002248257fd7") {
+                                        applicationsubtype.addOption({ text: 'RTA Staffing Domestic', value: 140310018 });
+                                        if (aplitionsubtype == 140310018) {
+
+
+
+
+
+
+                                            //      var entityType = "systemuser";
+                                            //      var entityId = "{0C11824D-EFF6-EB11-94EF-000D3A566004}";
+                                            //      var employeeName = "ArunKumar Sankaran";
+
+                                            var entityType = "systemuser";
+                                            var entityId = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
+                                            var employeeName = "Srinivasan Sukumar";
+
+
+                                            var lookupValue = [{
+                                                entityType: entityType,
+                                                id: entityId,
+                                                name: employeeName
+                                            }];
+                                            formContext.getAttribute("pg_approver").setValue(lookupValue);
+
+
+
+                                            if (includesecondapprover == true) {
+                                                formContext.getControl("pg_approversecond").setVisible(true);
+                                                var entityType1 = "systemuser";
+                                                var entityId1 = "{0516E8CD-FD87-EB11-B1AD-000D3A8C9195}";
+                                                var employeeName1 = "Ramesh Mahalingam";
+                                                var lookupValue1 = [{
+                                                    entityType: entityType1,
+                                                    id: entityId1,
+                                                    name: employeeName1
+                                                }];
+                                                formContext.getAttribute("pg_approversecond").setValue(lookupValue1);
+                                            }
+                                            else {
+                                                formContext.getControl("pg_approversecond").setVisible(false);
+                                                formContext.getControl("pg_approversecond").clear();
+                                            }
+
+
+                                        }
+                                    } else if (teamId === "47f1b546-e257-ee11-be6f-002248257fd7") {
+                                        applicationsubtype.addOption({ text: 'Financial Reporting', value: 140310019 });
+                                        if (aplitionsubtype == 140310019) {
+
+
+
+
+
+                                            //           var entityType = "systemuser";
+                                            //          var entityId = "{1016E8CD-FD87-EB11-B1AD-000D3A8C9195}";
+                                            //            var employeeName = "Venkatesh Chandiraraj";
+
+                                            var entityType = "systemuser";
+                                            var entityId = "{6D49CF21-56EF-ED11-8849-000D3A5755D3}";
+                                            var employeeName = "Srinivasan Sukumar";
+
+
+                                            var lookupValue = [{
+                                                entityType: entityType,
+                                                id: entityId,
+                                                name: employeeName
+                                            }];
+                                            formContext.getAttribute("pg_approver").setValue(lookupValue);
+
+
+
+                                            if (includesecondapprover == true) {
+                                                formContext.getControl("pg_approversecond").setVisible(true);
+                                                var entityType1 = "systemuser";
+                                                var entityId1 = "{0516E8CD-FD87-EB11-B1AD-000D3A8C9195}";
+                                                var employeeName1 = "Ramesh Mahalingam";
+                                                var lookupValue1 = [{
+                                                    entityType: entityType1,
+                                                    id: entityId1,
+                                                    name: employeeName1
+                                                }];
+                                                formContext.getAttribute("pg_approversecond").setValue(lookupValue1);
+                                            }
+                                            else {
+                                                formContext.getControl("pg_approversecond").setVisible(false);
+                                                formContext.getControl("pg_approversecond").clear();
+                                            }
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                };
+                req.send();
+            }
+        )
+
+        //}
+        formContext.getAttribute("pg_whychangeisrequired").setRequiredLevel("required");
+        formContext.getAttribute("pg_projectprograminitiative").setRequiredLevel("required");
+        formContext.getAttribute("pg_estimatedcostoption").setRequiredLevel("required");
+        formContext.getAttribute("pg_priority").setRequiredLevel("required");
+        formContext.getAttribute("pg_intendedoutcome").setRequiredLevel("required");
+        formContext.getAttribute("pg_hours").setRequiredLevel("required");
+
+        formContext.getAttribute("pg_durationimpact").setRequiredLevel("required");
+        formContext.getAttribute("pg_recommendations").setRequiredLevel("required");
+        formContext.getAttribute("pg_scheduleimpactwbs").setRequiredLevel("required");
+        formContext.getAttribute("pg_currency").setRequiredLevel("required");
+        formContext.getAttribute("pg_comments").setRequiredLevel("required");
+   
+    }
+    if (Type == createform) {
+        formContext.getControl("pg_applicationsubtype").setDisabled(false);
+    }
+    else {
+        formContext.getControl("pg_applicationsubtype").setDisabled(true);
+    }
+}
+
+
+
+
 function validateActualStartTime(executionContext) {
     var formContext = executionContext.getFormContext();
 

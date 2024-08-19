@@ -1,34 +1,6 @@
 
-//Requirement::whenever share happens get the owner of the shared record and display the owner name in Main record//
-function getsharedlist(executionContext) {
-            var formContext = executionContext.getFormContext();
-            var userSettings = Xrm.Utility.getGlobalContext().userSettings;
-            var recordId = formContext.data.entity.getId();
-         
-            var fetch = "<fetch version='1.0' output-format='xml-platform' mapping='logical' distinct='false'>" +
-                "<entity name='pg_prideinternaltracker'>" +
-               
-                "<attribute name='pg_prideinternaltrackerid' />" +
-                "<link-entity name='principalobjectaccess' to='pg_prideinternaltrackerid' from='objectid' link-type='inner' alias='share'>" +
-                 " <filter type='and'>" +
-                  "      <condition attribute='objectid' operator='eq' uitype='principalid' value='" + recordId + "'/>" +
-                  //" <condition attribute='principalid' operator='recordId' />" +  
-          "</filter>" +
-        "</link-entity>" +
-        " </entity>" +
-        "</fetch>";
-   
-    var fetch_Results = XrmServiceToolkit.Soap.Fetch(fetch);
-    if (fetch_Results.length > 0) {
-        var objectid = fetch_Results[0].attributes['principalid'];
-        var prideinternaltrackerid = fetch_Results[0].attributes['fullname'];//.name; // GUID
-        //formContext.getAttribute("WebResource_Watchers").setValue(value);
-    }
-}
-
-
-
-//Requirement::whenever share happens get the owner of the shared record and display the owner name in Main record//
+//Requirement::whenever share happens get the owner of the shared record and display the owner name in Main record//'
+//Objectid is ntg but the recordid//  and principalobjectid is ntg butto get  the user details/id of the user//
 function getsharedlist(executionContext) {
     var formContext = executionContext.getFormContext();
     var userSettings = Xrm.Utility.getGlobalContext().userSettings;
@@ -119,6 +91,21 @@ function (error) {
 }
 );
 
+}
+}
+
+function hideTab(executionContext) 
+{
+    formContext = executionContext.getFormContext();
+    var tabObj = formContext.ui.tabs.get("HR Internal Info");
+    tabObj.setVisible(false);
+}
+function setgoalsdefaultvalue(executionContext) 
+{
+    formContext = executionContext.getFormContext();
+ var setgoals = formContext.getAttribute("pg_setgoals").getValue();
+if(setgoals ==null){
+ var setgoals = formContext.getAttribute("pg_setgoals").setValue(true);
 }
 }
 
