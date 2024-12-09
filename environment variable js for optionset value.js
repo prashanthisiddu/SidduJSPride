@@ -149,13 +149,13 @@ function AppTypeNexus(context)
        
     }
    
-else if (Application == 140310004 && subject == 140310002) {
+else if (Application === 140310004 && subject === 140310002) {
     CaseType.addOption({ text: "RTA", value: 3 });
     CaseType.addOption({ text: "PHC", value: 4 });
     CaseType.addOption({ text: "Pride One", value: 5 });
     CaseType.addOption({ text: "Pride Now", value: 6 });
 }
-else if (Application == 140310004 && subject == 140310007) {
+else if (Application === 140310004 && subject === 140310007) {
     CaseType.addOption({ text: "ATS", value: 7 });
     CaseType.addOption({ text: "Client", value: 8 });
     CaseType.addOption({ text: "Meeting", value: 9 });
@@ -168,16 +168,16 @@ else if (Application == 140310004 && subject == 140310007) {
     CaseType.addOption({ text: "Other", value: 16 });
 }
 
-else if (Application == 140310004 && subject == 140310009) {
+else if (Application === 140310004 && subject === 140310009) {
     CaseType.addOption({ text: "Inquiries", value: 17 });
     CaseType.addOption({ text: "Escalations", value: 18 });
     CaseType.addOption({ text: "Queries", value: 19 });
     CaseType.addOption({ text: "Purchase Orders", value: 20 });
 }
-else if (Application == 140310004 && subject == 140310010) {
+else if (Application === 140310004 && subject === 140310010) {
 
 }
-else if (Application == 140310004 && subject == 140310011) {
+else if (Application === 140310004 && subject === 140310011) {
 
 }
 else{

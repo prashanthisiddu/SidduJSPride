@@ -3,7 +3,7 @@ function BPFMoving() {  ///TA Form stage move
   debugger;
 // var formContext = primaryControl;
   var name =Xrm.Page.ui.formSelector.getCurrentItem().getLabel(); 
-if(name=="Onboarding-TA"){
+if(name==="Onboarding-TA"){
   var activeProcess = formContext.data.process.getActiveProcess();
   var activeProcessID = activeProcess.getId();
 alert(activeProcessID);
@@ -24,10 +24,10 @@ function updateName(executionContext){              ///mainForm
  //var candidatesfullname = candidatesfullname;
  var Name =country +" - "+ " Internal Onboarding  -  " + candidatesfullname;  
  var Name = formContext.getAttribute("pg_name").setValue(Name);
-if(ratetype==1)  { // iif ratetype==salaried
+if(ratetype===1)  { // iif ratetype===salaried
      formContext.getControl("pg_salary").setVisible(true);
  }
- else if(ratetype==2)  {           // iif ratetype==hourly
+ else if(ratetype===2)  {           // iif ratetype===hourly
      formContext.getControl("pg_hourlyrate").setVisible(true);
  }
 if(ratetype!=1){
@@ -37,7 +37,7 @@ if( ratetype!=2 ){
 
 formContext.getControl("pg_hourlyrate").setVisible(false);
 }
-if(prideinbalance==1)  { // iif prideinbalance==yes
+if(prideinbalance===1)  { // iif prideinbalance===yes
      formContext.getControl("pg_prideinbalancereason").setVisible(true);
  }
  else  {          
@@ -76,85 +76,85 @@ var Setup = formContext.ui.tabs.get("Manager");
 var PGdepartment = formContext.getAttribute('pg_prideglobaldepartment').getValue();
 var PHdepartment = formContext.getAttribute('pg_pridehealthdepartment').getValue(); 
 var RTdepartment = formContext.getAttribute('pg_russelltobindepartment').getValue(); 
-  if(dojo==140310000){         ///prideglobal
+  if(dojo===140310000){         ///prideglobal
       formContext.getControl("pg_prideglobaldepartment").setVisible(true);
   }
   else{
       formContext.getControl("pg_prideglobaldepartment").setVisible(false);
   }
-  if(dojo==140310005){             //pridehealth
+  if(dojo===140310005){             //pridehealth
       formContext.getControl("pg_pridehealthdepartment").setVisible(true);
   }
   else{
       formContext.getControl("pg_pridehealthdepartment").setVisible(false);
   }
-  if(dojo==140310003){             //prideONE
+  if(dojo===140310003){             //prideONE
       formContext.getControl("pg_prideonedepartment").setVisible(true);
   }
   else{
       formContext.getControl("pg_prideonedepartment").setVisible(false);
   }
-  if(dojo==140310004){             //prideNOW
+  if(dojo===140310004){             //prideNOW
       formContext.getControl("pg_pridenowdepartment").setVisible(true);
   }
   else{
       formContext.getControl("pg_pridenowdepartment").setVisible(false);
   }
-  if(dojo==140310001){             //RussellTobin&Associates
+  if(dojo===140310001){             //RussellTobin&Associates
       formContext.getControl("pg_russelltobindepartment").setVisible(true);
   }
   else{
       formContext.getControl("pg_russelltobindepartment").setVisible(false);
   }
-  if(dojo==140310009){             //Rocket Shippers
+  if(dojo===140310009){             //Rocket Shippers
       formContext.getControl("pg_rocketshippersdepartment").setVisible(true);
   }
   else{
       formContext.getControl("pg_rocketshippersdepartment").setVisible(false);
   }
-  if(dojo==140310010){             //Pride Advisory
+  if(dojo===140310010){             //Pride Advisory
       formContext.getControl("pg_advisoryservicesdepartment").setVisible(true);
   }
   else{
       formContext.getControl("pg_advisoryservicesdepartment").setVisible(false);
   }
-if(PGdepartment==140310001)  { // if deprtment==AOF
+if(PGdepartment===140310001)  { // if deprtment===AOF
       formContext.getControl("pg_pgaofsubdepartmentjobfamily").setVisible(true);
   }
   else{
       formContext.getControl("pg_pgaofsubdepartmentjobfamily").setVisible(false);
   }
-  if(PGdepartment==140310006)  { // if deprtment==IT
+  if(PGdepartment===140310006)  { // if deprtment===IT
       formContext.getControl("pg_pgitsubdepartmentjobfamily").setVisible(true);
   }
   else{
       formContext.getControl("pg_pgitsubdepartmentjobfamily").setVisible(false);
   }
-if(PHdepartment==140310000)  { // iif pridehealthdeprtment==NATIONAL FULFILLMENT
+if(PHdepartment===140310000)  { // iif pridehealthdeprtment===NATIONAL FULFILLMENT
       formContext.getControl("pg_phcnationalfulfillmentsubdepartmentjobfam").setVisible(true);
   }
   else{
       formContext.getControl("pg_phcnationalfulfillmentsubdepartmentjobfam").setVisible(false);
   }
-if(RTdepartment==140310008)  { // iif RTA==SAT EAST
+if(RTdepartment===140310008)  { // iif RTA===SAT EAST
       formContext.getControl("pg_rtasateastsubdepartmentjobfamily").setVisible(true);
   }
   else{
       formContext.getControl("pg_rtasateastsubdepartmentjobfamily").setVisible(false);
   }
-if(RTdepartment==140310003)  { // iif RTA==rtae2eprofessionalsubdepartmentjobfamily
+if(RTdepartment===140310003)  { // iif RTA===rtae2eprofessionalsubdepartmentjobfamily
       formContext.getControl("pg_rtae2eprofessionalsubdepartmentjobfamily").setVisible(true);
   }
   else{
       formContext.getControl("pg_rtae2eprofessionalsubdepartmentjobfamily").setVisible(false);
   }
-if(country==140310001)  { // iif country= india
+if(country===140310001)  { // iif country= india
       India.setVisible(true);
   }
   else{
      India.setVisible(false);
   }
-if(country==140310000)  { // iif country =us
+if(country===140310000)  { // iif country =us
   US.setVisible(true);
   }
   else{
@@ -191,7 +191,7 @@ Case.formEvents = {
     var bpfstage = formcontext.data.process.getActiveStage().getName();
  
 
- if (bpfstage == "Child Ticket") {
+ if (bpfstage === "Child Ticket") {
   
             if (bpfArguments.getDirection() === "Next" && formcontext.getAttribute("pg_childtickets").getValue() != null && formcontext.getAttribute("pg_childtickets").getValue() != 0) {
                 bpfArguments.preventDefault();
@@ -349,16 +349,16 @@ function annivarsarywithout90days(context) {
   
           var quaterstartdate = {};
           // var quaterenddate = new Date();
-          if (Quater == "Q4") {
+          if (Quater === "Q4") {
             var quaterstartdate = startdateforQ4;
           }
-          else if (Quater == "Q3") {
+          else if (Quater === "Q3") {
             var quaterstartdate = startdateforQ3;
           }
-          else if (Quater == "Q2") {
+          else if (Quater === "Q2") {
             quaterstartdate = startdateforQ2;
           }
-          else if (Quater == "Q1") {
+          else if (Quater === "Q1") {
             quaterstartdate = startdateforQ1;
           }
           Xrm.WebApi.online.retrieveRecord("new_employee", review, "?$select=_pg_workerreviewid_value").then(
@@ -499,16 +499,16 @@ function annivarsarywithout90days(context) {
           enddateforQ4 = new Date(QuaterQ4.replace(/-/g, "/"));
   
           var quaterenddate = {};
-          if (Quater == "Q4") {
+          if (Quater === "Q4") {
             var quaterenddate = enddateforQ4;
           }
-          else if (Quater == "Q3") {
+          else if (Quater === "Q3") {
             var quaterenddate = enddateforQ3;
           }
-          else if (Quater == "Q2") {
+          else if (Quater === "Q2") {
             quaterenddate = enddateforQ2;
           }
-          else if (Quater == "Q1") {
+          else if (Quater === "Q1") {
             quaterenddate = enddateforQ1;
           }
           Xrm.WebApi.online.retrieveRecord("new_employee", review, "?$select=_pg_workerreviewid_value").then(
@@ -536,7 +536,7 @@ function annivarsarywithout90days(context) {
                   annivarsary[0] = new Object();
                   annivarsary[0].id = cdm_anniversarydatetime;
                   var anivarsary = new Date(annivarsary[0].id);
-                  if (quaterenddate > anivarsary && currentstatus==140310004) {
+                  if (quaterenddate > anivarsary && currentstatus===140310004) {
                      return true();
                   }
                   else {
@@ -612,8 +612,8 @@ Xrm.WebApi.online.updateRecord("new_employee", "recordId", record).then(
                     req.setRequestHeader("OData-Version", "4.0");
             
                     req.onreadystatechange = function () {
-                        if (this.readyState == 4 /* complete */) {
-                            if (this.status == 204 || this.status == 200) {
+                        if (this.readyState === 4 /* complete */) {
+                            if (this.status === 204 || this.status === 200) {
                                 formContext.data.entity.save();
                                // formContext.data.ui.close();
                             } else {
@@ -646,7 +646,7 @@ try{
         employeeid = employee.substring(1, 37);
             var incident = formcontext.getAttribute("title").getValue();
             //incidentid = incident.substring(1, 37);
-            if(applicationselect == 10 && subject ==140310003) {
+            if(applicationselect === 10 && subject ===140310003) {
  
             
                         Xrm.WebApi.online.retrieveMultipleRecords("pg_supportticket", "?$filter=pg_name eq '" + incident + "'&$top=1").then(
@@ -738,7 +738,7 @@ function ribbon(executionContext) {
         // var applicationselect = formcontext.getAttribute("pg_application").getSelectedOption().value;
         var origin = formContext.getAttribute("caseorigincode").getValue();
         var casetitle = formContext.getAttribute("title").getValue();
-        if (application == 140310017 && origin == 140310000) {
+        if (application === 140310017 && origin === 140310000) {
     
             if (casetitle.includes("IT")) {
                 var assetissued = formContext.getAttribute("pg_assetissued").getValue();    
@@ -748,7 +748,7 @@ function ribbon(executionContext) {
                 var emaildeactivated = formContext.getAttribute("pg_emaildeactivated").getValue();
                 var emailforwarding= formContext.getAttribute("pg_emailforwarding").getValue;
     
-         if (assetissued ==1 || databackupcompleted ==1||  assetreceived==1 || azureadaccessdeactivated ==1|| emaildeactivated==1 || emailforwarding==1){
+         if (assetissued ===1 || databackupcompleted ===1||  assetreceived===1 || azureadaccessdeactivated ===1|| emaildeactivated===1 || emailforwarding===1){
               return true;
             }
            else{
@@ -766,7 +766,7 @@ function ribbon(executionContext) {
                var datacarddongle=formContext.getAttribute("pg_datacarddongle").getValue();
                 var mobilephonesim=formContext.getAttribute("pg_mobilephonesim").getValue();
                var medicalinsuranceterminated=formContext.getAttribute("pg_medicalinsuranceterminated").getValue();
-    if (assetpickupcoordination || assetreceivedhandedovertoit || idaccesscardreceived || accesscarddeactivated ||drawerkeyreceived ||datacarddongle || mobilephonesim || medicalinsuranceterminated==1) {
+    if (assetpickupcoordination || assetreceivedhandedovertoit || idaccesscardreceived || accesscarddeactivated ||drawerkeyreceived ||datacarddongle || mobilephonesim || medicalinsuranceterminated===1) {
       return true;
             }
            else{
@@ -778,7 +778,7 @@ function ribbon(executionContext) {
           var deactivatexyme= formContext.getAttribute("pg_deactivatexyme").getValue();     
           var updatebonuseligibilityinbonusfile=formContext.getAttribute("pg_updatebonuseligibilityinbonusfile").getValue();
          
-        if (deactivatexyme ==1 ||updatebonuseligibilityinbonusfile==1 ){
+        if (deactivatexyme ===1 ||updatebonuseligibilityinbonusfile===1 ){
       return true;
             }
            else{
@@ -792,7 +792,7 @@ function ribbon(executionContext) {
           var disabledojostoreaccess= formContext.getAttribute("pg_disabledojostoreaccess").getValue();      
           var cancelopenordersinthequeue=formContext.getAttribute("pg_cancelopenordersinthequeue").getValue();
          
-              if (updatedeierglist==1 ||updateclashoftitanshouselistjos==1|| conductexitinterview==1||disabledojostoreaccess==1||cancelopenordersinthequeue==1){
+              if (updatedeierglist===1 ||updateclashoftitanshouselistjos===1|| conductexitinterview===1||disabledojostoreaccess===1||cancelopenordersinthequeue===1){
      return true;
             }
            else{
@@ -810,8 +810,8 @@ function ribbon(executionContext) {
           var publishffpayslip=formContext.getAttribute("pg_publishffpayslip").getValue();
          var updatedateofexitinpfportal=formContext.getAttribute("pg_updatedateofexitinpfportal").getValue();
       
-       if (updatetallywithenddate==1||moveemployeefrompayrolltof==1||
-    receiveffclearancefromhr==1||processff==1||processgratuity==1||processleaveencashment==1||processdeductionsforlopadjustments==1||publishffpayslip==1||updatedateofexitinpfportal==1){
+       if (updatetallywithenddate===1||moveemployeefrompayrolltof===1||
+    receiveffclearancefromhr===1||processff===1||processgratuity===1||processleaveencashment===1||processdeductionsforlopadjustments===1||publishffpayslip===1||updatedateofexitinpfportal===1){
      return true;
             }
            else{
@@ -822,7 +822,7 @@ function ribbon(executionContext) {
         var completeactivetrainingsinlms= formContext.getAttribute("pg_completeactivetrainingsinlms").getValue();      
           var deactivatelmsaccess=formContext.getAttribute("pg_deactivatelmsaccess").getValue();
         
-               if (completeactivetrainingsinlms ==1||deactivatelmsaccess  ==1){
+               if (completeactivetrainingsinlms ===1||deactivatelmsaccess  ===1){
      return true;
             }
            else{
@@ -840,7 +840,7 @@ debugger;
    var formContext = executionContext.getFormContext();
 var assetstate=formContext.getAttribute("pg_assetstate").getValue(); 
 
-if(assetstate=="Lost" || assetstate==2 ) {
+if(assetstate==="Lost" || assetstate===2 ) {
 
      formContext.getAttribute("pg_listassetdetails").setRequiredLevel("required");
      formContext.getAttribute("pg_deduction").setRequiredLevel("required");
@@ -850,10 +850,10 @@ formContext.getControl("pg_deduction").setVisible(true);
 formContext.getControl("pg_assetvalue").setVisible(true);
  
 }
-else if(assetstate==0) {
+else if(assetstate===0) {
    formContext.getControl("pg_deduction").setVisible(false);
  }
-else if(assetstate==1 ) {
+else if(assetstate===1 ) {
  formContext.getAttribute("pg_listassetdetails").setRequiredLevel("required");
      formContext.getAttribute("pg_deduction").setRequiredLevel("required");
   formContext.getAttribute("pg_assetvalue").setRequiredLevel("required");
@@ -871,7 +871,7 @@ function review(primaryControl) {
     // var applicationselect = formcontext.getAttribute("pg_application").getSelectedOption().value;
     var origin = formContext.getAttribute("caseorigincode").getValue();
     var casetitle = formContext.getAttribute("title").getValue();
-    if (application == 140310017 && origin == 140310000) {
+    if (application === 140310017 && origin === 140310000) {
 
         if (casetitle.includes("IT")) {
             var assetissued = formContext.getAttribute("pg_assetissued").getValue();
@@ -881,7 +881,7 @@ function review(primaryControl) {
             var emaildeactivated = formContext.getAttribute("pg_emaildeactivated").getValue();
             var emailforwarding = formContext.getAttribute("pg_emailforwarding").getValue;
 
-  if (assetissued ==1|| databackupcompleted ==1|| assetreceived==1 || azureadaccessdeactivated==1 || emaildeactivated==1 || emailforwarding == 1) {
+  if (assetissued ===1|| databackupcompleted ===1|| assetreceived===1 || azureadaccessdeactivated===1 || emaildeactivated===1 || emailforwarding === 1) {
                 return false;
             }
             else {
@@ -900,7 +900,7 @@ function review(primaryControl) {
             var f = formContext.getAttribute("pg_datacarddongle").getValue();
             var g = formContext.getAttribute("pg_mobilephonesim").getValue();
             var h = formContext.getAttribute("pg_medicalinsuranceterminated").getValue();
-            if (a==1 || b==1 || c==1 || d==1 || e==1 || f==1 || g ==1|| h == 1) {
+            if (a===1 || b===1 || c===1 || d===1 || e===1 || f===1 || g ===1|| h === 1) {
                 return false;
             }
             else {
@@ -913,7 +913,7 @@ function review(primaryControl) {
         else if (casetitle.includes("Employee Development")) {
             var a = formContext.getAttribute("pg_deactivatexyme").getValue();
             var b = formContext.getAttribute("pg_updatebonuseligibilityinbonusfile").getValue();
-            if (a==1 || b == 1) {
+            if (a===1 || b === 1) {
                 return false;
             }
             else {
@@ -925,7 +925,7 @@ function review(primaryControl) {
         else if (casetitle.includes("Learning & Development")) {
             var a = formContext.getAttribute("pg_completeactivetrainingsinlms").getValue();
             var b = formContext.getAttribute("pg_deactivatelmsaccess").getValue();
-            if (a ==1|| b == 1) {
+            if (a ===1|| b === 1) {
                 return false;
             }
             else {
@@ -943,7 +943,7 @@ function review(primaryControl) {
             var g = formContext.getAttribute("pg_processdeductionsforlopadjustments").getValue();
             var h = formContext.getAttribute("pg_publishffpayslip").getValue();
             var i = formContext.getAttribute("pg_updatedateofexitinpfportal").getValue();
-            if (a==1 || b ==1|| c==1 || d==1 || e==1 || f==1 || g==1 || h==1 || i == 1) {
+            if (a===1 || b ===1|| c===1 || d===1 || e===1 || f===1 || g===1 || h===1 || i === 1) {
                 return false;
             }
             else {
@@ -957,7 +957,7 @@ function review(primaryControl) {
             var c = formContext.getAttribute("pg_conductexitinterview").getValue();
             var d = formContext.getAttribute("pg_disabledojostoreaccess").getValue();
             var e = formContext.getAttribute("pg_cancelopenordersinthequeue").getValue();
-            if (a ==1 || b ==1 || c==1 || d==1 || e == 1) {
+            if (a ===1 || b ===1 || c===1 || d===1 || e === 1) {
                 return false;
             }
             else {
@@ -999,7 +999,7 @@ var workmodesec =  datachange.sections.get("tab_13_section_6");
         var subject = 0;
     }
 
-  if (applicationselect==10 && subject ==1000) {
+  if (applicationselect===10 && subject ===1000) {
    datachange.setVisible(true);
     reportingmanagersec.setVisible(true);    
     employeereportingtypesec.setVisible(false);
@@ -1009,7 +1009,7 @@ var workmodesec =  datachange.sections.get("tab_13_section_6");
  worklocsec.setVisible(false);
     salaryrevisionsec.setVisible(false);
 }
-else if ( applicationselect==10 && subject == 2000) {
+else if ( applicationselect===10 && subject === 2000) {
          datachange.setVisible(true);
  reportingmanagersec.setVisible(false);    
     employeereportingtypesec.setVisible(true);
@@ -1019,7 +1019,7 @@ else if ( applicationselect==10 && subject == 2000) {
  worklocsec.setVisible(false);
     salaryrevisionsec.setVisible(false);
  }
-  else if (applicationselect==10 && subject == 140310003) {
+  else if (applicationselect===10 && subject === 140310003) {
           datachange.setVisible(true);
         reportingmanagersec.setVisible(false);    
     employeereportingtypesec.setVisible(false);
@@ -1029,7 +1029,7 @@ else if ( applicationselect==10 && subject == 2000) {
  worklocsec.setVisible(false);
     salaryrevisionsec.setVisible(false);
   }
-  else if ( applicationselect==10 && subject == 140310004) {
+  else if ( applicationselect===10 && subject === 140310004) {
             datachange.setVisible(true);
         reportingmanagersec.setVisible(false);    
     employeereportingtypesec.setVisible(false);
@@ -1039,7 +1039,7 @@ else if ( applicationselect==10 && subject == 2000) {
  worklocsec.setVisible(false);
     salaryrevisionsec.setVisible(false);
   }
- else if (applicationselect==10 && subject == 140310005) {
+ else if (applicationselect===10 && subject === 140310005) {
  datachange.setVisible(true);
      reportingmanagersec.setVisible(false);    
     employeereportingtypesec.setVisible(false);
@@ -1049,7 +1049,7 @@ else if ( applicationselect==10 && subject == 2000) {
  worklocsec.setVisible(true);
     salaryrevisionsec.setVisible(false);
   }
-  else if (applicationselect==10 && subject == 140310006) {
+  else if (applicationselect===10 && subject === 140310006) {
  datachange.setVisible(true);
      reportingmanagersec.setVisible(false);    
     employeereportingtypesec.setVisible(false);
@@ -1059,7 +1059,7 @@ else if ( applicationselect==10 && subject == 2000) {
     worklocsec.setVisible(false);
     salaryrevisionsec.setVisible(false);
   }
-else if ( applicationselect==10 && subject == 140310008) {
+else if ( applicationselect===10 && subject === 140310008) {
  datachange.setVisible(true);
       reportingmanagersec.setVisible(false);    
     employeereportingtypesec.setVisible(false);
@@ -1093,7 +1093,7 @@ function subjectchangecase(context) {
         subject.removeOption(options[i].value);
     }
  //datachange
-    if ((applicationselect == 10)) {
+    if ((applicationselect === 10)) {
         subject.addOption({ text: 'Reporting Manager', value: 1000});
         subject.addOption({ text: 'Employee Reporting Change', value: 2000 });
         subject.addOption({ text: 'Team/Process', value: 140310003 });

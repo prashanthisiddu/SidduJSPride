@@ -93,13 +93,13 @@ function ShowHideFields(context) {
     var userSettings = Xrm.Utility.getGlobalContext().userSettings;
     var currentuserid = userSettings.userId;
     var employeeId = "{5107BBC4-568B-ED11-81AC-6045BDA8AA87}";  
-    if (category == 140310000) {
+    if (category === 140310000) {
         formContext.getControl("pg_startdate").setVisible(false);
         formContext.getControl("pg_enddate").setVisible(false);
         formContext.getControl("pg_fromlocation").setVisible(false);
         formContext.getControl("pg_tolocation").setVisible(false);
     }
-    else if (category == 140310001) {
+    else if (category === 140310001) {
         formContext.getControl("pg_startdate").setVisible(true);
         formContext.getControl("pg_enddate").setVisible(true);
         formContext.getControl("pg_fromlocation").setVisible(true);

@@ -69,7 +69,7 @@ function setaprrovalasyes(context) {
     var userSettings = Xrm.Utility.getGlobalContext().userSettings;
     //var currentuserid = userSettings.userId;
     var username = userSettings.userName;
-    if (formcontext.ui.getFormType() == 1) {
+    if (formcontext.ui.getFormType() === 1) {
      
 Xrm.WebApi.online.retrieveMultipleRecords("cdm_worker", "?$filter=cdm_fullname eq '" + username + "'&$top=1").then(
   function success(results) {
@@ -104,7 +104,7 @@ function setgoalsdefaultvalue(executionContext)
 {
     formContext = executionContext.getFormContext();
  var setgoals = formContext.getAttribute("pg_setgoals").getValue();
-if(setgoals ==null){
+if(setgoals ===null){
  var setgoals = formContext.getAttribute("pg_setgoals").setValue(true);
 }
 }

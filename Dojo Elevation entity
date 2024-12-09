@@ -168,19 +168,19 @@ enddateforQ8 = new Date(QuaterQ8.replace(/-/g, "/"));
 var quaterenddate={};
 var quaterstartdate={};
 	 var quaterenddate = new Date();
-		 if(Quater=="Q4"){
+		 if(Quater==="Q4"){
 			var quaterstartdate=startdateforQ4;
 			var quaterenddate=enddateforQ8;
 		 }
-	   else if(Quater == "Q3"){
+	   else if(Quater === "Q3"){
 		   var quaterstartdate=startdateforQ3;
 		   var quaterenddate=enddateforQ7;
 		 }
-	else if(Quater == "Q2"){
+	else if(Quater === "Q2"){
 	  quaterstartdate=startdateforQ2;
 	  quaterenddate=enddateforQ6;
 		 }
-	   else if(Quater == "Q1"){
+	   else if(Quater === "Q1"){
 		quaterstartdate=startdateforQ1;
 		quaterenddate=enddateforQ5;
 		 } 
@@ -361,73 +361,73 @@ function onloadDojoElevations(context) {
     //Add two level elevation
 
     //White - No Degree
-    if ((currentdojolevel == 140310006) && (currentdojodegree == 140310003)) {
+    if ((currentdojolevel === 140310006) && (currentdojodegree === 140310003)) {
         dojolevel.addOption({ text: 'Blue', value: 140310001 });
         dojolevel.addOption({ text: 'Yellow', value: 140310007 });
     }
     //Blue - 1st Degree
-    else if ((currentdojolevel == 140310001) && (currentdojodegree == 140310000  || currentdojodegree == 140310003)) {
+    else if ((currentdojolevel === 140310001) && (currentdojodegree === 140310000  || currentdojodegree === 140310003)) {
         dojolevel.addOption({ text: 'Blue', value: 140310001 });
     }
     //Blue - 2nd Degree
-    else if ((currentdojolevel == 140310001) && (currentdojodegree == 140310001)) {
+    else if ((currentdojolevel === 140310001) && (currentdojodegree === 140310001)) {
         dojolevel.addOption({ text: 'Blue', value: 140310001 });
         dojolevel.addOption({ text: 'Yellow', value: 140310007 });
     }
     //Blue - 3rd Degree
-    else if ((currentdojolevel == 140310001) && (currentdojodegree == 140310002)) {
+    else if ((currentdojolevel === 140310001) && (currentdojodegree === 140310002)) {
         dojolevel.addOption({ text: 'Yellow', value: 140310007 });
     }
     //Yellow - 1st Degree
-    else if ((currentdojolevel == 140310007) && (currentdojodegree == 140310000 || currentdojodegree == 140310003)) {
+    else if ((currentdojolevel === 140310007) && (currentdojodegree === 140310000 || currentdojodegree === 140310003)) {
         dojolevel.addOption({ text: 'Yellow', value: 140310007 });
     }
     //Yellow - 2nd Degree
-    else if ((currentdojolevel == 140310007) && (currentdojodegree == 140310001)) {
+    else if ((currentdojolevel === 140310007) && (currentdojodegree === 140310001)) {
         dojolevel.addOption({ text: 'Yellow', value: 140310007 });
         dojolevel.addOption({ text: 'Orange', value: 140310004 });
     }
     //Yellow - 3rd Degree
-    else if ((currentdojolevel == 140310007) && (currentdojodegree == 140310002)) {
+    else if ((currentdojolevel === 140310007) && (currentdojodegree === 140310002)) {
         dojolevel.addOption({ text: 'Orange', value: 140310004 });
     }
     //Orange - 1st Degree
-    else if ((currentdojolevel == 140310004) && (currentdojodegree == 140310000 || currentdojodegree == 140310003)) {
+    else if ((currentdojolevel === 140310004) && (currentdojodegree === 140310000 || currentdojodegree === 140310003)) {
         dojolevel.addOption({ text: 'Orange', value: 140310004 });
     }
     //Orange - 2nd Degree
-    else if ((currentdojolevel == 140310004) && (currentdojodegree == 140310001)) {
+    else if ((currentdojolevel === 140310004) && (currentdojodegree === 140310001)) {
         dojolevel.addOption({ text: 'Orange', value: 140310004 });
         dojolevel.addOption({ text: 'Green', value: 140310003 });
     }
     //Orange - 3rd Degree
-    else if ((currentdojolevel == 140310004) && (currentdojodegree == 140310002)) {
+    else if ((currentdojolevel === 140310004) && (currentdojodegree === 140310002)) {
         dojolevel.addOption({ text: 'Green', value: 140310003 });
     }
     //Green - 1st Degree
-    else if ((currentdojolevel == 140310003) && (currentdojodegree == 140310000 || currentdojodegree == 140310003)) {
+    else if ((currentdojolevel === 140310003) && (currentdojodegree === 140310000 || currentdojodegree === 140310003)) {
         dojolevel.addOption({ text: 'Green', value: 140310003 });
     }
     //Green - 2nd Degree
-    else if ((currentdojolevel == 140310003) && (currentdojodegree == 140310001)) {
+    else if ((currentdojolevel === 140310003) && (currentdojodegree === 140310001)) {
         dojolevel.addOption({ text: 'Green', value: 140310003 });
         dojolevel.addOption({ text: 'Purple', value: 140310005 });
     }
     //Green - 3rd Degree
-    else if ((currentdojolevel == 140310003) && (currentdojodegree == 140310002)) {
+    else if ((currentdojolevel === 140310003) && (currentdojodegree === 140310002)) {
         dojolevel.addOption({ text: 'Purple', value: 140310005 });
     }
     //Purple - 1st Degree
-    else if ((currentdojolevel == 140310005) && (currentdojodegree == 140310000 || currentdojodegree == 140310003)) {
+    else if ((currentdojolevel === 140310005) && (currentdojodegree === 140310000 || currentdojodegree === 140310003)) {
         dojolevel.addOption({ text: 'Purple', value: 140310005 });
     }
     //Purple -2nd Degree
-    else if ((currentdojolevel == 140310005) && (currentdojodegree == 140310001)) {
+    else if ((currentdojolevel === 140310005) && (currentdojodegree === 140310001)) {
         dojolevel.addOption({ text: 'Purple', value: 140310005 });
         dojolevel.addOption({ text: 'Black', value: 140310000 });
     }
     //Purple - 3rd Degree
-    else if ((currentdojolevel == 140310005) && (currentdojodegree == 140310002)) {
+    else if ((currentdojolevel === 140310005) && (currentdojodegree === 140310002)) {
         dojolevel.addOption({ text: 'Black', value: 140310000 });
     }
     //Black Belt - not needed
@@ -451,12 +451,12 @@ function onChangeDojoDegree(context){
     }
 
     if (dojolevel != null) {
-        if (currentdojolevel == dojolevel) {
-            if (currentdojodegree == 140310000) {
+        if (currentdojolevel === dojolevel) {
+            if (currentdojodegree === 140310000) {
                 dojodegree.addOption({ text: '2nd Degree', value: 140310001 });
                 dojodegree.addOption({ text: '3rd Degree', value: 140310002 });
             }
-            else if (currentdojodegree == 140310003) {
+            else if (currentdojodegree === 140310003) {
                 dojodegree.addOption({ text: '1st Degree', value: 140310000 });
                 dojodegree.addOption({ text: '2nd Degree', value: 140310001 });
             }
@@ -464,10 +464,10 @@ function onChangeDojoDegree(context){
         }
         else if (currentdojolevel != dojolevel) {
             dojodegree.addOption({ text: 'No Degree', value: 140310003 });
-            if (currentdojodegree == 140310002) {
+            if (currentdojodegree === 140310002) {
                 dojodegree.addOption({ text: '2nd Degree', value: 140310001 });
             }
-            if (currentdojodegree == 140310003 && currentdojolevel == 140310006 && dojolevel == 140310001) {
+            if (currentdojodegree === 140310003 && currentdojolevel === 140310006 && dojolevel === 140310001) {
                 dojodegree.addOption({ text: '1st Degree', value: 140310000 });
                 dojodegree.addOption({ text: '2nd Degree', value: 140310001 });
                 dojodegree.addOption({ text: '3rd Degree', value: 140310002 });
@@ -577,19 +577,19 @@ enddateforQ8 = new Date(QuaterQ8.replace(/-/g, "/"));
 var quaterenddate={};
 var quaterstartdate={};
 	 var quaterenddate = new Date();
-		 if(Quater=="Q4"){
+		 if(Quater==="Q4"){
 			var quaterstartdate=startdateforQ4;
 			var quaterenddate=enddateforQ8;
 		 }
-	   else if(Quater == "Q3"){
+	   else if(Quater === "Q3"){
 		   var quaterstartdate=startdateforQ3;
 		   var quaterenddate=enddateforQ7;
 		 }
-	else if(Quater == "Q2"){
+	else if(Quater === "Q2"){
 	  quaterstartdate=startdateforQ2;
 	  quaterenddate=enddateforQ6;
 		 }
-	   else if(Quater == "Q1"){
+	   else if(Quater === "Q1"){
 		quaterstartdate=startdateforQ1;
 		quaterenddate=enddateforQ5;
 		 } 
@@ -614,7 +614,7 @@ var quaterstartdate={};
 								var cutoffDateenddate = new Date(quaterenddate);
 								var cutoffDatestartdate = new Date(quaterstartdate);
 				
-			 if (cdm_anniversarydatetime >= new Date(cutoffDatestartdate) && (usersettings.userId == formContext.getAttribute("pg_manager").getValue()[0].id) && currentstage == "90 Day / Finalize Review" && enable && finalizeCheck == 140310002) {
+			 if (cdm_anniversarydatetime >= new Date(cutoffDatestartdate) && (usersettings.userId === formContext.getAttribute("pg_manager").getValue()[0].id) && currentstage === "90 Day / Finalize Review" && enable && finalizeCheck === 140310002) {
 									// Enable the dojobutton
 									//var finalizeCheck = formContext.getAttribute("pg_finalreview").getValue();
 									//formContext.getControl("pg_finalreview").setDisabled(true);
@@ -630,7 +630,7 @@ var quaterstartdate={};
 				}
 			);
 
- if ((usersettings.userId == formContext.getAttribute("pg_manager").getValue()[0].id) && currentstage == "90 Day / Finalize Review" && enable && finalizeCheck == 140310002) {
+ if ((usersettings.userId === formContext.getAttribute("pg_manager").getValue()[0].id) && currentstage === "90 Day / Finalize Review" && enable && finalizeCheck === 140310002) {
         return true;
     }
     else {

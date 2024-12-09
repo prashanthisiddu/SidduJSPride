@@ -30,7 +30,7 @@ var  datachangetype = formContext.getAttribute("pg_datachangetype").getSelectedO
         var applicationselect = 0;
     }
    
-    if (applicationselect == 10 && datachangetype == 1) {
+    if (applicationselect === 10 && datachangetype === 1) {
       reportingmanager.setVisible(true);
       employeereportingtype.setVisible(false);
       team.setVisible(false);
@@ -41,7 +41,7 @@ var  datachangetype = formContext.getAttribute("pg_datachangetype").getSelectedO
       salaryrevision.setVisible(false);
        
     }
-    else if (applicationselect == 10 && datachangetype == 140310001) {
+    else if (applicationselect === 10 && datachangetype === 140310001) {
         reportingmanager.setVisible(false);
       employeereportingtype.setVisible(true);
       team.setVisible(false);
@@ -52,7 +52,7 @@ var  datachangetype = formContext.getAttribute("pg_datachangetype").getSelectedO
       salaryrevision.setVisible(false);
 
     }
-    else if (applicationselect == 10 && datachangetype == 140310002) {
+    else if (applicationselect === 10 && datachangetype === 140310002) {
         reportingmanager.setVisible(false);
         employeereportingtype.setVisible(false);
         team.setVisible(true);
@@ -62,7 +62,7 @@ var  datachangetype = formContext.getAttribute("pg_datachangetype").getSelectedO
         workloc.setVisible(false);
         salaryrevision.setVisible(false);
     }
-    else if (applicationselect == 10 && datachangetype == 140310003) {
+    else if (applicationselect === 10 && datachangetype === 140310003) {
         reportingmanager.setVisible(false);
         employeereportingtype.setVisible(false);
         team.setVisible(false);
@@ -72,7 +72,7 @@ var  datachangetype = formContext.getAttribute("pg_datachangetype").getSelectedO
         workloc.setVisible(false);
         salaryrevision.setVisible(false);
     }
-    else if (applicationselect == 10 && datachangetype == 140310004) {
+    else if (applicationselect === 10 && datachangetype === 140310004) {
         reportingmanager.setVisible(false);
       employeereportingtype.setVisible(false);
       team.setVisible(false);
@@ -82,7 +82,7 @@ var  datachangetype = formContext.getAttribute("pg_datachangetype").getSelectedO
       workloc.setVisible(true);
       salaryrevision.setVisible(false);
     }
-    else if (applicationselect == 10 && datachangetype == 140310005) {
+    else if (applicationselect === 10 && datachangetype === 140310005) {
         reportingmanager.setVisible(false);
         employeereportingtype.setVisible(false);
         team.setVisible(false);
@@ -92,7 +92,7 @@ var  datachangetype = formContext.getAttribute("pg_datachangetype").getSelectedO
         workloc.setVisible(false);
         salaryrevision.setVisible(false);
     }
-    else if (applicationselect == 10 && datachangetype == 140310006) {
+    else if (applicationselect === 10 && datachangetype === 140310006) {
         reportingmanager.setVisible(false);
       employeereportingtype.setVisible(false);
       team.setVisible(false);
@@ -102,7 +102,7 @@ var  datachangetype = formContext.getAttribute("pg_datachangetype").getSelectedO
       workloc.setVisible(false);
       salaryrevision.setVisible(false);
     }
-    else if (applicationselect == 10 && datachangetype == 140310007) {
+    else if (applicationselect === 10 && datachangetype === 140310007) {
        reportingmanager.setVisible(false);
       employeereportingtype.setVisible(false);
       team.setVisible(false);
@@ -123,7 +123,7 @@ debugger;
     // var applicationselect = formcontext.getAttribute("pg_application").getSelectedOption().value;
     var origin = formContext.getAttribute("caseorigincode").getValue();
     var casetitle = formContext.getAttribute("title").getValue();
-    if (application == 140310017 && origin == 140310000) {
+    if (application === 140310017 && origin === 140310000) {
 
         if (casetitle.includes("IT")) {
             var x = formContext.getAttribute("pg_assetissued").getValue();    
@@ -138,7 +138,7 @@ debugger;
      var aada=formContext.getControl("pg_azureadaccessdeactivated");
         var emaildeativ=formContext.getControl("pg_emaildeactivated");
        var emailforw= formContext.getControl("pg_emailforwarding");
-         if (x  ==1 ||x== null) {
+         if (x  ===1 ||x=== null) {
              formContext.ui.setFormNotification("pls enter the valid data", "ERROR", "validation");
              demo.setNotification("pls enter the valid data", "validation");
              }
@@ -148,7 +148,7 @@ debugger;
            demo.clearNotification("validation");
           }
 
-         if (y  ==1 || y== null) {
+         if (y  ===1 || y=== null) {
              formContext.ui.setFormNotification("pls enter the valid data", "ERROR", "validation");
              mama.setNotification("pls enter the valid data", "validation");
              }
@@ -156,17 +156,8 @@ debugger;
               formContext.ui.clearFormNotification("validation");
   
            mama.clearNotification("validation");
-          }
-          if (z  ==1  || z== null) {
-             formContext.ui.setFormNotification("pls enter the valid data", "ERROR", "validation");
-             mimi.setNotification("pls enter the valid data", "validation");
-             }
-            else  {
-              formContext.ui.clearFormNotification("validation");
-  
-         mimi.clearNotification("validation");
-          }
- if (a  ==1  || a== null) {
+      
+ if (a  ===1  || a=== null) {
             formContext.ui.setFormNotification("pls enter the valid data", "ERROR", "validation");
              aada.setNotification("pls enter the valid data", "validation");
              }
@@ -175,7 +166,7 @@ debugger;
   
            aada.clearNotification("validation");
           }
-         if (b  ==1  || b== null) {
+         if (b  ===1  || b=== null) {
              formContext.ui.setFormNotification("pls enter the valid data", "ERROR", "validation");
              emaildeativ.setNotification("pls enter the valid data", "validation");
              }
@@ -184,7 +175,7 @@ debugger;
   
            emaildeativ.clearNotification("validation");
           }
-          if (c  ==1  || c== null) {
+          if (c  ===1  || c=== null) {
              formContext.ui.setFormNotification("pls enter the valid data", "ERROR", "validation");
              emailforw.setNotification("pls enter the valid data", "validation");
              }
@@ -196,24 +187,9 @@ debugger;
 }
     
      else if(casetitle.includes("Admin")){
-      
-          var a= formContext.getAttribute("pg_assetpickupcoordination").getValue();      
-           var b=formContext.getAttribute("pg_assetreceivedhandedovertoit").getValue();
-           var c=formContext.getAttribute("pg_idaccesscardreceived").getValue();
-           var d= formContext.getAttribute("pg_accesscarddeactivated").getValue();      
-           var e=formContext.getAttribute("pg_drawerkeyreceived").getValue();
-           var f=formContext.getAttribute("pg_datacarddongle").getValue();
-            var g=formContext.getAttribute("pg_mobilephonesim").getValue();
-           var h=formContext.getAttribute("pg_medicalinsuranceterminated").getValue();
-      var apc=formContext.getControl("pg_assetpickupcoordination");
-      var arho=formContext.getControl("pg_assetreceivedhandedovertoit");
-        var iacr=formContext.getControl("pg_idaccesscardreceived");
-         var aca=formContext.getControl("pg_accesscarddeactivated");
-            var dkr=formContext.getControl("pg_drawerkeyreceived");
-           var dc=formContext.getControl("pg_datacarddongle");
-      var mobile=formContext.getControl("pg_mobilephonesim");
+ 
            var med=formContext.getControl("pg_medicalinsuranceterminated");
-   if (a ==1  || a== null) {
+   if (a ===1  || a=== null) {
             formContext.ui.setFormNotification("pls enter the valid data", "ERROR", "validation");
              apc.setNotification("pls enter the valid data", "validation");
              }
@@ -222,59 +198,8 @@ debugger;
   
            apc.clearNotification("validation");
           }
-if (b ==1  || b== null) {
-             formContext.ui.setFormNotification("pls enter the valid data", "ERROR", "validation");
-            arho.setNotification("pls enter the valid data", "validation");
-             }
-            else  {
-              formContext.ui.clearFormNotification("validation");
-  
-          arho.clearNotification("validation");
-          }
-       if (c  ==1  || c== null) {
-             formContext.ui.setFormNotification("pls enter the valid data", "ERROR", "validation");
-            iacr.setNotification("pls enter the valid data", "validation");
-             }
-            else  {
-              formContext.ui.clearFormNotification("validation");
-  
-         iacr.clearNotification("validation");
-          }
-        if (d  ==1  || d== null) {
-            formContext.ui.setFormNotification("pls enter the valid data", "ERROR", "validation");
-             aca.setNotification("pls enter the valid data", "validation");
-             }
-            else  {
-              formContext.ui.clearFormNotification("validation");
-  
-           aca.clearNotification("validation");
-          }
-         if (e  ==1  || e== null) {
-             formContext.ui.setFormNotification("pls enter the valid data", "ERROR", "validation");
-            dkr.setNotification("pls enter the valid data", "validation");
-             }
-            else  {
-              formContext.ui.clearFormNotification("validation");
-  
-           dkr.clearNotification("validation");
-          }
-       if (f  ==1  || f== null) {
-             formContext.ui.setFormNotification("pls enter the valid data", "ERROR", "validation");
-             dc.setNotification("pls enter the valid data", "validation");
-             }
-            else  {
-               formContext.ui.clearFormNotification("validation");
-          dc.clearNotification("validation");
-      }
-      if (g  ==1  || g== null) {
-             formContext.ui.setFormNotification("pls enter the valid data", "ERROR", "validation");
-             mobile.setNotification("pls enter the valid data", "validation");
-             }
-            else  {
-               formContext.ui.clearFormNotification("validation");
-          mobile.clearNotification("validation");
-      }
- if (h ==1  || h== null) {
+
+ if (h ===1  || h=== null) {
              formContext.ui.setFormNotification("pls enter the valid data", "ERROR", "validation");
              med.setNotification("pls enter the valid data", "validation");
              }
@@ -284,90 +209,25 @@ if (b ==1  || b== null) {
       }
   }     
 
-  else if(casetitle.includes("Employee Development")){
+   if(casetitle.includes("Employee Development")){
       var a= formContext.getAttribute("pg_deactivatexyme").getValue();     
       var b=formContext.getAttribute("pg_updatebonuseligibilityinbonusfile").getValue();
-      var deactivate= formContext.getControl("pg_deactivatexyme");    
-      var updatebonus=formContext.getControl("pg_updatebonuseligibilityinbonusfile");
-    if (a  ==1  || a== null) {
-             formContext.ui.setFormNotification("pls enter the valid data", "ERROR", "validation");
-             deactivate.setNotification("pls enter the valid data", "validation");
-             }
-            else  {
-               formContext.ui.clearFormNotification("validation");
-          deactivate.clearNotification("validation");
-      }
- if (b ==1  || b== null) {
-             formContext.ui.setFormNotification("pls enter the valid data", "ERROR", "validation");
-             updatebonus.setNotification("pls enter the valid data", "validation");
-             }
-            else  {
-               formContext.ui.clearFormNotification("validation");
-          updatebonus.clearNotification("validation");
-      }
-  }
-   else if(casetitle.includes("Learning & Development")){
+    
+   
+    if(casetitle.includes("Learning & Development")){
     var a= formContext.getAttribute("pg_completeactivetrainingsinlms").getValue();      
-      var b=formContext.getAttribute("pg_deactivatelmsaccess").getValue();
-      var completeactive= formContext.getControl("pg_completeactivetrainingsinlms");    
-      var deactivelms=formContext.getControl("pg_deactivatelmsaccess");
-           if (a  ==1  || a== null) {
-             formContext.ui.setFormNotification("pls enter the valid data", "ERROR", "validation");
-             completeactive.setNotification("pls enter the valid data", "validation");
-             }
-            else  {
-              formContext.ui.clearFormNotification("validation");
   
-         completeactive.clearNotification("validation");
-          }
-         if (b ==1  || b== null) {
-             formContext.ui.setFormNotification("pls enter the valid data", "ERROR", "validation");
-            deactivelms.setNotification("pls enter the valid data", "validation");
-             }
-            else  {
-              formContext.ui.clearFormNotification("validation");
-  
-          deactivelms.clearNotification("validation");
-          }
+     
    }
    else if(casetitle.includes("Finance")){
        var a= formContext.getAttribute("pg_updatetallywithenddate").getValue();     
       var b=formContext.getAttribute("pg_moveemployeefrompayrolltoff").getValue();
-      var c=formContext.getAttribute("pg_receiveffclearancefromhr").getValue();
-      var d= formContext.getAttribute("pg_processff").getValue();      
-      var e=formContext.getAttribute("pg_processgratuity").getValue();
-      var f=formContext.getAttribute("pg_processleaveencashment").getValue();
-      var g=formContext.getAttribute("pg_processdeductionsforlopadjustments").getValue();
-      var h=formContext.getAttribute("pg_publishffpayslip").getValue();
-     var i=formContext.getAttribute("pg_updatedateofexitinpfportal").getValue();
-  var apc=formContext.getControl("pg_updatetallywithenddate");
-      var arho=formContext.getControl("pg_moveemployeefrompayrolltoff");
-        var iacr=formContext.getControl("pg_receiveffclearancefromhr");
-         var aca=formContext.getControl("pg_processff");
-            var dkr=formContext.getControl("pg_processgratuity");
-           var dc=formContext.getControl("pg_processleaveencashment");
+   
       var mobile=formContext.getControl("pg_processdeductionsforlopadjustments");
            var med=formContext.getControl("pg_publishffpayslip");
    var ink=formContext.getControl("pg_updatedateofexitinpfportal");
-   if (a ==1  || a== null) {
-            formContext.ui.setFormNotification("pls enter the valid data", "ERROR", "validation");
-             apc.setNotification("pls enter the valid data", "validation");
-             }
-            else  {
-              formContext.ui.clearFormNotification("validation");
-  
-           apc.clearNotification("validation");
-          }
-if (b ==1  || b== null) {
-             formContext.ui.setFormNotification("pls enter the valid data", "ERROR", "validation");
-            arho.setNotification("pls enter the valid data", "validation");
-             }
-            else  {
-              formContext.ui.clearFormNotification("validation");
-  
-          arho.clearNotification("validation");
-          }
-       if (c  ==1  || c== null) {
+ 
+       if (c  ===1  || c=== null) {
              formContext.ui.setFormNotification("pls enter the valid data", "ERROR", "validation");
             iacr.setNotification("pls enter the valid data", "validation");
              }
@@ -376,41 +236,8 @@ if (b ==1  || b== null) {
   
          iacr.clearNotification("validation");
           }
-        if (d  ==1  || d== null) {
-            formContext.ui.setFormNotification("pls enter the valid data", "ERROR", "validation");
-             aca.setNotification("pls enter the valid data", "validation");
-             }
-            else  {
-              formContext.ui.clearFormNotification("validation");
-  
-           aca.clearNotification("validation");
-          }
-         if (e  ==1  || e== null) {
-             formContext.ui.setFormNotification("pls enter the valid data", "ERROR", "validation");
-            dkr.setNotification("pls enter the valid data", "validation");
-             }
-            else  {
-              formContext.ui.clearFormNotification("validation");
-  
-           dkr.clearNotification("validation");
-          }
-       if (f  ==1  || f== null) {
-             formContext.ui.setFormNotification("pls enter the valid data", "ERROR", "validation");
-             dc.setNotification("pls enter the valid data", "validation");
-             }
-            else  {
-               formContext.ui.clearFormNotification("validation");
-          dc.clearNotification("validation");
-      }
-      if (g  ==1  || g== null) {
-             formContext.ui.setFormNotification("pls enter the valid data", "ERROR", "validation");
-             mobile.setNotification("pls enter the valid data", "validation");
-             }
-            else  {
-               formContext.ui.clearFormNotification("validation");
-          mobile.clearNotification("validation");
-      }
- if (h ==1  || h== null) {
+   
+ if (h ===1  || h=== null) {
              formContext.ui.setFormNotification("pls enter the valid data", "ERROR", "validation");
              med.setNotification("pls enter the valid data", "validation");
              }
@@ -418,7 +245,7 @@ if (b ==1  || b== null) {
                formContext.ui.clearFormNotification("validation");
           med.clearNotification("validation");
       }
- if (i ==1  || i== null) {
+ if (i ===1  || i=== null) {
              formContext.ui.setFormNotification("pls enter the valid data", "ERROR", "validation");
              ink.setNotification("pls enter the valid data", "validation");
              }
@@ -427,45 +254,9 @@ if (b ==1  || b== null) {
           ink.clearNotification("validation");
       }
    }
-    else if(casetitle.includes("Employee Engagement")){
-      var a= formContext.getAttribute("pg_updatedeierglist").getValue();     
-      var b=formContext.getAttribute("pg_updateclashoftitanshouselistjosh").getValue();
-      var c=formContext.getAttribute("pg_conductexitinterview").getValue();
-      var d= formContext.getAttribute("pg_disabledojostoreaccess").getValue();      
-      var e=formContext.getAttribute("pg_cancelopenordersinthequeue").getValue();
-      var updatedei= formContext.getControl("pg_updatedeierglist");    
-      var updateclas=formContext.getControl("pg_updateclashoftitanshouselistjosh");
-     var con=formContext.getControl("pg_conductexitinterview");
-     var doj= formContext.getControl("pg_disabledojostoreaccess");    
-     var cancel=formContext.getControl("pg_cancelopenordersinthequeue");
-          if (a  ==1 || a== null) {
-             formContext.ui.setFormNotification("pls enter the valid data", "ERROR", "validation");
-             updatedei.setNotification("pls enter the valid data", "validation");
-             }
-            else  {
-              formContext.ui.clearFormNotification("validation");
-  
-         updatedei.clearNotification("validation");
-          }
-         if (b ==1  || b== null) {
-             formContext.ui.setFormNotification("pls enter the valid data", "ERROR", "validation");
-            updateclas.setNotification("pls enter the valid data", "validation");
-             }
-            else  {
-              formContext.ui.clearFormNotification("validation");
-  
-          updateclas.clearNotification("validation");
-          }
- if (c  ==1  || c== null) {
-             formContext.ui.setFormNotification("pls enter the valid data", "ERROR", "validation");
-            con.setNotification("pls enter the valid data", "validation");
-             }
-            else  {
-              formContext.ui.clearFormNotification("validation");
-  
-         con.clearNotification("validation");
-          }
-        if (d  ==1 || d== null) {
+   
+    
+        if (d  ===1 || d=== null) {
             formContext.ui.setFormNotification("pls enter the valid data", "ERROR", "validation");
              doj.setNotification("pls enter the valid data", "validation");
              }
@@ -474,7 +265,7 @@ if (b ==1  || b== null) {
   
            doj.clearNotification("validation");
           }
-         if (e  ==1  || e== null) {
+         if (e  ===1  || e=== null) {
              formContext.ui.setFormNotification("pls enter the valid data", "ERROR", "validation");
             cancel.setNotification("pls enter the valid data", "validation");
              }
@@ -501,7 +292,7 @@ var formContext=primaryControl;
     // var applicationselect = formcontext.getAttribute("pg_application").getSelectedOption().value;
     var origin = formContext.getAttribute("caseorigincode").getValue();
     var casetitle = formContext.getAttribute("title").getValue();
-    if (application == 140310017 && origin == 140310000) {
+    if (application === 140310017 && origin === 140310000) {
 
         if (casetitle.includes("IT")) {
             var assetissued = formContext.getAttribute("pg_assetissued").getValue();    
@@ -511,7 +302,7 @@ var formContext=primaryControl;
             var emaildeactivated = formContext.getAttribute("pg_emaildeactivated").getValue();
             var emailforwarding= formContext.getAttribute("pg_emailforwarding").getValue;
 
-      if (assetissued ==0 || 2 && databackupcompleted ==0 || 2 && assetreceived  ==0 || 2){
+      if (assetissued ===0 || 2 && databackupcompleted ===0 || 2 && assetreceived  ===0 || 2){
           return true;
         }
        else{
@@ -521,24 +312,7 @@ var formContext=primaryControl;
 
 }
 }
- if (databackupcompleted ==0 || 2){
-          return true;
-        }
-       else{
-          return false;
 
-         }
-
-       }
- if (assetreceived  ==0 || 2){
-          return true;
-        }
-       else{
-          return false;
-
-         }
-
-       }
        
      else if(casetitle.includes("Admin")){
       
@@ -550,7 +324,7 @@ var formContext=primaryControl;
            var f=formContext.getAttribute("pg_datacarddongle").getValue();
             var g=formContext.getAttribute("pg_mobilephonesim").getValue();
            var h=formContext.getAttribute("pg_medicalinsuranceterminated").getValue();
- if (a ||b||c||d  || e|| f||g||h ==1){
+ if (a ||b||c||d  || e|| f||g||h ===1){
           return true;
         }
        else{
@@ -560,54 +334,13 @@ var formContext=primaryControl;
          
   }     
 
-  else if(casetitle.includes("Employee Development")){
-      var a= formContext.getAttribute("pg_deactivatexyme").getValue();     
-      var b=formContext.getAttribute("pg_updatebonuseligibilityinbonusfile").getValue();
-        if (a||b==1){
- return true;
-        }
-       else{
-          return false;
-
-         }
-   }
-  
-   else if(casetitle.includes("Learning & Development")){
-    var a= formContext.getAttribute("pg_completeactivetrainingsinlms").getValue();      
-      var b=formContext.getAttribute("pg_deactivatelmsaccess").getValue();
-     if (a||b==1){
- return true;
-        }
-       else{
-          return false;
-
-         }
-   }
-   else if(casetitle.includes("Finance")){
-       var a= formContext.getAttribute("pg_updatetallywithenddate").getValue();     
-      var b=formContext.getAttribute("pg_moveemployeefrompayrolltoff").getValue();
-      var c=formContext.getAttribute("pg_receiveffclearancefromhr").getValue();
-      var d= formContext.getAttribute("pg_processff").getValue();      
-      var e=formContext.getAttribute("pg_processgratuity").getValue();
-      var f=formContext.getAttribute("pg_processleaveencashment").getValue();
-      var g=formContext.getAttribute("pg_processdeductionsforlopadjustments").getValue();
-      var h=formContext.getAttribute("pg_publishffpayslip").getValue();
-     var i=formContext.getAttribute("pg_updatedateofexitinpfportal").getValue();
-   if (a ||b||c||d  || e|| f||g||h || i==1){
-          return true;
-        }
-       else{
-          return false;
-
-         }  
-   }
     else if(casetitle.includes("Employee Engagement")){
       var a= formContext.getAttribute("pg_updatedeierglist").getValue();     
       var b=formContext.getAttribute("pg_updateclashoftitanshouselistjosh").getValue();
       var c=formContext.getAttribute("pg_conductexitinterview").getValue();
       var d= formContext.getAttribute("pg_disabledojostoreaccess").getValue();      
       var e=formContext.getAttribute("pg_cancelopenordersinthequeue").getValue();
-      if (a ||b||c||d  || e ==1){
+      if (a ||b||c||d  || e ===1){
           return true;
         }
        else{
@@ -629,7 +362,7 @@ debugger;
     // var applicationselect = formcontext.getAttribute("pg_application").getSelectedOption().value;
     var origin = formContext.getAttribute("caseorigincode").getValue();
     var casetitle = formContext.getAttribute("title").getValue();
-    if (application == 140310017 && origin == 140310000) {
+    if (application === 140310017 && origin === 140310000) {
 
         if (casetitle.includes("IT")) {
             var assetissued = formContext.getAttribute("pg_assetissued").getValue();    
@@ -638,117 +371,29 @@ debugger;
          var azureadaccessdeactivated= formContext.getAttribute("pg_azureadaccessdeactivated").getValue();    
             var emaildeactivated = formContext.getAttribute("pg_emaildeactivated").getValue();
             var emailforwarding = formContext.getAttribute("pg_emailforwarding").getValue();
-        
-       if(assetissued==1 || assetissued==null){
-              formContext.getAttribute("statuscode").setValue(1);
-             }
-            else  {
-              formContext.getAttribute("statuscode").setValue(5);
-          }
-       if(data==1 || data==null){
+    
+       if(data===1 || data===null){
              formContext.getAttribute("statuscode").setValue(1);
              }
             else  {
               formContext.getAttribute("statuscode").setValue(5);
           }
-      if (assetreceived  ==1  || assetreceived== null) {
-             formContext.getAttribute("statuscode").setValue(1);
-             }
-            else  {
-              formContext.getAttribute("statuscode").setValue(5);
-          }
-    if (azureadaccessdeactivated ==1  || azureadaccessdeactivated== null) {
-           formContext.getAttribute("statuscode").setValue(1);
-             }
-            else  {
-              formContext.getAttribute("statuscode").setValue(5);
-          }
-        if (emaildeactivated  ==1  || emaildeactivated== null) {
-              formContext.getAttribute("statuscode").setValue(1);
-             }
-            else  {
-              formContext.getAttribute("statuscode").setValue(5);
-          }
-         if (emailforwarding  ==1  || emailforwarding== null) {
-             formContext.getAttribute("statuscode").setValue(1);
-             }
-            else  {
-             formContext.getAttribute("statuscode").setValue(5);
-          }
+ 
 }
     
-     else if(casetitle.includes("Admin")){
-      
-          var assetpickupcoordination= formContext.getAttribute("pg_assetpickupcoordination").getValue();      
-           var assetreceivedhandedovertoit=formContext.getAttribute("pg_assetreceivedhandedovertoit").getValue();
-           var idaccesscardreceived=formContext.getAttribute("pg_idaccesscardreceived").getValue();
-           var accesscarddeactivated= formContext.getAttribute("pg_accesscarddeactivated").getValue();      
-           var drawerkeyreceived=formContext.getAttribute("pg_drawerkeyreceived").getValue();
-           var datacarddongle=formContext.getAttribute("pg_datacarddongle").getValue();
-            var mobilephonesim=formContext.getAttribute("pg_mobilephonesim").getValue();
-           var medicalinsuranceterminated=formContext.getAttribute("pg_medicalinsuranceterminated").getValue();
-    
-   if (assetpickupcoordination ==1  || assetpickupcoordination== null) {
-            formContext.getAttribute("statuscode").setValue(1);
-             }
-            else  {
-              formContext.getAttribute("statuscode").setValue(5);
-          }
-  if (assetreceivedhandedovertoit ==1  || assetreceivedhandedovertoit== null) {
-            formContext.getAttribute("statuscode").setValue(1);
-             }
-            else  {
-         formContext.getAttribute("statuscode").setValue(5);
-          }
-       if (idaccesscardreceived  ==1  || idaccesscardreceived== null) {
-            formContext.getAttribute("statuscode").setValue(1);
-             }
-            else  {
-              formContext.getAttribute("statuscode").setValue(5);
-          }
-        if (accesscarddeactivated  ==1  || accesscarddeactivated== null) {
-             formContext.getAttribute("statuscode").setValue(1);
-             }
-            else  {
-      formContext.getAttribute("statuscode").setValue(5);
-          }
-         if (drawerkeyreceived  ==1  || drawerkeyreceived== null) {
-             formContext.getAttribute("statuscode").setValue(1);
-             }
-            else  {
-              formContext.getAttribute("statuscode").setValue(5);
-          }
-      if (datacarddongle  ==1  || datacarddongle== null) {
-           formContext.getAttribute("statuscode").setValue(1);
-             }
-            else  {
-              formContext.getAttribute("statuscode").setValue(5);
-          }
-      if (mobilephonesim  ==1  || mobilephonesim== null) {
-             formContext.getAttribute("statuscode").setValue(1);
-             }
-            else  {
-             formContext.getAttribute("statuscode").setValue(5);
-          }
-  if (medicalinsuranceterminated ==1  || medicalinsuranceterminated== null) {
-            formContext.getAttribute("statuscode").setValue(1);
-             }
-            else  {
-            formContext.getAttribute("statuscode").setValue(5);
-          }
-}
+  
 
   else if(casetitle.includes("Employee Development")){
       var deactivatexyme= formContext.getAttribute("pg_deactivatexyme").getValue();     
       var updatebonuseligibilityinbonusfile=formContext.getAttribute("pg_updatebonuseligibilityinbonusfile").getValue();
      
-    if (deactivatexyme  ==1  || deactivatexyme== null) {
+    if (deactivatexyme  ===1  || deactivatexyme=== null) {
              formContext.getAttribute("statuscode").setValue(1);
              }
             else  {
             formContext.getAttribute("statuscode").setValue(5);
           }
- if (updatebonuseligibilityinbonusfile ==1  || updatebonuseligibilityinbonusfile== null) {
+ if (updatebonuseligibilityinbonusfile ===1  || updatebonuseligibilityinbonusfile=== null) {
             formContext.getAttribute("statuscode").setValue(1);
              }
             else  {
@@ -759,13 +404,13 @@ debugger;
     var completeactivetrainingsinlms= formContext.getAttribute("pg_completeactivetrainingsinlms").getValue();      
       var deactivatelmsaccess=formContext.getAttribute("pg_deactivatelmsaccess").getValue();
     
-           if (completeactivetrainingsinlms  ==1  || completeactivetrainingsinlms== null) {
+           if (completeactivetrainingsinlms  ===1  || completeactivetrainingsinlms=== null) {
              formContext.getAttribute("statuscode").setValue(1);
              }
             else  {
              formContext.getAttribute("statuscode").setValue(5);
           }
-         if (deactivatelmsaccess==1  || deactivatelmsaccess== null) {
+         if (deactivatelmsaccess===1  || deactivatelmsaccess=== null) {
              formContext.getAttribute("statuscode").setValue(1);
              }
             else  {
@@ -774,107 +419,49 @@ debugger;
    }
    else if(casetitle.includes("Finance")){
        var updatetallywithenddate= formContext.getAttribute("pg_updatetallywithenddate").getValue();     
-      var moveemployeefrompayrolltof=formContext.getAttribute("pg_moveemployeefrompayrolltoff").getValue();
-      var receiveffclearancefromhr=formContext.getAttribute("pg_receiveffclearancefromhr").getValue();
-      var processff= formContext.getAttribute("pg_processff").getValue();      
-      var processgratuity=formContext.getAttribute("pg_processgratuity").getValue();
-      var processleaveencashment=formContext.getAttribute("pg_processleaveencashment").getValue();
-      var processdeductionsforlopadjustments=formContext.getAttribute("pg_processdeductionsforlopadjustments").getValue();
-      var publishffpayslip=formContext.getAttribute("pg_publishffpayslip").getValue();
+     
      var updatedateofexitinpfportal=formContext.getAttribute("pg_updatedateofexitinpfportal").getValue();
   
-   if (updatetallywithenddate ==1  || updatetallywithenddate== null) {
+   if (updatetallywithenddate ===1  || updatetallywithenddate=== null) {
             formContext.getAttribute("statuscode").setValue(1);
              }
             else  {
             formContext.getAttribute("statuscode").setValue(5);
           }
- if (moveemployeefrompayrolltof ==1  || moveemployeefrompayrolltof== null) {
+ if (moveemployeefrompayrolltof ===1  || moveemployeefrompayrolltof=== null) {
            formContext.getAttribute("statuscode").setValue(1);
              }
             else  {
              formContext.getAttribute("statuscode").setValue(5);
           }
-      if (receiveffclearancefromhr  ==1  || receiveffclearancefromhr== null) {
+      if (receiveffclearancefromhr  ===1  || receiveffclearancefromhr=== null) {
              formContext.getAttribute("statuscode").setValue(1);
              }
             else  {
              formContext.getAttribute("statuscode").setValue(5);
           }
-       if (processff ==1  || processff== null) {
+       if (processff ===1  || processff=== null) {
             formContext.getAttribute("statuscode").setValue(1);
              }
             else  {
                formContext.getAttribute("statuscode").setValue(5);
           }
-        if (processgratuity  ==1  || processgratuity== null) {
+        if (processgratuity  ===1  || processgratuity=== null) {
              formContext.getAttribute("statuscode").setValue(1);
              }
             else  {
              formContext.getAttribute("statuscode").setValue(5);
           }
-      if (processleaveencashment ==1  || processleaveencashment== null) {
-             formContext.getAttribute("statuscode").setValue(1);
-             }
-            else  {
-              formContext.getAttribute("statuscode").setValue(5);
-          }
-      if (processdeductionsforlopadjustments  ==1  || processdeductionsforlopadjustments== null) {
-             formContext.getAttribute("statuscode").setValue(1);
-             }
-            else  {
-               formContext.getAttribute("statuscode").setValue(5);
-          }
- if (publishffpayslip ==1  || publishffpayslip== null) {
-             formContext.getAttribute("statuscode").setValue(1);
-             }
-            else  {
-               formContext.getAttribute("statuscode").setValue(5);
-          }
- if (updatedateofexitinpfportal==1  || updatedateofexitinpfportal== null) {
+   
+ if (updatedateofexitinpfportal===1  || updatedateofexitinpfportal=== null) {
              formContext.getAttribute("statuscode").setValue(1);
              }
             else  {
              formContext.getAttribute("statuscode").setValue(5);
           }
    }
-    else if(casetitle.includes("Employee Engagement")){
-      var updatedeierglist= formContext.getAttribute("pg_updatedeierglist").getValue();     
-      var updateclashoftitanshouselistjos=formContext.getAttribute("pg_updateclashoftitanshouselistjosh").getValue();
-      var conductexitinterview=formContext.getAttribute("pg_conductexitinterview").getValue();
-      var disabledojostoreaccess= formContext.getAttribute("pg_disabledojostoreaccess").getValue();      
-      var cancelopenordersinthequeue=formContext.getAttribute("pg_cancelopenordersinthequeue").getValue();
-     
-          if (updatedeierglist  ==1 || updatedeierglist== null) {
-             formContext.getAttribute("statuscode").setValue(1);
-             }
-            else  {
-             formContext.getAttribute("statuscode").setValue(5);
-          }
-      if (updateclashoftitanshouselistjos==1  || updateclashoftitanshouselistjos== null) {
-           formContext.getAttribute("statuscode").setValue(1);
-             }
-            else  {
-           formContext.getAttribute("statuscode").setValue(5);
-          }
- if (conductexitinterview  ==1  || conductexitinterview== null) {
-           formContext.getAttribute("statuscode").setValue(1);
-             }
-            else  {
-            formContext.getAttribute("statuscode").setValue(5);
-          }
-        if (disabledojostoreaccess  ==1 || disabledojostoreaccess== null) {
-            formContext.getAttribute("statuscode").setValue(1);
-             }
-            else  {
-            formContext.getAttribute("statuscode").setValue(5);
-          }
-        if (cancelopenordersinthequeue  ==1  || cancelopenordersinthequeue== null) {
-             formContext.getAttribute("statuscode").setValue(1);
-             }
-            else  {
-              formContext.getAttribute("statuscode").setValue(5);
-          }
+   
+
      }
    }
 }

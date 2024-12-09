@@ -41,16 +41,16 @@ function PIBshowandhide(primaryControl) {
       enddateforQ4 = new Date(QuaterQ4.replace(/-/g, "/"));
   
       var quaterenddate = {};
-      if (Quater == "Q4") {
+      if (Quater === "Q4") {
         var quaterenddate = enddateforQ4;
       }
-      else if (Quater == "Q3") {
+      else if (Quater === "Q3") {
         var quaterenddate = enddateforQ3;
       }
-      else if (Quater == "Q2") {
+      else if (Quater === "Q2") {
         quaterenddate = enddateforQ2;
       }
-      else if (Quater == "Q1") {
+      else if (Quater === "Q1") {
         quaterenddate = enddateforQ1;
       }
       var workerreviewid = formcontext.getAttribute("pg_workerreviewid").getValue()[0].id;
@@ -59,7 +59,7 @@ function PIBshowandhide(primaryControl) {
         function success(result) {
           var cdm_anniversarydatetime = result["cdm_anniversarydatetime"];
           var anivarsary = new Date(cdm_anniversarydatetime);
-          if (quaterenddate > anivarsary && currentstatus == 140310004) {
+          if (quaterenddate > anivarsary && currentstatus === 140310004) {
             return true;
           }
           else if(quaterenddate < anivarsary && currentstatus != 140310004){

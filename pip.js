@@ -1,3 +1,89 @@
+
+function onPipStartDateChange(executionContext) {
+    var formContext = executionContext.getFormContext();
+var userSettings = Xrm.Utility.getGlobalContext().userSettings;
+var currentuserid = userSettings.userId.toLowerCase().replace('{', '').replace('}', '');
+
+var pipStartDate = formContext.getAttribute("pg_startdate").getValue();
+var manager_value = Xrm.Page.getAttribute("pg_manager").getValue();
+if (manager_value !== null) {
+    var manager = manager_value[0].id.toLowerCase().replace('{', '').replace('}', '');
+    var querytGetUserEmailID = "systemusers?$select=internalemailaddress&$filter=systemuserid eq " + currentuserid;
+    var resUserEmailID = getAttributeValue(querytGetUserEmailID);
+    var querytGetEmployeeEmailID = "pg_prideemployees?$select=emailaddress&$filter=pg_prideemployeeid eq " + manager;
+    var resEmployeeEmailID = getAttributeValue(querytGetEmployeeEmailID);
+    if (resUserEmailID.value[0].internalemailaddress === resEmployeeEmailID.value[0].emailaddress && pipStartDate!=null) {
+        formContext.getControl("pg_pipenddate").setDisabled(true);
+    }
+    else {
+        formContext.getControl("pg_pipenddate").setDisabled(false);
+    }
+}
+}
+
+
+
+
+function Compareannivarywithcurrentdate(context) {
+    debugger;
+    var formContext = context.getFormContext();
+    var employeeName = formContext.getAttribute("pg_employeename");
+
+    // Check if employeeNameField is not null and has a value
+    if (employeeName && employeeName.getValue() !== null && employeeName.getValue().length > 0) {
+        var employeeNameId = employeeName.getValue()[0].id;
+
+        Xrm.WebApi.online.retrieveMultipleRecords("pg_prideemployee", "?$select=emailaddress,pg_probationstatus&$filter=systemuserid eq '" + employeeNameId + "'&$top=1").then(
+            function success(results) {
+                if (results.entities.length > 0) {
+                    var emailaddress = results.entities[0]["emailaddress"];
+                    var probationStatus = results.entities[0]["pg_probationstatus"]; // Assuming true means on probation
+
+                    // Check if the employee is on probation
+                    if (probationStatus) {
+                        // Notify the user that PIP cannot be raised for an employee on probation
+                        employeeNameField.setNotification("You cannot raise a PIP for this employee as they are currently in their probation period.", "ProbationError");
+                        return; // Stop further execution
+                    }
+
+                    // Retrieve the anniversary date using the email address
+                    Xrm.WebApi.online.retrieveMultipleRecords("cdm_worker", "?$select=cdm_anniversarydatetime&$filter=cdm_primaryemailaddress eq '" + emailaddress + "'&$top=1").then(
+                        function success(results) {
+                            if (results.entities.length > 0) {
+                                var cdm_anniversarydatetime = results.entities[0]["cdm_anniversarydatetime"];
+                                var anniversaryDate = new Date(cdm_anniversarydatetime);
+                                var anniversaryPlus90 = new Date(anniversaryDate);
+                                anniversaryPlus90.setDate(anniversaryPlus90.getDate() + 90);
+
+                                var today = new Date();
+                                today.setHours(0, 0, 0, 0);  // Ensure we're comparing only dates, not times
+
+                                if (anniversaryPlus90 > today) {
+                                    // Clear any existing error notification on the pg_employeename field
+                                    formContext.getControl("pg_employeename").clearNotification("ProbationError");
+                                } else {
+                                    formContext.getControl("pg_employeename").setNotification("You cannot raise a PIP for this employee as they are currently in their probation period.", "ProbationError");
+                                }
+                            }
+                        },
+                        function(error) {
+                            Xrm.Utility.alertDialog(error.message);
+                        }
+                    );
+                }
+            },
+            function(error) {
+                Xrm.Utility.alertDialog(error.message);
+            }
+        );
+    } else {
+        // Handle the case where the employeeNameField is null or has no value
+        Xrm.Utility.alertDialog("Please select a valid employee.");
+    }
+}
+
+
+
 function AcknowlegdebyEmployee(primaryControl) {  
     debugger;
     var formContext = primaryControl;   
@@ -12,7 +98,7 @@ var userSettings = Xrm.Utility.getGlobalContext().userSettings;
    var resUserEmailID=getAttributeValue(querytGetUserEmailID);
     var querytGetEmployeeEmailID="pg_prideemployees?$select=emailaddress&$filter=pg_prideemployeeid eq "+employee;
     var resEmployeeEmailID=getAttributeValue(querytGetEmployeeEmailID);
-    if (stageId == "ee551d28-2ec3-4b67-8289-5216a4ae0af4" && resUserEmailID.value[0].internalemailaddress===resEmployeeEmailID.value[0].emailaddress) {
+    if (stageId === "ee551d28-2ec3-4b67-8289-5216a4ae0af4" && resUserEmailID.value[0].internalemailaddress===resEmployeeEmailID.value[0].emailaddress) {
         return true;
  formContext.data.entity.save("saveandclose");
     }
@@ -175,7 +261,7 @@ PIP.formEvents = {
         var formcontext = context.getFormContext();
         var bpfstage = formcontext.data.process.getActiveStage().getName();
 
-        if (bpfstage == "Employee Acknowledge PIP (HR)") {
+        if (bpfstage === "Employee Acknowledge PIP (HR)") {
             if (bpfArguments.getDirection() === "Next" && formcontext.getAttribute("pg_acknowledgebyhr").getValue() != true || formcontext.getAttribute("pg_initialacknowledgebyemployee").getValue() != true) {
                 bpfArguments.preventDefault();
                 var alertStrings = { confirmButtonLabel: "OK", text: "Acknowledge by HR and Initial Acknowledge by Employee should be YES.", title: "Cannot Move to Next Stage" };
@@ -185,7 +271,7 @@ PIP.formEvents = {
             }
         }
 
-        if (bpfstage == "PIP Response (Manager)") {
+        if (bpfstage === "PIP Response (Manager)") {
             if (bpfArguments.getDirection() === "Next" && formcontext.getAttribute("pg_pipobjectivereview").getValue() != true) {
                 bpfArguments.preventDefault();
                 var alertStrings = { confirmButtonLabel: "OK", text: "PIP Objective Review should be YES.", title: "Cannot Move to Next Stage" };
@@ -371,9 +457,9 @@ Xrm.Navigation.openConfirmDialog(confirmStrings, confirmOptions).then(
             req.setRequestHeader("OData-Version", "4.0");
 
             req.onreadystatechange = function () {
-                if (this.readyState == 4 /* complete */) {
+                if (this.readyState === 4 /* complete */) {
 
-                    if (this.status == 200 || this.status == 204) {
+                    if (this.status === 200 || this.status === 204) {
 
                         formContext.data.entity.save("saveandclose");
 
@@ -462,9 +548,9 @@ Xrm.Navigation.openConfirmDialog(confirmStrings, confirmOptions).then(
             req.setRequestHeader("OData-Version", "4.0");
 
             req.onreadystatechange = function () {
-                if (this.readyState == 4 /* complete */) {
+                if (this.readyState === 4 /* complete */) {
 
-                    if (this.status == 200 || this.status == 204) {
+                    if (this.status === 200 || this.status === 204) {
 
                         formContext.data.entity.save("saveandclose");
 
@@ -507,9 +593,9 @@ Xrm.Navigation.openConfirmDialog(confirmStrings, confirmOptions).then(
             req.setRequestHeader("OData-Version", "4.0");
 
             req.onreadystatechange = function () {
-                if (this.readyState == 4 /* complete */) {
+                if (this.readyState === 4 /* complete */) {
 
-                    if (this.status == 200 || this.status == 204) {
+                    if (this.status === 200 || this.status === 204) {
 
                         formContext.data.entity.save("saveandclose");
 

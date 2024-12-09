@@ -50,7 +50,7 @@ function deactivateXYME(primaryControl) {  //main form
   var owner = formContext.getAttribute("ownerid").getValue();
   var ownerName = owner[0].name; 
   var statuscode= formContext.getAttribute("statuscode").getValue();
-  if (username!=ownerName && statuscode==1) {////intial stage
+  if (username!=ownerName && statuscode===1) {////intial stage
       return true;
   }
   else {

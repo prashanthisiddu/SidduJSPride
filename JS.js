@@ -3,7 +3,7 @@
 //ex for promt///
 //var applicationName = prompt("Enter application name");
 
-if (applicationName !== null) {
+if (applicationName !=== null) {
     // The user clicked OK in the prompt
     console.log("Entered application name: " + applicationName);
 

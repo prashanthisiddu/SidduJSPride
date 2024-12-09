@@ -1,3 +1,89 @@
+var previousDescriptionValue = null;
+var previousRemarksValue = null;
+
+function trackFieldChanges(executionContext) {
+    var formContext = executionContext.getFormContext();
+    var fields = ["pg_description", "pg_remarks"]; // Logical names
+    var historyField = "pg_history";
+ 
+    fields.forEach(function(fieldName) {
+        formContext.getAttribute(fieldName).addOnChange(function() {
+            var currentDate = new Date();
+            var timestamp = currentDate.toLocaleString();
+            var userName = Xrm.Utility.getGlobalContext().userSettings.userName;
+
+            var currentValue = formContext.getAttribute(fieldName).getValue();
+            var previousValue, displayName;
+
+            if (fieldName === "pg_description") {
+                previousValue = previousDescriptionValue;
+                previousDescriptionValue = currentValue; 
+                displayName = "Query Details"; 
+            } else if (fieldName === "pg_remarks") {
+                previousValue = previousRemarksValue;
+                previousRemarksValue = currentValue; 
+                displayName = "Remarks"; 
+            }   
+            
+            var historyValue = formContext.getAttribute(historyField).getValue() || "";
+    
+            if (fieldName === "pg_description") {
+                 if (previousValue === null && historyValue==="") {
+                    var newEntry = `The Query has been submitted: ${currentValue !== null ? currentValue : "N/A"} ` + 
+                                   `on ${timestamp} by ${userName}\n`;
+                      formContext.getAttribute(historyField).setValue(newEntry + " \n");
+                } else if (previousValue !== currentValue) {
+                    var updateEntry = `The Query has been Updated : "${currentValue !== null ? currentValue : "N/A"}" ` +
+                                      `on ${timestamp} by ${userName}\n`;
+                    formContext.getAttribute(historyField).setValue(historyValue  + " \n" +  updateEntry);
+                }
+            }
+       
+            if (fieldName === "pg_remarks") { 
+                if (!historyValue.includes("The Remarks has been added") && previousValue === null) {
+                    var newEntry = `The Remarks has been added: ${currentValue !== null ? currentValue : "N/A"} ` + 
+                                   `on ${timestamp} by ${userName}\n`;
+                formContext.getAttribute(historyField).setValue(historyValue  + " \n"+ newEntry);
+                } else if (historyValue.includes("The Remarks has been added")) {
+                    var updateEntry = `Remarks has been Updated : "${currentValue !== null ? currentValue : "N/A"}" ` +
+                                      `on ${timestamp} by ${userName}\n`;
+               formContext.getAttribute(historyField).setValue(historyValue + " \n"+ updateEntry);
+                }
+
+            }
+        });
+    });
+}
+
+
+function clearRemarksField(primarycontrol) {
+    var formContext = primarycontrol; 
+    formContext.getAttribute("pg_remarks").setValue(null);
+}
+function Updatehistoryfield(primarycontrol) {
+    var formContext = primarycontrol; 
+    var status = formContext.getAttribute("statecode") ? formContext.getAttribute("statecode").getValue() : null;
+    var remarks = formContext.getAttribute("pg_remarks") ? formContext.getAttribute("pg_remarks").getValue() : "";
+   
+    var historyField = "pg_history"; 
+    var historyValue = formContext.getAttribute(historyField) ? formContext.getAttribute(historyField).getValue() : "";  
+   // var updateEntry = `The Query has been closed: ${remarks}`; //use this instead of commented line
+   
+    // Set the update entry message based on whether remarks is null or empty
+    var updateEntry = remarks ? `The Query has been closed: Remarks ${remarks}` : "The Query has been closed";
+    formContext.getAttribute(historyField).setValue(historyValue + "\n" + updateEntry);
+}  
+
+ /*else if (historyValue.includes("The Remarks has been added")) {
+    var updateEntry = `Approver: Remarks has been Updated : "${currentValue !== null ? currentValue : "N/A"}" ` +
+                      `on ${timestamp} by ${userName}\n`;
+formContext.getAttribute(historyField).setValue(historyValue + " \n"+ updateEntry);
+}*/
+
+
+
+
+
 function Delegate(context) {//internal queries
     Xrm.Navigation.navigateTo({
         pageType: "custom",
@@ -16,7 +102,7 @@ function Delegate(context) {//internal queries
 function enableSend(primarycontrol) {
     var formContext = primarycontrol;
     var usersettings = Xrm.Utility.getGlobalContext().userSettings;
-    if ((!usersettings.userId == formContext.getAttribute("ownerid").getValue()[0].id)) {
+    if ((!usersettings.userId === formContext.getAttribute("ownerid").getValue()[0].id)) {
         return true;
     }
     else {
@@ -44,23 +130,6 @@ function dropout(context) {
     ).then(console.log).catch(console.error);
   }
   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -172,9 +241,9 @@ function Resubmit(primaryControl) {
               req.setRequestHeader("OData-Version", "4.0");
 
               req.onreadystatechange = function () {
-                  if (this.readyState == 4 /* complete */) {
+                  if (this.readyState === 4 /* complete */) {
 
-                      if (this.status == 200 || this.status == 204) {
+                      if (this.status === 200 || this.status === 204) {
 
                           formContext.data.entity.save("saveandclose");
 
@@ -243,9 +312,9 @@ function Resubmit(primaryControl) {
                   req.setRequestHeader("OData-Version", "4.0");
     
                   req.onreadystatechange = function () {
-                      if (this.readyState == 4 /* complete */) {
+                      if (this.readyState === 4 /* complete */) {
     
-                          if (this.status == 200 || this.status == 204) {
+                          if (this.status === 200 || this.status === 204) {
     
                               formContext.data.entity.save("saveandclose");
     
@@ -274,7 +343,7 @@ function Resubmit(primaryControl) {
     //  var stageId = activeStage.getId();
       var  approvallevel= formContext.getAttribute("pg_approvallevel").getValue();
     
-      if ((username == ownerid && approvallevel == null)|| (username == ownerid && approvallevel == 140310000) || (username == ownerid && approvallevel == 140310002)) {////intial stage
+      if ((username === ownerid && approvallevel === null)|| (username === ownerid && approvallevel === 140310000) || (username === ownerid && approvallevel === 140310002)) {////intial stage
           return true;
      formContext.data.entity.save("saveandclose");
       }
@@ -306,7 +375,7 @@ function Resubmit(primaryControl) {
     
         currencytype.setValue(newCurrency);
     
-        if (formcontext.ui.getFormType() == 1) {
+        if (formcontext.ui.getFormType() === 1) {
             createdby.setVisible(false);
         }
         else {
@@ -332,7 +401,7 @@ function Resubmit(primaryControl) {
         }
     
         //Leave & Attendance
-        if (type == 0) {
+        if (type === 0) {
             subject.addOption({ text: 'Shift Allowance Days', value: 0 });
             subject.addOption({ text: 'Leave Balance Correction', value: 1 });
             subject.addOption({ text: 'Holiday Correction', value: 2 });
@@ -343,12 +412,12 @@ function Resubmit(primaryControl) {
             subject.addOption({ text: 'Other', value: 7 });
         }
         //Expense Reimbursement
-        else if (type == 1) {
+        else if (type === 1) {
             subject.addOption({ text: 'Amount Discrepancy', value: 8 });
             subject.addOption({ text: 'Reimbursement Request', value: 9 });
         }
         //Payroll
-        else if (type == 2) {
+        else if (type === 2) {
             subject.addOption({ text: 'Payslip Request', value: 10 });
             subject.addOption({ text: 'Salary Discrepancy', value: 11 });
             subject.addOption({ text: 'Income Tax Related', value: 12 });
@@ -357,7 +426,7 @@ function Resubmit(primaryControl) {
             subject.addOption({ text: 'Other', value: 7 });
         }
         //Medical Insurance
-        else if (type == 3) {
+        else if (type === 3) {
             subject.addOption({ text: 'Enrollment Query', value: 15 });
             subject.addOption({ text: 'Addition/Deletion of Dependent', value: 16 });
             subject.addOption({ text: 'Information Correction', value: 17 });
@@ -366,7 +435,7 @@ function Resubmit(primaryControl) {
             subject.addOption({ text: 'Other', value: 7 });
         }
         //Facilities & Administration
-        else if (type == 4) {
+        else if (type === 4) {
             subject.addOption({ text: 'Restroom', value: 20 });
             subject.addOption({ text: 'Pantry', value: 21 });
             subject.addOption({ text: 'Housekeeping', value: 22 });
@@ -376,7 +445,7 @@ function Resubmit(primaryControl) {
             subject.addOption({ text: 'Other', value: 7 });
         }
         //HR, Policy & Documentation
-        else if (type == 5) {
+        else if (type === 5) {
             subject.addOption({ text: 'Request for Document', value: 26 });
             subject.addOption({ text: 'Policy Details Enquiry', value: 27 });
             subject.addOption({ text: 'Dress Code Exemption Request', value: 28 });
@@ -385,7 +454,7 @@ function Resubmit(primaryControl) {
             subject.addOption({ text: 'Other', value: 7 });
         }
         //Talent Development
-        else if (type == 6) {
+        else if (type === 6) {
             subject.addOption({ text: 'PIP Related', value: 31 });
             subject.addOption({ text: 'Incubation/Promotion Related', value: 32 });
             subject.addOption({ text: 'XYMe Related', value: 33 });
@@ -393,7 +462,7 @@ function Resubmit(primaryControl) {
             subject.addOption({ text: 'Other', value: 7 });
         }
         //Learning & Development
-        else if (type == 7) {
+        else if (type === 7) {
             subject.addOption({ text: 'LMS User Access', value: 35 });
             subject.addOption({ text: 'Training Request', value: 36 });
             subject.addOption({ text: 'LMS Troubleshooting', value: 37 });
@@ -402,7 +471,7 @@ function Resubmit(primaryControl) {
             subject.addOption({ text: 'Other', value: 7 });
         }
         //Employee Engagement
-        else if (type == 8) {
+        else if (type === 8) {
             subject.addOption({ text: 'Dojo Store Related', value: 40 });
             subject.addOption({ text: 'Dojo Dollar Balance Related', value: 41 });
             subject.addOption({ text: 'Dojo Store Order Related', value: 42 });
@@ -422,7 +491,7 @@ function Resubmit(primaryControl) {
         var reimbursementTab = formcontext.ui.tabs.get("tab_2");
         reimbursementTab.setVisible(false);
     
-        if (subject == 9) {
+        if (subject === 9) {
             reimbursementTab.setVisible(true);
         }
     }
@@ -441,6 +510,30 @@ function Resubmit(primaryControl) {
         }
         );
     }
+  
+    
+    function resolve(primarycontrol) {
+        var formContext = primarycontrol;
+        var remarks = formContext.getAttribute("pg_remarks").getValue();
+        if (remarks) {
+            formContext.ui.clearFormNotification("remarkNotification");
+            var data = {
+                "statuscode": 2,
+                "statecode": 1,
+            };
+            var id = primarycontrol.data.entity.getId();
+            Xrm.WebApi.updateRecord("pg_internalquery", id, data).then(function success(result) {
+                console.log("Status Updated");
+    
+                primarycontrol.data.entity.save("saveandclose");
+            }, function (error) {
+                console.log(error.message);
+            });
+        } else {
+            formContext.ui.setFormNotification("Remarks: Required fields must be filled in.", "ERROR", "remarkNotification");
+        }
+    }
+
     
     function showHideRemarks(context) {
     
@@ -450,7 +543,7 @@ function Resubmit(primaryControl) {
         var ownerId = formContext.getAttribute("ownerid").getValue()[0].id;
         var statuscode = formContext.getAttribute("statuscode").getValue();
     
-        if (userId == ownerId && statuscode != 2) {
+        if (userId === ownerId && statuscode != 2) {
             formContext.getControl("pg_remarks").setVisible(false);
         }
         else {
@@ -476,19 +569,19 @@ function Resubmit(primaryControl) {
         var priority = formcontext.getAttribute("pg_prioritytype").getValue();
     
         //Urgent
-        if (priority == 0) {
+        if (priority === 0) {
             formcontext.getAttribute("pg_prioritydescription").setValue(0);
         }
         //High
-        else if (priority == 1) {
+        else if (priority === 1) {
             formcontext.getAttribute("pg_prioritydescription").setValue(1);
         }
         //Medium
-        else if (priority == 2) {
+        else if (priority === 2) {
             formcontext.getAttribute("pg_prioritydescription").setValue(2);
         }
         //Low
-        else if (priority == 3) {
+        else if (priority === 3) {
             formcontext.getAttribute("pg_prioritydescription").setValue(3);
         }
     }
@@ -496,7 +589,7 @@ function Resubmit(primaryControl) {
     function enableSend(primarycontrol) {
         var formContext = primarycontrol;
         var usersettings = Xrm.Utility.getGlobalContext().userSettings;
-        if ((!usersettings.userId == formContext.getAttribute("ownerid").getValue()[0].id)) {
+        if ((!usersettings.userId === formContext.getAttribute("ownerid").getValue()[0].id)) {
             return true;
         }
         else {

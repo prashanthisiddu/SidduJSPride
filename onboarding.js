@@ -1,3 +1,20 @@
+function disableAllFieldsOnInactiveStage(executionContext) {//To disable all fields on form
+    var formContext = executionContext.getFormContext();
+    var status = formContext.getAttribute('statecode').getValue();
+
+    if (status === 1) {
+        
+        formContext.ui.controls.forEach(function (control) {
+            var fieldName = control.getName();
+            if (fieldName) {
+                control.setDisabled(true);
+            }
+        });
+    }
+}
+
+
+
 function switchProcess(executionContext) {
     var formContext = executionContext.getFormContext();
     var CREATE_FORM_TYPE = 1;
@@ -11,7 +28,7 @@ function switchProcess(executionContext) {
         var currentStage = currentStageAttribute ? currentStageAttribute.getValue() : null;
 var Dropoutintiated =formContext.getAttribute("pg_dropoutintiated").getValue();
 
-        if (currentStage === 140310002 && Dropoutintiated==1 || currentStage === 140310003 && Dropoutintiated==1 || currentStage === 140310004 && Dropoutintiated==1) {
+        if (currentStage === 140310002 && Dropoutintiated===1 || currentStage === 140310003 && Dropoutintiated===1 || currentStage === 140310004 && Dropoutintiated===1) {
 
             formContext.data.process.setActiveProcess("83A416A9-66B5-45DC-A548-0953CDB2C0B2");
 formContext.getAttribute("pg_currentstage").setValue(140310002);
@@ -32,7 +49,7 @@ var formType = formContext.ui.getFormType();
     var status = formContext.getAttribute("statuscode").getValue();
     var loggedinUserId = Xrm.Utility.getGlobalContext().userSettings.userId.replace("{", "").replace("}", "");
   var ownerid = formContext.getAttribute("ownerid").getValue()[0].id.replace("{", "").replace("}", "");
-    if (formType !==1 && type == 140310000 && status == 1) {
+    if (formType !==1 && type === 140310000 && status === 1) {
         return Xrm.WebApi.online.retrieveRecord("systemuser", loggedinUserId, "?$select=internalemailaddress")
             .then(function success(result1) {
                 var internalemailaddress2 = result1["internalemailaddress"];
@@ -70,7 +87,7 @@ function QMGFIELDCHECK(context) {
     var country = formcontext.getAttribute("pg_country").getValue();
     var activeStage = formcontext.data.process.getActiveStage();
     var stageId = activeStage.getId();
-    if (stageId == "4da369a2-7910-4f16-8cee-0bcfd281685d" && country==140310000) {
+    if (stageId === "4da369a2-7910-4f16-8cee-0bcfd281685d" && country===140310000) {
       var A,B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q,R;
   
    var A = formcontext.getAttribute("pg_identifycandidate").getValue();
@@ -145,14 +162,14 @@ function usdojovalues(context) {
   var formcontext = context.getFormContext();
   var dojo = formcontext.getControl("pg_dojo");
       var country = formcontext.getAttribute("pg_country").getValue();
-  if (country == 140310000) {
+  if (country === 140310000) {
       dojo.removeOption(140310006);
       dojo.removeOption(140310002);
       dojo.removeOption(140310007);
       dojo.removeOption(140310008);
 dojo.removeOption(140310010);
   }
-else if (country == 140310001) {
+else if (country === 140310001) {
       dojo.addOption({ text: 'Search & Engage', value: 140310006 });
       dojo.addOption({ text: 'Pride India', value: 140310002 });
       dojo.addOption({ text: 'Russell Tobin India', value: 140310007 });
@@ -179,7 +196,7 @@ var formContext = context.getFormContext();
   if (Type != createform) {
 var owner = formContext.getAttribute("ownerid").getValue();
 var ownerName = owner[0].name; 
-      if (type == 140310000 && country == 140310000 && status == 1) {///type == 140310001 changed to 140310000
+      if (type === 140310000 && country === 140310000 && status === 1) {///type === 140310001 changed to 140310000
           Xrm.WebApi.online.retrieveRecord("systemuser", loggedinUserId, "?$select=internalemailaddress").then(
               function success(result1) {
                   var internalemailaddress2 = result1["internalemailaddress"];
@@ -295,7 +312,7 @@ var userSettings = Xrm.Utility.getGlobalContext().userSettings;
   if (Type != createform) {
 var owner = formContext.getAttribute("ownerid").getValue();
 var ownerName = owner[0].name; 
-      if (username !==ownerName && country==140310001) {
+      if (username !==ownerName && country===140310001) {
           formContext.getControl("pg_firstname").setDisabled(true);
           formContext.getControl("pg_middlename").setDisabled(true);
           formContext.getControl("pg_lastname").setDisabled(true);
@@ -350,7 +367,7 @@ var ownerName = owner[0].name;
       }
 
   }
-if(country == 140310000 && type != 140310000){
+if(country === 140310000 && type != 140310000){
 alert("Child ticket should be closed before moving to the next stage");
 }
 }
@@ -364,7 +381,7 @@ function Regenerateofferletter(primaryControl) {  //main form
   var activeStage = formContext.data.process.getActiveStage();
   var stageId = activeStage.getId();
   var type = formContext.getAttribute("pg_type").getValue();
-  if (stageId == "5b1a3c2d-a34b-4f8a-aadf-a0af017d93ef" && type == 140310000) {////intial stage
+  if (stageId === "5b1a3c2d-a34b-4f8a-aadf-a0af017d93ef" && type === 140310000) {////intial stage
       return true;
   }
   else {
@@ -379,7 +396,7 @@ function offerletter(primaryControl) {  //main form
   var activeStage = formContext.data.process.getActiveStage();
   var stageId = activeStage.getId();
   var type = formContext.getAttribute("pg_type").getValue();
-  if (stageId == "f91895dc-eb9c-4398-8b78-b596b266aa63" && type == 140310000) {////intial stage
+  if (stageId === "f91895dc-eb9c-4398-8b78-b596b266aa63" && type === 140310000) {////intial stage
       return true;
   }
   else {
@@ -423,58 +440,58 @@ function EATOMOVE(executionContext) {
       var activeStage = formContext.data.process.getActiveStage();
       var stageId = activeStage.getId();
   if (Type != createform) {
-if (stageId == "434713b1-7d96-43df-b36c-d325daef06d7"){
+if (stageId === "434713b1-7d96-43df-b36c-d325daef06d7"){
     formContext.data.process.moveNext();
-} //else if(stageId == "f91895dc-eb9c-4398-8b78-b596b266aa63" && country==140310000){
+} //else if(stageId === "f91895dc-eb9c-4398-8b78-b596b266aa63" && country===140310000){
  //   formContext.data.process.moveNext();
 //} 
-//else if(stageId == "4da369a2-7910-4f16-8cee-0bcfd281685d" && country==140310000){//qmg us
+//else if(stageId === "4da369a2-7910-4f16-8cee-0bcfd281685d" && country===140310000){//qmg us
 
 //} 
-else if(stageId == "2c0e0542-b81d-4b20-83bd-370196b8adaf"){
+else if(stageId === "2c0e0542-b81d-4b20-83bd-370196b8adaf"){
     formContext.data.process.moveNext();
-} //else if(stageId == "98d720f3-2395-4920-9994-43e245ea7bc6"){//US MANAGER
+} //else if(stageId === "98d720f3-2395-4920-9994-43e245ea7bc6"){//US MANAGER
  ///   formContext.data.process.moveNext();
 ///}
       
-else if((stageId == "601fe287-7df7-4244-b549-ca01134f5382" && country == 140310001 && childcount==0) && (a == true && b == true && c == true && d == true && e == true && f == true && g==true && h == true)){///////////hr  for india 
+else if((stageId === "601fe287-7df7-4244-b549-ca01134f5382" && country === 140310001 && childcount===0) && (a === true && b === true && c === true && d === true && e === true && f === true && g===true && h === true)){///////////hr  for india 
     
           formContext.data.process.moveNext();
 
       }
-else if (stageId == "4eb007b7-4aa0-457f-aeed-1bd56af15c12"){
+else if (stageId === "4eb007b7-4aa0-457f-aeed-1bd56af15c12"){
    formContext.data.process.moveNext();
 }
 
-else if(stageId == "ec153282-5f82-44cb-8cdb-29af81a84186" && country==140310000){
+else if(stageId === "ec153282-5f82-44cb-8cdb-29af81a84186" && country===140310000){
 formContext.data.process.moveNext();
 }
 
-else if(stageId == "4345ff6c-1b88-4999-851d-4fe4fba6f496" && country==140310000){
+else if(stageId === "4345ff6c-1b88-4999-851d-4fe4fba6f496" && country===140310000){
 formContext.data.process.moveNext();
 }
-else if(stageId == "4442fe1c-fc11-49b2-a0f5-6431a01ab238"){
+else if(stageId === "4442fe1c-fc11-49b2-a0f5-6431a01ab238"){
     formContext.data.process.moveNext();
 }
-else if(stageId == "1b929018-05de-45be-9abf-87c69466d2bb"){
+else if(stageId === "1b929018-05de-45be-9abf-87c69466d2bb"){
     formContext.data.process.moveNext();
 }
-else if(stageId == "24598d06-6c0b-44a7-9d73-9ffe2f064628"){
+else if(stageId === "24598d06-6c0b-44a7-9d73-9ffe2f064628"){
     formContext.data.process.moveNext();
-}else if(stageId == "af634a5d-e6e2-4b47-8f20-b3d71f2708b7"){
-    formContext.data.process.moveNext();
-}
-else if( stageId == "3ebeb3bb-a2cb-40be-8679-f3b70c945661"){
+}else if(stageId === "af634a5d-e6e2-4b47-8f20-b3d71f2708b7"){
     formContext.data.process.moveNext();
 }
-else if(stageId == "e2862d9f-c4fa-4d26-b615-f64141604f04"){
+else if( stageId === "3ebeb3bb-a2cb-40be-8679-f3b70c945661"){
+    formContext.data.process.moveNext();
+}
+else if(stageId === "e2862d9f-c4fa-4d26-b615-f64141604f04"){
     formContext.data.process.moveNext();
 }
 
-else if(stageId=="ae651664-9d2b-4357-9697-770241c65e23"){
+else if(stageId==="ae651664-9d2b-4357-9697-770241c65e23"){
     formContext.data.process.moveNext();
 }
-// else if (stageId == "c08c6d0c-59f5-4286-aeb0-56c8446e7983" && status != 1) {////manager stage  //&legalus
+// else if (stageId === "c08c6d0c-59f5-4286-aeb0-56c8446e7983" && status != 1) {////manager stage  //&legalus
    //       formContext.data.process.moveNext();
    //   }
 }
@@ -496,7 +513,7 @@ function compareusers(context) {
 var status = formContext.getAttribute("statuscode").getValue();
   if (Type != createform) {
 
-      if (type == 140310000 && country == 140310000 && status == 1) {///type == 140310001 changed to 140310000
+      if (type === 140310000 && country === 140310000 && status === 1) {///type === 140310001 changed to 140310000
 
           var Reportingmanager = formContext.getAttribute("pg_reportingmanagername").getValue()[0].id;
           Xrm.WebApi.online.retrieveRecord("systemuser", loggedinUserId, "?$select=internalemailaddress").then(
@@ -519,7 +536,7 @@ var status = formContext.getAttribute("statuscode").getValue();
                                   for (var i = 0; i < results.entities.length; i++) {
                                       var result3 = results.entities[i];
                                       var email = result3["internalemailaddress"];
-                                      if (internalemailaddress2 == email) {
+                                      if (internalemailaddress2 === email) {
                                           //Using SetVisible propertly for locking field Account Address.
                                          // formContext.getControl("pg_candidatesfulllegalname").setDisabled(false);
                                           formContext.getControl("pg_dojo").setDisabled(false);
@@ -604,7 +621,7 @@ function processtonextstageSandH(primaryControl) {  //main form
   var stageId = activeStage.getId();
   var type = formContext.getAttribute("pg_type").getValue();
   var statuscode = formContext.getAttribute("statuscode").getValue();
-  if (stageId == "c08c6d0c-59f5-4286-aeb0-56c8446e7983" && type == 140310000 && statuscode == 1 || stageId == "98d720f3-2395-4920-9994-43e245ea7bc6" && type == 140310000 && statuscode == 1) {////initial stage
+  if (stageId === "c08c6d0c-59f5-4286-aeb0-56c8446e7983" && type === 140310000 && statuscode === 1 || stageId === "98d720f3-2395-4920-9994-43e245ea7bc6" && type === 140310000 && statuscode === 1) {////initial stage
       return true;
   }
   else {
@@ -638,9 +655,9 @@ Xrm.Navigation.openConfirmDialog(confirmStrings, confirmOptions).then(
             req.setRequestHeader("OData-Version", "4.0");
 
             req.onreadystatechange = function () {
-                if (this.readyState == 4 /* complete */) {
+                if (this.readyState === 4 /* complete */) {
 
-                    if (this.status == 200 || this.status == 204) {
+                    if (this.status === 200 || this.status === 204) {
 
                         formContext.data.entity.save("saveandclose");
 
@@ -691,7 +708,7 @@ function onboardingowner(context) {
       var username = userSettings.userName;
       var ownerid = formContext.getAttribute("ownerid").getValue();
       var dropoutintiated = formContext.getAttribute("pg_dropoutintiated").getValue();
-      if (username == ownerid && dropoutintiated == 0) {
+      if (username === ownerid && dropoutintiated === 0) {
           return true;
       }
       else {
@@ -720,7 +737,7 @@ function Resolvebutton(primaryControl) {  //main form
  var itteamcreateemailid = formContext.getAttribute("pg_itteamcreateemailid").getValue();
  var itteamringcentralaccess = formContext.getAttribute("pg_itteamringcentralaccess").getValue();
  var itteamcreateloginpassword = formContext.getAttribute("pg_itteamcreateloginpassword").getValue();
-  if ((stageId == "af2bd53b-5965-470a-a555-bd6d02ee2211" && type == 140310000) || (type == 140310012 && legalemployeeagrement ==true) || (type == 140310004 && itteamcreateemailid ==true && itteamringcentralaccess==true && itteamcreateloginpassword==true) || (type != 140310000 && country !=140310000) || (type == 140310005 && country==140310000)) {///completed stage
+  if ((stageId === "af2bd53b-5965-470a-a555-bd6d02ee2211" && type === 140310000) || (type === 140310012 && legalemployeeagrement ===true) || (type === 140310004 && itteamcreateemailid ===true && itteamringcentralaccess===true && itteamcreateloginpassword===true) || (type != 140310000 && country !=140310000) || (type === 140310005 && country===140310000)) {///completed stage
       return true;
   }
   else {
@@ -733,17 +750,17 @@ function managerSH(executionContext) {
   var formContext = executionContext.getFormContext();
   var pgvoicesupport = formContext.getAttribute("pg_voicesupport").getValue();
   var managesemployees = formContext.getAttribute("pg_managesemployees").getValue();
-  if (pgvoicesupport == 140310002 || pgvoicesupport == 140310003) { // iif voicesupport==US OR UK
+  if (pgvoicesupport === 140310002 || pgvoicesupport === 140310003) { // iif voicesupport===US OR UK
       formContext.getControl("pg_voipareacode").setVisible(true);
   formContext.getControl("pg_voipareacode1").setVisible(true);
   }
-  /////else if(voicesupport==140310000 || voicesupport ==140310001)  { // iif voicesupport==US OR UK
+  /////else if(voicesupport===140310000 || voicesupport ===140310001)  { // iif voicesupport===US OR UK
 
   else {
       formContext.getControl("pg_voipareacode").setVisible(false);
   formContext.getControl("pg_voipareacode1").setVisible(false);
   }
-  if (managesemployees == 1) { // iif managesemployees==0
+  if (managesemployees === 1) { // iif managesemployees===0
       formContext.getControl("pg_employeetobemapped").setVisible(true);
   }
   else {
@@ -758,7 +775,7 @@ function SaveandClose(primaryControl) {  //main form
   var activeStage = formContext.data.process.getActiveStage();
   var stageId = activeStage.getId();
   var type = formContext.getAttribute("pg_type").getValue();
-  if (stageId == "4fc24e2a-ce53-4df1-9253-9587b144389f" && type == 140310000) {////intial stage
+  if (stageId === "4fc24e2a-ce53-4df1-9253-9587b144389f" && type === 140310000) {////intial stage
       return false;
   }
   else {
@@ -775,7 +792,7 @@ function submittomanager(primaryControl) {  //main form
   var stageId = activeStage.getId();
   var type = formContext.getAttribute("pg_type").getValue();
   var statuscode = formContext.getAttribute("statuscode").getValue();
-  if (stageId == "4fc24e2a-ce53-4df1-9253-9587b144389f" && type == 140310000 && statuscode == 1) {////initial stage
+  if (stageId === "4fc24e2a-ce53-4df1-9253-9587b144389f" && type === 140310000 && statuscode === 1) {////initial stage
       return true;
   }
   else {
@@ -799,38 +816,38 @@ function BPFMove(executionContext) {
       var activeStage = formContext.data.process.getActiveStage();
       var stageId = activeStage.getId();
    
-       if (stageId == "4a81cbce-6ed8-442d-a4fc-8ee873101d56") {///hr stage///currentstage == 140310003 && country != 140310000
+       if (stageId === "4a81cbce-6ed8-442d-a4fc-8ee873101d56") {///hr stage///currentstage === 140310003 && country != 140310000
     
           formContext.data.process.moveNext();
       }
-      else if (stageId == "11a1353a-8929-4e64-84fb-f0fb16960dcc" || stageId == "cb5fde85-072a-4bc2-b107-0af5fbe55e2d") {////audit stage//currentstage == 140310004 && country != 140310000
+      else if (stageId === "11a1353a-8929-4e64-84fb-f0fb16960dcc" || stageId === "cb5fde85-072a-4bc2-b107-0af5fbe55e2d") {////audit stage//currentstage === 140310004 && country != 140310000
     
           formContext.data.process.moveNext();
       }
-  else if(stageId == "5b1a3c2d-a34b-4f8a-aadf-a0af017d93ef" && childcount== 0){ ////dropoutindia
-    
-          formContext.data.process.moveNext();
-
-      }
-else if(stageId == "408d7424-cb76-4326-b1ec-5f3287f3bdc1"){ ////india hrops stage
+  else if(stageId === "5b1a3c2d-a34b-4f8a-aadf-a0af017d93ef" && childcount=== 0){ ////dropoutindia
     
           formContext.data.process.moveNext();
 
       }
-else if(stageId == "5b1a3c2d-a34b-4f8a-aadf-a0af017d93ef" && childcount!= 0){ ////dropoutindia
+else if(stageId === "408d7424-cb76-4326-b1ec-5f3287f3bdc1"){ ////india hrops stage
+    
+          formContext.data.process.moveNext();
+
+      }
+else if(stageId === "5b1a3c2d-a34b-4f8a-aadf-a0af017d93ef" && childcount!= 0){ ////dropoutindia
     
     alertStrings = { confirmButtonLabel: "OK", text: "Please complete the child ticket fully and accurately, to proceed to the next stage.", title: "Cannot Move to Next Stage" };
               alertOptions = { height: 200, width: 300 };
               Xrm.Navigation.openAlertDialog(alertStrings, alertOptions);
 
       }
-      else if (stageId == "c2608534-5ea5-4118-8513-b6d4bd829a30" || stageId == "b7900f22-3d52-4d26-bb2d-4b13208f029e") {////dropoutta stage
+      else if (stageId === "c2608534-5ea5-4118-8513-b6d4bd829a30" || stageId === "b7900f22-3d52-4d26-bb2d-4b13208f029e") {////dropoutta stage
           formContext.data.process.moveNext();
       }
-      else if (stageId == "dd998249-4176-4511-8fea-1b3fff8d4dcc" && childcount == 0 || stageId == "b9732caf-4eb2-47d5-aa2a-e53e6575054e") {////dropoutta stage
+      else if (stageId === "dd998249-4176-4511-8fea-1b3fff8d4dcc" && childcount === 0 || stageId === "b9732caf-4eb2-47d5-aa2a-e53e6575054e") {////dropoutta stage
           formContext.data.process.moveNext();
       }
-      else if (stageId == "0baac90f-f95e-4581-83a1-f7753b429186" || stageId == "6bb2f036-a279-466a-b004-72a93e20ba6c" || currentstage == 140310002 && country != 140310000) {
+      else if (stageId === "0baac90f-f95e-4581-83a1-f7753b429186" || stageId === "6bb2f036-a279-466a-b004-72a93e20ba6c" || currentstage === 140310002 && country != 140310000) {
           formContext.data.process.moveNext();
       }
   }
@@ -875,7 +892,7 @@ Onboarding.formEvents = {
       var bpfstage = formcontext.data.process.getActiveStage().getName();
       var country = formcontext.getAttribute("pg_country").getValue();
 
-      if (bpfstage == "Child Ticket" || bpfstage == "Dropout Child Ticket" || bpfstage == "Legal" || bpfstage == "IT") {
+      if (bpfstage === "Child Ticket" || bpfstage === "Dropout Child Ticket" || bpfstage === "Legal" || bpfstage === "IT") {
 
           if (bpfArguments.getDirection() === "Next" && formcontext.getAttribute("pg_childtickets").getValue() != null && formcontext.getAttribute("pg_childtickets").getValue() != 0) {
               bpfArguments.preventDefault();
@@ -887,7 +904,7 @@ Onboarding.formEvents = {
           }
 
       }
- if (bpfstage == "QMG" && country == 140310000) {
+ if (bpfstage === "QMG" && country === 140310000) {
   var A,B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q,R;
 
 var A = formcontext.getAttribute("pg_identifycandidate").getValue();
@@ -921,7 +938,7 @@ var M = formcontext.getAttribute("pg_senditaccessformlinktoreportingmanager").ge
 
 
 
-      if (bpfstage == "QAT" && country == 140310000) {
+      if (bpfstage === "QAT" && country === 140310000) {
           var a,b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q,r;
 
 a = formcontext.getAttribute("pg_emergencycontactinformation").getValue();
@@ -955,7 +972,7 @@ a = formcontext.getAttribute("pg_emergencycontactinformation").getValue();
 
           }
       }
-      if (bpfstage == "HR" && country == 140310001) {
+      if (bpfstage === "HR" && country === 140310001) {
           var s, t, u, v, w, x, z;
 
 
@@ -987,7 +1004,7 @@ a = formcontext.getAttribute("pg_emergencycontactinformation").getValue();
 function formname() {  //main form
   debugger;
   var name = formContext.ui.formSelector.getCurrentItem().getLabel();
-  if (name == "Main Form") {
+  if (name === "Main Form") {
       return true;
   }
   else {
@@ -1024,9 +1041,9 @@ function SubmittoHR(primaryControl) {   //mainform
               req.setRequestHeader("OData-Version", "4.0");
 
               req.onreadystatechange = function () {
-                  if (this.readyState == 4 /* complete */) {
+                  if (this.readyState === 4 /* complete */) {
 
-                      if (this.status == 200 || this.status == 204) {
+                      if (this.status === 200 || this.status === 204) {
 
                           formContext.data.entity.save("saveandclose");
 
@@ -1066,7 +1083,7 @@ var dropoutaudit = formContext.ui.tabs.get("tab_15"); ///tab_15dropout audit
  
       var country = formContext.getAttribute("pg_country").getValue();
  
-  if (country == 140310000) {
+  if (country === 140310000) {
 
       // Onboardinggeneral.setVisible(false);
       TAOnboarding.setVisible(true);
@@ -1151,7 +1168,7 @@ formContext.getControl("pg_candidateaddressstate").setVisible(true);
 
 
   }
-  if (country == 140310001) {          //india
+  if (country === 140310001) {          //india
       TAOnboarding.setVisible(true);
       //TAONBOARDING
               formContext.getControl("pg_middlename").setVisible(true);                                                                                                      
@@ -1206,7 +1223,7 @@ formContext.getControl("pg_candidateaddressstate").setVisible(false);
 //formContext.getControl("pg_department").setRequiredLevel("required");
      formContext.getAttribute("pg_department").setRequiredLevel("required");
   }
-  if (country == 140310002 || country == 140310003 || country == 140310004 || country == 140310005 || country == 140310006 || country == 140310007 || country == 140310008) {
+  if (country === 140310002 || country === 140310003 || country === 140310004 || country === 140310005 || country === 140310006 || country === 140310007 || country === 140310008) {
       TAOnboarding.setVisible(false);
   }
   var dropoutcomments = formContext.getAttribute("pg_dropoutcomments").getValue();
@@ -1218,7 +1235,7 @@ formContext.getControl("pg_candidateaddressstate").setVisible(false);
   var typename = formContext.getAttribute("pg_type").getText();
   var status = formContext.getAttribute("statuscode").getSelectedOption().value;
   var isthisacandidateareferra = formContext.getControl("pg_isthisacandidateareferral").getValue();
-  if (isthisacandidateareferra == "Yes") {
+  if (isthisacandidateareferra === "Yes") {
       formContext.getControl("pg_refferedby").setVisible(true);
       formContext.getAttribute("pg_refferedby").setRequiredLevel("required");
   }
@@ -1226,11 +1243,11 @@ formContext.getControl("pg_candidateaddressstate").setVisible(false);
       formContext.getControl("pg_refferedby").setVisible(false);
   }
 
-  if (ratetype == 1) { // iif ratetype==salaried
+  if (ratetype === 1) { // iif ratetype===salaried
       formContext.getControl("pg_salary").setVisible(true);
      formContext.getControl("pg_salary1").setVisible(true);
   }
-  else if (ratetype == 2) {           // iif ratetype==hourly
+  else if (ratetype === 2) {           // iif ratetype===hourly
       formContext.getControl("pg_hourlyrate").setVisible(true);
  formContext.getControl("pg_hourlyrate1").setVisible(true);
   }
@@ -1242,7 +1259,7 @@ formContext.getControl("pg_candidateaddressstate").setVisible(false);
       formContext.getControl("pg_hourlyrate").setVisible(false);
 formContext.getControl("pg_hourlyrate1").setVisible(false);
   }
-  if (prideinbalance == 1) { // iif prideinbalance==yes
+  if (prideinbalance === 1) { // iif prideinbalance===yes
       formContext.getControl("pg_prideinbalancereason").setVisible(true);
   }
   else {
@@ -1251,7 +1268,7 @@ formContext.getControl("pg_hourlyrate1").setVisible(false);
   if (dropoutcomments != null) {
       formContext.getAttribute("pg_dropoutintiated").setValue(true);
   }
-  else if (dropoutcomments == null) {
+  else if (dropoutcomments === null) {
       formContext.getAttribute("pg_dropoutintiated").setValue(false);
   }
   var dojo = formContext.getAttribute('pg_dojo').getValue();
@@ -1263,13 +1280,13 @@ formContext.getControl("pg_hourlyrate1").setVisible(false);
   var PHdepartment = formContext.getAttribute('pg_pridehealthdepartment').getValue();
   var RTdepartment = formContext.getAttribute('pg_russelltobindepartment').getValue();
 var pgaofsubdepartmentjobfamily = formContext.getAttribute('pg_pgaofsubdepartmentjobfamily').getValue();
-  if (dojo == 140310000) {         ///prideglobal
+  if (dojo === 140310000) {         ///prideglobal
       formContext.getControl("pg_prideglobaldepartment").setVisible(true);
   }
   else {
       formContext.getControl("pg_prideglobaldepartment").setVisible(false);
   }
-  if (dojo == 140310005) {             //pridehealth
+  if (dojo === 140310005) {             //pridehealth
       formContext.getControl("pg_pridehealthdepartment").setVisible(true);
 //formContext.getControl("pg_pridehealthdepartment1").setVisible(true);
   }
@@ -1277,19 +1294,19 @@ var pgaofsubdepartmentjobfamily = formContext.getAttribute('pg_pgaofsubdepartmen
       formContext.getControl("pg_pridehealthdepartment").setVisible(false);
 
   }
-  if (dojo == 140310003) {             //prideONE
+  if (dojo === 140310003) {             //prideONE
       formContext.getControl("pg_prideonedepartment").setVisible(true);
   }
   else {
       formContext.getControl("pg_prideonedepartment").setVisible(false);
   }
-  if (dojo == 140310004) {             //prideNOW
+  if (dojo === 140310004) {             //prideNOW
       formContext.getControl("pg_pridenowdepartment").setVisible(true);
   }
   else {
       formContext.getControl("pg_pridenowdepartment").setVisible(false);
   }
-  if (dojo == 140310001) {             //RussellTobin&Associates
+  if (dojo === 140310001) {             //RussellTobin&Associates
       formContext.getControl("pg_russelltobindepartment").setVisible(true);
 
   }
@@ -1297,19 +1314,19 @@ var pgaofsubdepartmentjobfamily = formContext.getAttribute('pg_pgaofsubdepartmen
       formContext.getControl("pg_russelltobindepartment").setVisible(false);
 
   }
-  if (dojo == 140310009) {             //Rocket Shippers
+  if (dojo === 140310009) {             //Rocket Shippers
       formContext.getControl("pg_rocketshippersdepartment").setVisible(true);
   }
   else {
       formContext.getControl("pg_rocketshippersdepartment").setVisible(false);
   }
-  if (dojo == 140310010 || pgaofsubdepartmentjobfamily == 140310008) {             //Pride Advisory
+  if (dojo === 140310010 || pgaofsubdepartmentjobfamily === 140310008) {             //Pride Advisory
       formContext.getControl("pg_advisoryservicesdepartment").setVisible(true);
   }
   else {
       formContext.getControl("pg_advisoryservicesdepartment").setVisible(false);
   }
-  if (PGdepartment == 140310001) { // if deprtment==AOF
+  if (PGdepartment === 140310001) { // if deprtment===AOF
       formContext.getControl("pg_pgaofsubdepartmentjobfamily").setVisible(true);
 
   }
@@ -1317,32 +1334,32 @@ var pgaofsubdepartmentjobfamily = formContext.getAttribute('pg_pgaofsubdepartmen
       formContext.getControl("pg_pgaofsubdepartmentjobfamily").setVisible(false);
 
   }
-  if (PGdepartment == 140310006) { // if deprtment==IT
+  if (PGdepartment === 140310006) { // if deprtment===IT
       formContext.getControl("pg_pgitsubdepartmentjobfamily").setVisible(true);
   }
   else {
       formContext.getControl("pg_pgitsubdepartmentjobfamily").setVisible(false);
   }
-  if (PHdepartment == 140310000) { // iif pridehealthdeprtment==NATIONAL FULFILLMENT
+  if (PHdepartment === 140310000) { // iif pridehealthdeprtment===NATIONAL FULFILLMENT
       formContext.getControl("pg_phcnationalfulfillmentsubdepartmentjobfam").setVisible(true);
   }
   else {
       formContext.getControl("pg_phcnationalfulfillmentsubdepartmentjobfam").setVisible(false);
   }
-  if (RTdepartment == 140310008) { // iif RTA==SAT EAST
+  if (RTdepartment === 140310008) { // iif RTA===SAT EAST
       formContext.getControl("pg_rtasateastsubdepartmentjobfamily").setVisible(true);
   }
   else {
       formContext.getControl("pg_rtasateastsubdepartmentjobfamily").setVisible(false);
   }
-  if (RTdepartment == 140310003) { // iif RTA==rtae2eprofessionalsubdepartmentjobfamily
+  if (RTdepartment === 140310003) { // iif RTA===rtae2eprofessionalsubdepartmentjobfamily
       formContext.getControl("pg_rtae2eprofessionalsubdepartmentjobfamily").setVisible(true);
   }
   else {
       formContext.getControl("pg_rtae2eprofessionalsubdepartmentjobfamily").setVisible(false);
   }
 
-  if (country == 140310001 || country == 140310000) { // iif country= india
+  if (country === 140310001 || country === 140310000) { // iif country= india
       TAOnboarding.setVisible(true);
 
   }
@@ -1370,7 +1387,7 @@ var USAudit = formContext.ui.tabs.get("tab_14");
   if (Type != createform) {
       var stageId = activeStage.getId();
   }
-  if (stageId == "c08c6d0c-59f5-4286-aeb0-56c8446e7983" && country == 140310000 || stageId == "98d720f3-2395-4920-9994-43e245ea7bc6" && country == 140310000) {///manager
+  if (stageId === "c08c6d0c-59f5-4286-aeb0-56c8446e7983" && country === 140310000 || stageId === "98d720f3-2395-4920-9994-43e245ea7bc6" && country === 140310000) {///manager
       Manager.setVisible(true);
       RMforUS.setVisible(true);
       formContext.getAttribute("pg_listtheemaildistributionlistsmailboxyouwa").setRequiredLevel("required");
@@ -1381,7 +1398,7 @@ var USAudit = formContext.ui.tabs.get("tab_14");
       formContext.getAttribute("pg_pleasespecifythedepartmentsubdeptjobfamil").setRequiredLevel("required");
  formContext.getAttribute("pg_currentstage").setValue(140310001);
   }
-  else if (stageId == "c08c6d0c-59f5-4286-aeb0-56c8446e7983" && country == 140310001) {//manager
+  else if (stageId === "c08c6d0c-59f5-4286-aeb0-56c8446e7983" && country === 140310001) {//manager
       Manager.setVisible(true);
       RMforIndia.setVisible(true);
 formContext.getAttribute("pg_currentstage").setValue(140310001);
@@ -1390,7 +1407,7 @@ formContext.getAttribute("pg_currentstage").setValue(140310001);
       Manager.setVisible(false);
 
   }
-  if (stageId == "11a1353a-8929-4e64-84fb-f0fb16960dcc" || stageId == "cb5fde85-072a-4bc2-b107-0af5fbe55e2d") {///audit stage
+  if (stageId === "11a1353a-8929-4e64-84fb-f0fb16960dcc" || stageId === "cb5fde85-072a-4bc2-b107-0af5fbe55e2d") {///audit stage
       formContext.getAttribute("pg_currentstage").setValue(140310004);
       Audit.setVisible(true);
 
@@ -1399,7 +1416,7 @@ formContext.getAttribute("pg_currentstage").setValue(140310001);
       Audit.setVisible(false);
 
   }
-  if (stageId == "4da369a2-7910-4f16-8cee-0bcfd281685d") {///audit stage
+  if (stageId === "4da369a2-7910-4f16-8cee-0bcfd281685d") {///audit stage
       formContext.getAttribute("pg_currentstage").setValue(140310004);
       USAudit.setVisible(true);
 
@@ -1408,12 +1425,12 @@ formContext.getAttribute("pg_currentstage").setValue(140310001);
       USAudit.setVisible(false);
 
   }
- if (stageId == "af2bd53b-5965-470a-a555-bd6d02ee2211") {///completed stage
+ if (stageId === "af2bd53b-5965-470a-a555-bd6d02ee2211") {///completed stage
       formContext.getAttribute("pg_currentstage").setValue(140310005);
        }
 else{
 }
-  if (stageId == "2c0e0542-b81d-4b20-83bd-370196b8adaf" || stageId == "ae651664-9d2b-4357-9697-770241c65e23" || stageId == "981d379d-1a0a-4bca-b467-8e60bf0b980f" || stageId == "24598d06-6c0b-44a7-9d73-9ffe2f064628" || stageId == "4345ff6c-1b88-4999-851d-4fe4fba6f496" || stageId == "4eb007b7-4aa0-457f-aeed-1bd56af15c12") {///taonboarding stage for dropout
+  if (stageId === "2c0e0542-b81d-4b20-83bd-370196b8adaf" || stageId === "ae651664-9d2b-4357-9697-770241c65e23" || stageId === "981d379d-1a0a-4bca-b467-8e60bf0b980f" || stageId === "24598d06-6c0b-44a7-9d73-9ffe2f064628" || stageId === "4345ff6c-1b88-4999-851d-4fe4fba6f496" || stageId === "4eb007b7-4aa0-457f-aeed-1bd56af15c12") {///taonboarding stage for dropout
       TAONBOARDING.setVisible(true);
 
   }
@@ -1421,7 +1438,7 @@ else{
       TAONBOARDING.setVisible(false);
 
   }
-  if (stageId == "434713b1-7d96-43df-b36c-d325daef06d7" || stageId == "28d690d6-53ac-42af-9bb2-d4ec44bd5c52" || stageId == "e2862d9f-c4fa-4d26-b615-f64141604f04" || stageId == "4442fe1c-fc11-49b2-a0f5-6431a01ab238") {///hropeartiononboarding stage for dropout
+  if (stageId === "434713b1-7d96-43df-b36c-d325daef06d7" || stageId === "28d690d6-53ac-42af-9bb2-d4ec44bd5c52" || stageId === "e2862d9f-c4fa-4d26-b615-f64141604f04" || stageId === "4442fe1c-fc11-49b2-a0f5-6431a01ab238") {///hropeartiononboarding stage for dropout
       hroperationdropout.setVisible(true);
 
   }
@@ -1430,13 +1447,13 @@ else{
 
   }
 
-  if (stageId =="3ebeb3bb-a2cb-40be-8679-f3b70c945661" || stageId == "af634a5d-e6e2-4b47-8f20-b3d71f2708b7" || stageId == "1b929018-05de-45be-9abf-87c69466d2bb") {
+  if (stageId ==="3ebeb3bb-a2cb-40be-8679-f3b70c945661" || stageId === "af634a5d-e6e2-4b47-8f20-b3d71f2708b7" || stageId === "1b929018-05de-45be-9abf-87c69466d2bb") {
       dropoutChildTickets.setVisible(true);
   }
   else {
       dropoutChildTickets.setVisible(false);
   }
-if (stageId == "ec153282-5f82-44cb-8cdb-29af81a84186"){
+if (stageId === "ec153282-5f82-44cb-8cdb-29af81a84186"){
 dropoutaudit.setVisible(true);
   }
   else {
@@ -1444,7 +1461,7 @@ dropoutaudit.setVisible(true);
       dropoutaudit.setVisible(false);
 
   }
-  if (stageId == "0baac90f-f95e-4581-83a1-f7753b429186" || stageId == "6bb2f036-a279-466a-b004-72a93e20ba6c" || stageId == "dd998249-4176-4511-8fea-1b3fff8d4dcc" || stageId == "5b1a3c2d-a34b-4f8a-aadf-a0af017d93ef" || stageId == "b9732caf-4eb2-47d5-aa2a-e53e6575054e") {
+  if (stageId === "0baac90f-f95e-4581-83a1-f7753b429186" || stageId === "6bb2f036-a279-466a-b004-72a93e20ba6c" || stageId === "dd998249-4176-4511-8fea-1b3fff8d4dcc" || stageId === "5b1a3c2d-a34b-4f8a-aadf-a0af017d93ef" || stageId === "b9732caf-4eb2-47d5-aa2a-e53e6575054e") {
       formContext.getAttribute("pg_currentstage").setValue(140310002);
       ChildTickets.setVisible(true);
   }
@@ -1452,7 +1469,7 @@ dropoutaudit.setVisible(true);
       ChildTickets.setVisible(false);
 
   }
-if (stageId == "408d7424-cb76-4326-b1ec-5f3287f3bdc1" && country == 140310001) {
+if (stageId === "408d7424-cb76-4326-b1ec-5f3287f3bdc1" && country === 140310001) {
      // formContext.getAttribute("pg_currentstage").setValue(140310003);
       HROps.setVisible(true);
 
@@ -1460,7 +1477,7 @@ if (stageId == "408d7424-cb76-4326-b1ec-5f3287f3bdc1" && country == 140310001) {
   else {
       HROps.setVisible(false);
   }
-  if (stageId == "601fe287-7df7-4244-b549-ca01134f5382" && country == 140310001) {
+  if (stageId === "601fe287-7df7-4244-b549-ca01134f5382" && country === 140310001) {
       formContext.getAttribute("pg_currentstage").setValue(140310003);
       HR.setVisible(true);
 
@@ -1470,7 +1487,7 @@ if (stageId == "408d7424-cb76-4326-b1ec-5f3287f3bdc1" && country == 140310001) {
   }
   var USHRINTERNALOnboarding = formContext.ui.tabs.get("HR Internal");
   var USEA = formContext.ui.tabs.get("tab_13");
-  if (stageId == "1943bd92-6621-45b4-afe6-cf3acf70b9f5" && country == 140310000 || stageId == "340f4ddd-37ca-4ce4-97b0-5076b3670599" && country == 140310000 ) {
+  if (stageId === "1943bd92-6621-45b4-afe6-cf3acf70b9f5" && country === 140310000 || stageId === "340f4ddd-37ca-4ce4-97b0-5076b3670599" && country === 140310000 ) {
       formContext.getAttribute("pg_currentstage").setValue(140310003);
 
       USHRINTERNALOnboarding.setVisible(true);
@@ -1479,7 +1496,7 @@ if (stageId == "408d7424-cb76-4326-b1ec-5f3287f3bdc1" && country == 140310001) {
   else {
       USHRINTERNALOnboarding.setVisible(false);
   }
-  if (stageId == "b7900f22-3d52-4d26-bb2d-4b13208f029e" && country == 140310000 || stageId == "dec7bf2c-ef18-431c-9df6-aa5776062f59" && country == 140310000 || stageId == "f91895dc-eb9c-4398-8b78-b596b266aa63" && country == 140310000) {
+  if (stageId === "b7900f22-3d52-4d26-bb2d-4b13208f029e" && country === 140310000 || stageId === "dec7bf2c-ef18-431c-9df6-aa5776062f59" && country === 140310000 || stageId === "f91895dc-eb9c-4398-8b78-b596b266aa63" && country === 140310000) {
       ////formContext.getAttribute("pg_currentstage").setValue(140310003);
 
       USEA.setVisible(true);
@@ -1490,13 +1507,13 @@ if (stageId == "408d7424-cb76-4326-b1ec-5f3287f3bdc1" && country == 140310001) {
   }
   var OnboardingDocument = formContext.ui.tabs.get("Onboarding_Document");
   var formType = formContext.ui.getFormType();
-  if (formType == 2 || formType != 1) {
+  if (formType === 2 || formType != 1) {
       OnboardingDocument.setVisible(true);
   }
   else {
       OnboardingDocument.setVisible(false);
   }
-  if (country == 140310001) { // iif country= india
+  if (country === 140310001) { // iif country= india
       India.setVisible(true);
 
   }
@@ -1504,7 +1521,7 @@ if (stageId == "408d7424-cb76-4326-b1ec-5f3287f3bdc1" && country == 140310001) {
       India.setVisible(false);
 
   }
-  if (country == 140310000) { // if country= us
+  if (country === 140310000) { // if country= us
       US.setVisible(true);
   }
  else{
@@ -1512,7 +1529,7 @@ US.setVisible(false);
 } 
 
   var USOnboarding = formContext.ui.tabs.get("Onboardingtab");
-  if (type == 140310000) {
+  if (type === 140310000) {
       USOnboarding.setVisible(false);
   }
   if (type != 140310000) {
@@ -1521,14 +1538,14 @@ US.setVisible(false);
 
  var createform = 1;
   var Type = formContext.ui.getFormType();
-  if (Type != createform && type == 140310000 && country == 140310000) {
+  if (Type != createform && type === 140310000 && country === 140310000) {
 
 
 formContext.getControl("header_process_pg_dropoutintiated").setDisabled(true);
 formContext.getControl("header_process_pg_dropoutintiated_2").setDisabled(true);
       formContext.getControl("header_process_pg_dropoutintiated_2").setVisible(false);
 }
-  if (Type != createform && type == 140310000 && country == 140310001) {
+  if (Type != createform && type === 140310000 && country === 140310001) {
  formContext.getControl("header_process_statuscode").setVisible(false);
 formContext.getControl("header_process_pg_dropoutintiated").setVisible(false);
    formContext.getControl("header_process_pg_country").setVisible(false);
@@ -1545,7 +1562,7 @@ var IndiaQFORM = formContext.ui.quickForms.get("India");    //India
 
 var diversitytype=formContext.getAttribute("pg_diversitytype").getValue();
 var Diversehire = formContext.getAttribute("pg_diversehire").getValue();
-if(type == 140310000 && country == 140310001 || type != 140310000){
+if(type === 140310000 && country === 140310001 || type != 140310000){
  formContext.getControl("pg_diversehire").setVisible(false);
  formContext.getControl("pg_diversitytype").setVisible(false);
 formContext.getControl("pg_diversecategory").setVisible(false);
@@ -1554,7 +1571,7 @@ formContext.getControl("pg_diversecategory_lgbtqia").setVisible(false);
       formContext.getControl("pg_diversecategory_gender").setVisible(false);
  formContext.getControl("pg_diversecategory_age").setVisible(false);
 }
-if(Diversehire==140310000 && type != 140310000){///// && type == 140310000
+if(Diversehire===140310000 && type != 140310000){///// && type === 140310000
 formContext.getControl("pg_diversitytype1").setVisible(false);
 formContext.getControl("pg_diversecategory1").setVisible(false);
 formContext.getControl("pg_diversecategory_lgbtqia1").setVisible(false);
@@ -1562,10 +1579,10 @@ formContext.getControl("pg_diversecategory_lgbtqia1").setVisible(false);
       formContext.getControl("pg_diversecategory_gender1").setVisible(false);
  formContext.getControl("pg_diversecategory_age1").setVisible(false);
 }
-if(type != 140310000 && country == 140310001){
+if(type != 140310000 && country === 140310001){
 formContext.getControl("pg_diversehire").setVisible(false);
 }
-if(Diversehire==140310000 && type != 140310000){///// && type == 140310000
+if(Diversehire===140310000 && type != 140310000){///// && type === 140310000
 
 formContext.getControl("pg_diversitytype").setVisible(false);
 formContext.getControl("pg_diversecategory").setVisible(false);
@@ -1576,7 +1593,7 @@ formContext.getControl("pg_diversecategory").setVisible(false);
 
 }
 
-if(diversitytype!=null && Diversehire==140310000 && type != 140310000){///&& type == 140310000
+if(diversitytype!=null && Diversehire===140310000 && type != 140310000){///&& type === 140310000
 
 formContext.getControl("pg_diversecategory").setVisible(false);
  formContext.getControl("pg_diversecategory_lgbtqia").setVisible(false);
@@ -1585,7 +1602,7 @@ formContext.getControl("pg_diversecategory").setVisible(false);
  formContext.getControl("pg_diversecategory_age").setVisible(false);
 
 }
-if(type == 140310000 || type != 140310000){///&& type == 140310000
+if(type === 140310000 || type != 140310000){///&& type === 140310000
 
 formContext.getControl("pg_diversecategory").setVisible(false);
 formContext.getControl("pg_diversecategory_lgbtqia").setVisible(false);
@@ -1593,7 +1610,7 @@ formContext.getControl("pg_diversecategory_lgbtqia").setVisible(false);
       formContext.getControl("pg_diversecategory_gender").setVisible(false);
  formContext.getControl("pg_diversecategory_age").setVisible(false);
 }
-if(Diversehire==140310000 && type == 140310000){///// && type == 140310000
+if(Diversehire===140310000 && type === 140310000){///// && type === 140310000
 
 formContext.getControl("pg_diversitytype1").setVisible(true);
 }
@@ -1605,14 +1622,14 @@ formContext.getControl("pg_diversecategory_lgbtqia1").setVisible(false);
       formContext.getControl("pg_diversecategory_gender1").setVisible(false);
  formContext.getControl("pg_diversecategory_age1").setVisible(false);
 }
-if(type != 140310000 && Diversehire==140310000){
+if(type != 140310000 && Diversehire===140310000){
 IndiaQFORM.getControl("pg_diversitytype").setVisible(true);
 }
 else if(type != 140310000 && Diversehire!=140310000){
 IndiaQFORM.getControl("pg_diversitytype").setVisible(false);
 }
 
-if(country == 140310001 && diversitytype!=null && type != 140310000){
+if(country === 140310001 && diversitytype!=null && type != 140310000){
 if(diversitytype.includes(140310000)){
 
 IndiaQFORM.getControl("pg_diversecategory").setVisible(true);
@@ -1656,7 +1673,7 @@ IndiaQFORM.getControl("pg_diversecategory_age").setVisible(false);
 }
 
 //Diversecategory.clearOptions();
-if(country == 140310001 && diversitytype!=null && type == 140310000){
+if(country === 140310001 && diversitytype!=null && type === 140310000){
 if(diversitytype.includes(140310000)){
 formContext.getControl("pg_diversecategory1").setVisible(true);
 
@@ -1699,7 +1716,7 @@ formContext.getControl("pg_diversecategory_age1").setVisible(false);
 }
  var Onboardingtab = formContext.ui.tabs.get("Onboardingtab");
 var childticket = formContext.ui.tabs.get("tab_2");////////child tickets tab
-if (Type != createform && country == 140310000 && type == 140310000) {
+if (Type != createform && country === 140310000 && type === 140310000) {
 hrbgc.setVisible(true);
 
 
@@ -1708,13 +1725,13 @@ else{
 hrbgc.setVisible(false);
 }
 
-if (Type != createform && country == 140310000 && type != 140310000) {
+if (Type != createform && country === 140310000 && type != 140310000) {
 var US = childticket.sections.get("US").setVisible(true);   
 }
 else{
    var US = childticket.sections.get("US").setVisible(false);  
 }
-if (Type != createform && country == 140310000 && type == 140310005) {
+if (Type != createform && country === 140310000 && type === 140310005) {
    var USITCAM = Onboardingtab.sections.get("Onboardingtab_section_15").setVisible(true);
 }
 else{
@@ -1880,7 +1897,7 @@ var EmployeeAgreement = formContext.ui.quickForms.get("EmployeeAgreement");/////
   var createform = 1;
   var Type = formContext.ui.getFormType();
   if (Type != createform) {
-      if (name == null || name.includes("IndiaInternal Onboarding") || name.includes("USInternal Onboarding")) {
+      if (name === null || name.includes("IndiaInternal Onboarding") || name.includes("USInternal Onboarding")) {
           var type = formContext.getAttribute("pg_type").setValue(140310000);
       }
       var type = formContext.getAttribute("pg_type").getSelectedOption().value;/// child tickets
@@ -1888,7 +1905,7 @@ var EmployeeAgreement = formContext.ui.quickForms.get("EmployeeAgreement");/////
       var status = formContext.getAttribute("statuscode").getValue();
 
       // if (Name.includes("Internal Onboarding - TA")) {
-      if ((type == 140310001 && country == 140310001 && status == 1) || (type == 140310001 && country == 140310001 && status == 140310005)) {
+      if ((type === 140310001 && country === 140310001 && status === 1) || (type === 140310001 && country === 140310001 && status === 140310005)) {
           Onboarding.setVisible(true);
           childtickettab.setVisible(true);
           TAOnboarding.setVisible(false);
@@ -1906,7 +1923,7 @@ var EmployeeAgreement = formContext.ui.quickForms.get("EmployeeAgreement");/////
           US.setVisible(false);
           ////   HRInternalChecklist.setVisible(false);
       }
-      else if (type == 140310001 && country == 140310001 && status == 140310001) { /// (type == 140310001 && country == 140310001 && status == 140310005)) {
+      else if (type === 140310001 && country === 140310001 && status === 140310001) { /// (type === 140310001 && country === 140310001 && status === 140310005)) {
           Onboarding.setVisible(true);
           childtickettab.setVisible(true);
           TAOnboarding.setVisible(false);
@@ -1926,7 +1943,7 @@ var EmployeeAgreement = formContext.ui.quickForms.get("EmployeeAgreement");/////
       }
 
       // internal Onboarding - IT CAM
-      else if ((type == 140310005 && country == 140310001 && status == 1) || (type == 140310005 && country == 140310001 && status == 140310005)) { /////inprocess
+      else if ((type === 140310005 && country === 140310001 && status === 1) || (type === 140310005 && country === 140310001 && status === 140310005)) { /////inprocess
           Onboarding.setVisible(true);
           childtickettab.setVisible(true);
           TAOnboarding.setVisible(false);
@@ -1947,7 +1964,7 @@ var EmployeeAgreement = formContext.ui.quickForms.get("EmployeeAgreement");/////
           formContext.getControl("pg_removedfromstandarddls").setVisible(false);
           formContext.getControl("pg_removedfromcustomdls").setVisible(false);
       }
-      else if ((type == 140310005 && country == 140310001 && status == 140310003) || (type == 140310005 && country == 140310001 && status == 140310004) || (type == 140310005 && country == 140310001 && status == 140310001) || (type == 140310005 && country == 140310001 && status == 140310002)) {
+      else if ((type === 140310005 && country === 140310001 && status === 140310003) || (type === 140310005 && country === 140310001 && status === 140310004) || (type === 140310005 && country === 140310001 && status === 140310001) || (type === 140310005 && country === 140310001 && status === 140310002)) {
           Onboarding.setVisible(true);
           dropchildtickettab.setVisible(false);
           TAOnboarding.setVisible(false);
@@ -1970,7 +1987,7 @@ var EmployeeAgreement = formContext.ui.quickForms.get("EmployeeAgreement");/////
       }
 
       // Internal Onboarding - Learning & Development
-      else if ((type == 140310006 && country == 140310001 && status == 1) || (type == 140310006 && country == 140310001 && status == 140310005)) {       // inprocess
+      else if ((type === 140310006 && country === 140310001 && status === 1) || (type === 140310006 && country === 140310001 && status === 140310005)) {       // inprocess
           Onboarding.setVisible(true);
           childtickettab.setVisible(true);
           TAOnboarding.setVisible(false);
@@ -1991,7 +2008,7 @@ var EmployeeAgreement = formContext.ui.quickForms.get("EmployeeAgreement");/////
           formContext.getControl("pg_removefromnewhireinductionbatch").setVisible(false);
 
       }
-      else if ((type == 140310006 && country == 140310001 && status == 140310003) || (type == 140310006 && country == 140310001 && status == 140310004) || (type == 140310006 && country == 140310001 && status == 140310001) || (type == 140310006 && country == 140310001 && status == 140310002)) {
+      else if ((type === 140310006 && country === 140310001 && status === 140310003) || (type === 140310006 && country === 140310001 && status === 140310004) || (type === 140310006 && country === 140310001 && status === 140310001) || (type === 140310006 && country === 140310001 && status === 140310002)) {
           Onboarding.setVisible(true);
           dropchildtickettab.setVisible(false);
           TAOnboarding.setVisible(false);
@@ -2015,7 +2032,7 @@ var EmployeeAgreement = formContext.ui.quickForms.get("EmployeeAgreement");/////
       }
 
       // Internal Onboarding - IT Helpdesk
-      else if ((type == 140310004 && country == 140310001 && status == 1) || (type == 140310004 && country == 140310001 && status == 140310005)) {  // inprocess
+      else if ((type === 140310004 && country === 140310001 && status === 1) || (type === 140310004 && country === 140310001 && status === 140310005)) {  // inprocess
           Onboarding.setVisible(true);
           childtickettab.setVisible(true);
           TAOnboarding.setVisible(false);
@@ -2036,7 +2053,7 @@ var EmployeeAgreement = formContext.ui.quickForms.get("EmployeeAgreement");/////
           //formContext.getControl("pg_assetinventoryupdatedintrackertool").setVisible(false);
           formContext.getControl("pg_voipdisabled").setVisible(false);
       }
-      else if ((type == 140310004 && country == 140310001 && status == 140310003) || (type == 140310004 && country == 140310001 && status == 140310004) || (type == 140310004 && country == 140310001 && status == 140310001) || (type == 140310004 && country == 140310001 && status == 140310002)) {
+      else if ((type === 140310004 && country === 140310001 && status === 140310003) || (type === 140310004 && country === 140310001 && status === 140310004) || (type === 140310004 && country === 140310001 && status === 140310001) || (type === 140310004 && country === 140310001 && status === 140310002)) {
           Onboarding.setVisible(true);
           dropchildtickettab.setVisible(false);
           TAOnboarding.setVisible(false);
@@ -2061,7 +2078,7 @@ var EmployeeAgreement = formContext.ui.quickForms.get("EmployeeAgreement");/////
           formContext.getControl("pg_intunesetupcompleted").setVisible(false);
       }
       // Internal Onboarding - Admin
-      else if ((type == 140310009 && country == 140310001 && status == 1) || (type == 140310009 && country == 140310001 && status == 140310005)) {              //inprocess
+      else if ((type === 140310009 && country === 140310001 && status === 1) || (type === 140310009 && country === 140310001 && status === 140310005)) {              //inprocess
           Onboarding.setVisible(true);
           childtickettab.setVisible(true);
           TAOnboarding.setVisible(false);
@@ -2081,7 +2098,7 @@ var EmployeeAgreement = formContext.ui.quickForms.get("EmployeeAgreement");/////
           formContext.getControl("pg_assetretreival").setVisible(false);
    formContext.getControl("pg_seatingpreferance").setVisible(false);
       }
-      else if ((type == 140310009 && country == 140310001 && status == 140310003) || (type == 140310009 && country == 140310001 && status == 140310004) || (type == 140310009 && country == 140310001 && status == 140310001) || (type == 140310009 && country == 140310001 && status == 140310002)) {
+      else if ((type === 140310009 && country === 140310001 && status === 140310003) || (type === 140310009 && country === 140310001 && status === 140310004) || (type === 140310009 && country === 140310001 && status === 140310001) || (type === 140310009 && country === 140310001 && status === 140310002)) {
           Onboarding.setVisible(true);
           dropchildtickettab.setVisible(false);
           TAOnboarding.setVisible(false);
@@ -2109,7 +2126,7 @@ var EmployeeAgreement = formContext.ui.quickForms.get("EmployeeAgreement");/////
           formContext.getControl("pg_cabarrangement").setVisible(false);
       }
       // Internal Onboarding - Employee Development
-      else if ((type == 140310007 && country == 140310001 && status == 1) || (type == 140310007 && country == 140310001 && status == 140310005)) {    //inprocess
+      else if ((type === 140310007 && country === 140310001 && status === 1) || (type === 140310007 && country === 140310001 && status === 140310005)) {    //inprocess
           Onboarding.setVisible(true);
           childtickettab.setVisible(true);
           TAOnboarding.setVisible(false);
@@ -2128,7 +2145,7 @@ var EmployeeAgreement = formContext.ui.quickForms.get("EmployeeAgreement");/////
           ////    HRInternalChecklist.setVisible(false);
           formContext.getControl("pg_deactivatexyme").setVisible(false);
       }
-      else if ((type == 140310007 && country == 140310001 && status == 140310003) || (type == 140310007 && country == 140310001 && status == 140310004) || (type == 140310007 && country == 140310001 && status == 140310001) || (type == 140310007 && country == 140310001 && status == 140310002)) {
+      else if ((type === 140310007 && country === 140310001 && status === 140310003) || (type === 140310007 && country === 140310001 && status === 140310004) || (type === 140310007 && country === 140310001 && status === 140310001) || (type === 140310007 && country === 140310001 && status === 140310002)) {
           Onboarding.setVisible(true);
           dropchildtickettab.setVisible(false);
           TAOnboarding.setVisible(false);
@@ -2149,7 +2166,7 @@ var EmployeeAgreement = formContext.ui.quickForms.get("EmployeeAgreement");/////
           formContext.getControl("pg_createxyme").setVisible(false);
       }
       // Internal Onboarding - Employee Engagement
-      else if ((type == 140310010 && country == 140310001 && status == 1) || (type == 140310010 && country == 140310001 && status == 140310005)) {   // inprocess
+      else if ((type === 140310010 && country === 140310001 && status === 1) || (type === 140310010 && country === 140310001 && status === 140310005)) {   // inprocess
           Onboarding.setVisible(true);
           childtickettab.setVisible(true);
           TAOnboarding.setVisible(false);
@@ -2169,7 +2186,7 @@ var EmployeeAgreement = formContext.ui.quickForms.get("EmployeeAgreement");/////
           formContext.getControl("pg_removenameinmmmsingerslist").setVisible(false);//EMPLOYEENGAGEMENT
           formContext.getControl("pg_deactivatedojostoreprofile").setVisible(false);
       }
-      else if ((type == 140310010 && country == 140310001 && status == 140310003) || (type == 140310010 && country == 140310001 && status == 140310004) || (type == 140310010 && country == 140310001 && status == 140310001) || (type == 140310010 && country == 140310001 && status == 140310002)) {
+      else if ((type === 140310010 && country === 140310001 && status === 140310003) || (type === 140310010 && country === 140310001 && status === 140310004) || (type === 140310010 && country === 140310001 && status === 140310001) || (type === 140310010 && country === 140310001 && status === 140310002)) {
           Onboarding.setVisible(true);
           dropchildtickettab.setVisible(false);
           TAOnboarding.setVisible(false);
@@ -2194,7 +2211,7 @@ var EmployeeAgreement = formContext.ui.quickForms.get("EmployeeAgreement");/////
           formContext.getControl("pg_welcometoprideemailshared").setVisible(false);
       }
       // Internal Onboarding - Finance
-      else if ((type == 140310008 && country == 140310001 && status == 1) || (type == 140310008 && country == 140310001 && status == 140310005)) {
+      else if ((type === 140310008 && country === 140310001 && status === 1) || (type === 140310008 && country === 140310001 && status === 140310005)) {
           Onboarding.setVisible(true);
           childtickettab.setVisible(true);
           TAOnboarding.setVisible(false);
@@ -2212,7 +2229,7 @@ var EmployeeAgreement = formContext.ui.quickForms.get("EmployeeAgreement");/////
           US.setVisible(false);
           /////   HRInternalChecklist.setVisible(false);
       }
-      else if ((type == 140310008 && country == 140310001 && status == 140310003) || (type == 140310008 && country == 140310001 && status == 140310004) || (type == 140310008 && country == 140310001 && status == 140310001) || (type == 140310008 && country == 140310001 && status == 140310002)) {
+      else if ((type === 140310008 && country === 140310001 && status === 140310003) || (type === 140310008 && country === 140310001 && status === 140310004) || (type === 140310008 && country === 140310001 && status === 140310001) || (type === 140310008 && country === 140310001 && status === 140310002)) {
 Onboarding.setVisible(true);
           childtickettab.setVisible(true);
           TAOnboarding.setVisible(false);
@@ -2231,7 +2248,7 @@ Onboarding.setVisible(true);
           /////   HRInternalChecklist.setVisible(false);
       }
       //Internal Onboarding - HR Operation
-      else if ((type == 140310003 && country == 140310001 && status == 1) || (type == 140310003 && country == 140310001 && status == 140310005)) {     // in process
+      else if ((type === 140310003 && country === 140310001 && status === 1) || (type === 140310003 && country === 140310001 && status === 140310005)) {     // in process
           Onboarding.setVisible(true);
           childtickettab.setVisible(true);
           TAOnboarding.setVisible(false);
@@ -2261,7 +2278,7 @@ Onboarding.setVisible(true);
           formContext.getControl("pg_sendofferrescindmentemailtocandidate").setVisible(false);
       }
 
-      else if ((type == 140310003 && country == 140310001 && status == 140310003) || (type == 140310003 && country == 140310001 && status == 140310004) || (type == 140310003 && country == 140310001 && status == 140310001) || (type == 140310003 && country == 140310001 && status == 140310002)) {
+      else if ((type === 140310003 && country === 140310001 && status === 140310003) || (type === 140310003 && country === 140310001 && status === 140310004) || (type === 140310003 && country === 140310001 && status === 140310001) || (type === 140310003 && country === 140310001 && status === 140310002)) {
           Onboarding.setVisible(true);
           dropchildtickettab.setVisible(false);
           TAOnboarding.setVisible(false);
@@ -2278,7 +2295,7 @@ Onboarding.setVisible(true);
      
       }
     ///HRBP
-      else if ((type == 140310014 && country == 140310001 && status == 1) || (type == 140310014 && country == 140310001 && status == 140310005)) {
+      else if ((type === 140310014 && country === 140310001 && status === 1) || (type === 140310014 && country === 140310001 && status === 140310005)) {
           Onboarding.setVisible(true);
           childtickettab.setVisible(true);
           TAOnboarding.setVisible(false);
@@ -2287,7 +2304,7 @@ Onboarding.setVisible(true);
      US.setVisible(false);
       }
   ///HRBP
-        else if ((type == 140310014 && country == 140310001 && status == 140310003) || (type == 140310014 && country == 140310001 && status == 140310004) || (type == 140310014 && country == 140310001 && status == 140310001) || (type == 140310014 && country == 140310001 && status == 140310002)) {
+        else if ((type === 140310014 && country === 140310001 && status === 140310003) || (type === 140310014 && country === 140310001 && status === 140310004) || (type === 140310014 && country === 140310001 && status === 140310001) || (type === 140310014 && country === 140310001 && status === 140310002)) {
           Onboarding.setVisible(true);
           childtickettab.setVisible(true);
           TAOnboarding.setVisible(false);
@@ -2296,7 +2313,7 @@ Onboarding.setVisible(true);
      US.setVisible(false);
       }
      ///HRBP day1
-      else if ((type == 140310016 && country == 140310001 && status == 1) || (type == 140310016 && country == 140310001 && status == 140310005)) {////employyee engagement
+      else if ((type === 140310016 && country === 140310001 && status === 1) || (type === 140310016 && country === 140310001 && status === 140310005)) {////employyee engagement
           Onboarding.setVisible(true);
           childtickettab.setVisible(true);
           TAOnboarding.setVisible(false);
@@ -2306,7 +2323,7 @@ Onboarding.setVisible(true);
 
       }
 
-      else if ((type == 140310004 && country == 140310000 && status == 1) || (type == 140310004 && country == 140310000 && status == 140310005)) {           // inprocess//////us///ithelpdesk
+      else if ((type === 140310004 && country === 140310000 && status === 1) || (type === 140310004 && country === 140310000 && status === 140310005)) {           // inprocess//////us///ithelpdesk
           Onboarding.setVisible(true);
           childtickettab.setVisible(true);
           TAOnboarding.setVisible(false);
@@ -2317,38 +2334,38 @@ Manager.setVisible(false);
 US.setVisible(true);
 
     formContext.getControl("pg_prideglobaldepartment").setVisible(true);
-if(dojo == 140310000){
+if(dojo === 140310000){
 global.getControl("pg_prideglobaldepartment").setVisible(true);
 
 }
-else if(dojo == 140310005){
+else if(dojo === 140310005){
 
 global.getControl("pg_pridehealthdepartment").setVisible(true);
 global.getControl("pg_advisoryservicesdepartment").setVisible(false);
 
 }
-else if(dojo == 140310009){
+else if(dojo === 140310009){
 global.getControl("pg_rocketshippersdepartment").setVisible(true);
 
 }
 
-else if(dojo == 140310001){
+else if(dojo === 140310001){
 global.getControl("pg_russelltobindepartment").setVisible(true);
 
 }
-else if(dojo == 140310003){
+else if(dojo === 140310003){
 
 global.getControl("pg_advisoryservicesdepartment").setVisible(false);
 global.getControl("pg_prideonedepartment").setVisible(true);
 
 
 }
-else if(dojo == 140310004){
+else if(dojo === 140310004){
 global.getControl("pg_pridenowdepartment").setVisible(true);
 global.getControl("pg_prideglobaldepartment").setVisible(false);
 
 }
-if(dojo == 140310010 || pgaofsubdepartmentjobfamily==140310008){
+if(dojo === 140310010 || pgaofsubdepartmentjobfamily===140310008){
 
 global.getControl("pg_advisoryservicesdepartment").setVisible(true);
 global.getControl("pg_pridenowdepartment").setVisible(false);
@@ -2356,55 +2373,55 @@ global.getControl("pg_pridenowdepartment").setVisible(false);
 else{
 global.getControl("pg_advisoryservicesdepartment").setVisible(false);
 }
-  if (PGdepartment == 140310001) { // if deprtment==AOF
+  if (PGdepartment === 140310001) { // if deprtment===AOF
       global.getControl("pg_pgaofsubdepartmentjobfamily").setVisible(true);
   }
   else {
       global.getControl("pg_pgaofsubdepartmentjobfamily").setVisible(false);
   }
-  if (PGdepartment == 140310006) { // if deprtment==IT
+  if (PGdepartment === 140310006) { // if deprtment===IT
       global.getControl("pg_pgitsubdepartmentjobfamily").setVisible(true);
   }
   else {
       global.getControl("pg_pgitsubdepartmentjobfamily").setVisible(false);
   }
-  if (PHdepartment == 140310000) { // iif pridehealthdeprtment==NATIONAL FULFILLMENT
+  if (PHdepartment === 140310000) { // iif pridehealthdeprtment===NATIONAL FULFILLMENT
       global.getControl("pg_phcnationalfulfillmentsubdepartmentjobfam").setVisible(true);
   }
   else {
       global.getControl("pg_phcnationalfulfillmentsubdepartmentjobfam").setVisible(false);
   }
-  if (RTdepartment == 140310008) { // iif RTA==SAT EAST
+  if (RTdepartment === 140310008) { // iif RTA===SAT EAST
       global.getControl("pg_rtasateastsubdepartmentjobfamily").setVisible(true);
   }
   else {
       global.getControl("pg_rtasateastsubdepartmentjobfamily").setVisible(false);
   }
-  if (RTdepartment == 140310003) { // iif RTA==rtae2eprofessionalsubdepartmentjobfamily
+  if (RTdepartment === 140310003) { // iif RTA===rtae2eprofessionalsubdepartmentjobfamily
       global.getControl("pg_rtae2eprofessionalsubdepartmentjobfamily").setVisible(true);
   }
   else {
       global.getControl("pg_rtae2eprofessionalsubdepartmentjobfamily").setVisible(false);
   }
-if(ratetype==1){
+if(ratetype===1){
    USQFORM.getControl("pg_salary").setVisible(true);
 }
 else {
       USQFORM.getControl("pg_salary").setVisible(false);
   }
-if(ratetype==2){
+if(ratetype===2){
    USQFORM.getControl("pg_hourlyrate").setVisible(true);
 }
 else {
       USQFORM.getControl("pg_hourlyrate").setVisible(false);
   }
-if(prideinbalance ==true){
+if(prideinbalance ===true){
    USQFORM.getControl("pg_prideinbalancereason").setVisible(true);
 }
 else {
       USQFORM.getControl("pg_prideinbalancereason").setVisible(false);
   }
-if(isthisacandidaterefferral ==true){
+if(isthisacandidaterefferral ===true){
    USQFORM.getControl("pg_refferedby").setVisible(true);
 }
 else {
@@ -2412,7 +2429,7 @@ else {
   }
 
       }
-else if ((type == 140310005 && country == 140310000 && status == 1) || (type == 140310005 && country == 140310000 && status == 140310005)) { /////inprocess////itcam
+else if ((type === 140310005 && country === 140310000 && status === 1) || (type === 140310005 && country === 140310000 && status === 140310005)) { /////inprocess////itcam
           Onboarding.setVisible(true);
           childtickettab.setVisible(true);
           TAOnboarding.setVisible(false);
@@ -2421,7 +2438,7 @@ else if ((type == 140310005 && country == 140310000 && status == 1) || (type == 
       Manager.setVisible(false);
 US.setVisible(true);
       }
-      else if ((type == 140310013 && country == 140310000 && status == 1) || (type == 140310013 && country == 140310000 && status == 140310005)) { /////inprocess////EmploymentAgreement
+      else if ((type === 140310013 && country === 140310000 && status === 1) || (type === 140310013 && country === 140310000 && status === 140310005)) { /////inprocess////EmploymentAgreement
           Onboarding.setVisible(true);
           childtickettab.setVisible(true);
           TAOnboarding.setVisible(false);
@@ -2431,7 +2448,7 @@ US.setVisible(true);
       }
   
       // Internal Onboarding - Admin
-      else if ((type == 140310009 && country == 140310000 && status == 1) || (type == 140310009 && country == 140310000 && status == 140310005)) {
+      else if ((type === 140310009 && country === 140310000 && status === 1) || (type === 140310009 && country === 140310000 && status === 140310005)) {
           Onboarding.setVisible(true);
           childtickettab.setVisible(true);
           TAOnboarding.setVisible(false);
@@ -2440,7 +2457,7 @@ US.setVisible(true);
 
       }
       ////Legal
-      else if ((type == 140310012 && country == 140310000 && status == 1) || (type == 140310012 && country == 140310000 && status == 140310005) || (type == 140310012 && country == 140310000 && status == 140310001) || (type == 140310012 && country == 140310000 && status == 140310002)) {           // inprocess//////us
+      else if ((type === 140310012 && country === 140310000 && status === 1) || (type === 140310012 && country === 140310000 && status === 140310005) || (type === 140310012 && country === 140310000 && status === 140310001) || (type === 140310012 && country === 140310000 && status === 140310002)) {           // inprocess//////us
           Onboarding.setVisible(true);
           childtickettab.setVisible(true);
           TAOnboarding.setVisible(false);
@@ -2450,7 +2467,7 @@ USITCAM.setVisible(false);
 Manager.setVisible(false);
           India.setVisible(false);
 US.setVisible(true);
-if(ratetype==1){
+if(ratetype===1){
    USQFORM.getControl("pg_salary").setVisible(true);
 EmployeeAgreement.getControl("pg_salary").setVisible(true);
 }
@@ -2458,7 +2475,7 @@ else {
       USQFORM.getControl("pg_salary").setVisible(false);
 EmployeeAgreement.getControl("pg_salary").setVisible(false);
   }
-if(ratetype==2){
+if(ratetype===2){
    USQFORM.getControl("pg_hourlyrate").setVisible(true);
 EmployeeAgreement.getControl("pg_hourlyrate").setVisible(true);
 }
@@ -2466,13 +2483,13 @@ else {
       USQFORM.getControl("pg_hourlyrate").setVisible(false);
 EmployeeAgreement.getControl("pg_hourlyrate").setVisible(false);
   }
-if(prideinbalance ==true){
+if(prideinbalance ===true){
    USQFORM.getControl("pg_prideinbalancereason").setVisible(true);
 }
 else {
       USQFORM.getControl("pg_prideinbalancereason").setVisible(false);
   }
-if(isthisacandidaterefferral ==true){
+if(isthisacandidaterefferral ===true){
    USQFORM.getControl("pg_refferedby").setVisible(true);
 }
 else {
@@ -2483,7 +2500,7 @@ else {
 
  
       // Internal Onboarding - Audit
-      else if ((type == 140310011 && country == 140310001 && status == 1) || (type == 140310011 && country == 140310001 && status == 140310005)) {
+      else if ((type === 140310011 && country === 140310001 && status === 1) || (type === 140310011 && country === 140310001 && status === 140310005)) {
           Onboarding.setVisible(true);
           childtickettab.setVisible(true);
           TAOnboarding.setVisible(false);
@@ -2501,7 +2518,7 @@ else {
           US.setVisible(false);
           ////  HRInternalChecklist.setVisible(false);
       }
-      else if (type == 140310011 && country == 140310001 && status == 140310001) {
+      else if (type === 140310011 && country === 140310001 && status === 140310001) {
           Onboarding.setVisible(true);
           childtickettab.setVisible(true);
           TAOnboarding.setVisible(false);
@@ -2520,7 +2537,7 @@ else {
           ////  HRInternalChecklist.setVisible(false);
       }
 
-      if (type == 140310000) {
+      if (type === 140310000) {
           Onboarding.setVisible(false);
       }
       var Country = formContext.getAttribute("pg_country").getText();
@@ -2529,7 +2546,7 @@ else {
  var lastname = formContext.getAttribute("pg_lastname").getValue();
       var firstname = formContext.getAttribute("pg_firstname").getValue();
 var Middlename = "";
-if( formContext.getAttribute("pg_middlename").getValue()==null){
+if( formContext.getAttribute("pg_middlename").getValue()===null){
 var Middlename="";
 
 }
@@ -2537,21 +2554,21 @@ else{
 var Middlename=formContext.getAttribute("pg_middlename").getValue();
 }
       var status = formContext.getAttribute("statuscode").getSelectedOption().value;
-      if (status == 140310001 && type != 140310000 || status == 140310002 || status == 140310003 || status == 140310005 && valueCountry != 140310000 || status == 140310004 && valueCountry != 140310000 || status == 1 && type != 140310000 || status == 1 && type != 140310005 && valueCountry != 140310000 || status == 1 && type != 140310004 && valueCountry != 140310000) {
+      if (status === 140310001 && type != 140310000 || status === 140310002 || status === 140310003 || status === 140310005 && valueCountry != 140310000 || status === 140310004 && valueCountry != 140310000 || status === 1 && type != 140310000 || status === 1 && type != 140310005 && valueCountry != 140310000 || status === 1 && type != 140310004 && valueCountry != 140310000) {
 
         var Name = Country + " - " + "Internal Onboarding - " + typename + " - " + firstname + "  " + lastname +  "  "  +  Middlename ;
 
           var formName = formContext.getAttribute("pg_name").setValue(Name);
       }
-      else if (type == 140310000 && valueCountry == 140310001) {
+      else if (type === 140310000 && valueCountry === 140310001) {
           var Name = Country + " - " + "Internal Onboarding - " +firstname + "  " + lastname +  "  "  +  Middlename ;
           var formName = formContext.getAttribute("pg_name").setValue(Name);
       }
-      else if (type == 140310000 && valueCountry == 140310000) {
+      else if (type === 140310000 && valueCountry === 140310000) {
           var Name = Country + " - " + "Internal Onboarding - " + firstname + "  " + lastname ;
           var formName = formContext.getAttribute("pg_name").setValue(Name);
       }
-   else if (status == 1 && type != 140310005 || status == 140310005 && valueCountry == 140310000) {
+   else if (status === 1 && type != 140310005 || status === 140310005 && valueCountry === 140310000) {
      var Name = Country + " - " + "Internal Onboarding - " + typename + " - " + firstname + "  " + lastname;
 
           var formName = formContext.getAttribute("pg_name").setValue(Name);
@@ -2560,12 +2577,12 @@ var Middlename=formContext.getAttribute("pg_middlename").getValue();
           var Name = Country + " - " + "Internal Onboarding - " + firstname + "  " + lastname +  "  "  +  Middlename ;
           var formName = formContext.getAttribute("pg_name").setValue(Name);
       }
-   if (status == 1 && type == 140310004 && valueCountry == 140310000 || status == 140310005 && type == 140310004 && valueCountry == 140310000 || status == 1 && type == 140310005 && valueCountry == 140310000 || status == 140310005 && type == 140310005 && valueCountry == 140310000){
+   if (status === 1 && type === 140310004 && valueCountry === 140310000 || status === 140310005 && type === 140310004 && valueCountry === 140310000 || status === 1 && type === 140310005 && valueCountry === 140310000 || status === 140310005 && type === 140310005 && valueCountry === 140310000){
     var Name = Country + " - " + "Internal Onboarding - " + typename + " - " + firstname + "  " + lastname;
 
           var formName = formContext.getAttribute("pg_name").setValue(Name);
 }
- if (status == 1 && type == 140310012 && valueCountry == 140310000 || status == 140310005 && type == 140310012 && valueCountry == 140310000 || status == 1 && type == 140310005 && valueCountry == 140310000 || status == 140310005 && type == 140310005 && valueCountry == 140310000){
+ if (status === 1 && type === 140310012 && valueCountry === 140310000 || status === 140310005 && type === 140310012 && valueCountry === 140310000 || status === 1 && type === 140310005 && valueCountry === 140310000 || status === 140310005 && type === 140310005 && valueCountry === 140310000){
     var Name = Country + " - " + "Internal Onboarding - " + typename + " - " + firstname + "  " + lastname;
 
           var formName = formContext.getAttribute("pg_name").setValue(Name);

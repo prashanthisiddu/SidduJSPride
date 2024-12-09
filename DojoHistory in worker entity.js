@@ -86,7 +86,7 @@ function DojoHistory(context) {
       var formContext = context.getFormContext();
       var fieldsList = ["pg_goalcomment"];
   
-      if (usersettings.userId == formContext.getAttribute("ownerid").getValue()[0].id) {
+      if (usersettings.userId === formContext.getAttribute("ownerid").getValue()[0].id) {
           context.getFormContext().getData().getEntity().attributes.forEach(function (attr) {
               var fld = attr.getName();
               if (fieldsList.includes(fld)) {
@@ -112,7 +112,7 @@ function DojoHistory(context) {
   function MultiCopyToNext(context) {
       var formcontext = context;
   
-      if (formcontext.getAttribute("pg_currentstatus").getValue() == 140310003) {
+      if (formcontext.getAttribute("pg_currentstatus").getValue() === 140310003) {
           return true;
       }
       else false;
@@ -215,7 +215,7 @@ function DojoHistory(context) {
           function success(result) {
               //alert(typeof result.pg_currentstatus);
               var currentstage = result.pg_currentstatus;
-              if (currentstage == 140310000 || currentstage == 140310001) {
+              if (currentstage === 140310000 || currentstage === 140310001) {
                   return true;
                   formContext.ui.refreshRibbon();
               }
@@ -246,7 +246,7 @@ function DojoHistory(context) {
                   isAsyncOperationCompleted = true;
                   var currentstage = result.pg_currentstatus;
                   var usersettings = Xrm.Utility.getGlobalContext().userSettings;
-                  if ((currentstage == 140310000 || currentstage == 140310001) && primarycontrol.getAttribute("new_employeeid").getValue() != null && usersettings.userId != primarycontrol.getAttribute("ownerid").getValue()[0].id) {
+                  if ((currentstage === 140310000 || currentstage === 140310001) && primarycontrol.getAttribute("new_employeeid").getValue() != null && usersettings.userId != primarycontrol.getAttribute("ownerid").getValue()[0].id) {
                       isButtonEnabled = true;
                   }
   
@@ -293,8 +293,8 @@ function DojoHistory(context) {
               req.setRequestHeader("OData-Version", "4.0");
   
               req.onreadystatechange = function () {
-                  if (this.readyState == 4 /* complete */) {
-                      if (this.status == 204 || this.status == 200) {
+                  if (this.readyState === 4 /* complete */) {
+                      if (this.status === 204 || this.status === 200) {
                           primarycontrol.data.entity.save("saveandclose");
   
                       } else {
@@ -328,8 +328,8 @@ function DojoHistory(context) {
               req.setRequestHeader("OData-Version", "4.0");
   
               req.onreadystatechange = function () {
-                  if (this.readyState == 4 /* complete */) {
-                      if (this.status == 204 || this.status == 200) {
+                  if (this.readyState === 4 /* complete */) {
+                      if (this.status === 204 || this.status === 200) {
                           primarycontrol.data.entity.save("saveandclose");
   
                       } else {
@@ -363,8 +363,8 @@ function DojoHistory(context) {
               req.setRequestHeader("OData-Version", "4.0");
   
               req.onreadystatechange = function () {
-                  if (this.readyState == 4 /* complete */) {
-                      if (this.status == 204 || this.status == 200) {
+                  if (this.readyState === 4 /* complete */) {
+                      if (this.status === 204 || this.status === 200) {
                           formContext.ui.close();
   
                       } else {
@@ -381,7 +381,7 @@ function DojoHistory(context) {
   function goalCreateOnload(context) {
       var formContext = context.getFormContext();
   
-      if (formContext.ui.getFormType() == 1) {
+      if (formContext.ui.getFormType() === 1) {
           formContext.getAttribute('pg_targetdecimal').setValue(100);
           formContext.getAttribute('pg_actualdecimal').setValue(0);
       }
@@ -410,7 +410,7 @@ function DojoHistory(context) {
   function createYGoalFromX(primarycontrol) {
       var txt;
       var r = confirm("Convert X Goal to Y?");
-      if (r == true) {
+      if (r === true) {
           var recordId = primarycontrol.data.entity.getId();
           var workflowId = "ae4a0dc8-5b60-41da-85db-d5f842f9b5e1";
           var functionName = "executeWorkflow >>";
@@ -426,8 +426,8 @@ function DojoHistory(context) {
           req.setRequestHeader("OData-Version", "4.0");
   
           req.onreadystatechange = function () {
-              if (this.readyState == 4 /* complete */) {
-                  if (this.status == 204 || this.status == 200) {
+              if (this.readyState === 4 /* complete */) {
+                  if (this.status === 204 || this.status === 200) {
                       primarycontrol.data.entity.save("saveandclose");
   
                   } else {
@@ -444,7 +444,7 @@ function DojoHistory(context) {
   function createXGoalFromY(primarycontrol) {
       var txt;
       var r = confirm("Convert Y Goal to X?");
-      if (r == true) {
+      if (r === true) {
           var recordId = primarycontrol.data.entity.getId();
           var workflowId = "4f7c7c17-409e-4a9a-b92a-dea7f99ea439";
           var functionName = "executeWorkflow >>";
@@ -460,8 +460,8 @@ function DojoHistory(context) {
           req.setRequestHeader("OData-Version", "4.0");
   
           req.onreadystatechange = function () {
-              if (this.readyState == 4 /* complete */) {
-                  if (this.status == 204 || this.status == 200) {
+              if (this.readyState === 4 /* complete */) {
+                  if (this.status === 204 || this.status === 200) {
                       primarycontrol.data.entity.save("saveandclose");
   
                   } else {
@@ -478,7 +478,7 @@ function DojoHistory(context) {
   function createXGoalFromMe(primarycontrol) {
       var txt;
       var r = confirm("Convert Me Goal to X?");
-      if (r == true) {
+      if (r === true) {
           var recordId = primarycontrol.data.entity.getId();
           var workflowId = "E409B911-EFF1-4C88-87FB-ECC210AB9665";
           var functionName = "executeWorkflow >>";
@@ -494,8 +494,8 @@ function DojoHistory(context) {
           req.setRequestHeader("OData-Version", "4.0");
   
           req.onreadystatechange = function () {
-              if (this.readyState == 4 /* complete */) {
-                  if (this.status == 204 || this.status == 200) {
+              if (this.readyState === 4 /* complete */) {
+                  if (this.status === 204 || this.status === 200) {
                       primarycontrol.data.entity.save("saveandclose");
   
                   } else {
@@ -512,7 +512,7 @@ function DojoHistory(context) {
   function createYGoalFromMe(primarycontrol) {
       var txt;
       var r = confirm("Convert Me Goal to Y?");
-      if (r == true) {
+      if (r === true) {
           var recordId = primarycontrol.data.entity.getId();
           var workflowId = "4E1F172C3-D69C-4ED7-9AFE-6C4C460F39AD";
           var functionName = "executeWorkflow >>";
@@ -528,8 +528,8 @@ function DojoHistory(context) {
           req.setRequestHeader("OData-Version", "4.0");
   
           req.onreadystatechange = function () {
-              if (this.readyState == 4 /* complete */) {
-                  if (this.status == 204 || this.status == 200) {
+              if (this.readyState === 4 /* complete */) {
+                  if (this.status === 204 || this.status === 200) {
                       primarycontrol.data.entity.save("saveandclose");
   
                   } else {
@@ -546,7 +546,7 @@ function DojoHistory(context) {
   function createMeGoalFromX(primarycontrol) {
       var txt;
       var r = confirm("Convert X Goal to Me?");
-      if (r == true) {
+      if (r === true) {
           var recordId = primarycontrol.data.entity.getId();
           var workflowId = "3B525BFC-4587-49D4-B5E9-D4D53F3D678D";
           var functionName = "executeWorkflow >>";
@@ -562,8 +562,8 @@ function DojoHistory(context) {
           req.setRequestHeader("OData-Version", "4.0");
   
           req.onreadystatechange = function () {
-              if (this.readyState == 4 /* complete */) {
-                  if (this.status == 204 || this.status == 200) {
+              if (this.readyState === 4 /* complete */) {
+                  if (this.status === 204 || this.status === 200) {
                       primarycontrol.data.entity.save("saveandclose");
   
                   } else {
@@ -580,7 +580,7 @@ function DojoHistory(context) {
   function createMeGoalFromY(primarycontrol) {
       var txt;
       var r = confirm("Convert Y Goal to Me?");
-      if (r == true) {
+      if (r === true) {
           var recordId = primarycontrol.data.entity.getId();
           var workflowId = "2BCC34CA-A992-48D7-A30B-5593CFA0114B";
           var functionName = "executeWorkflow >>";
@@ -596,8 +596,8 @@ function DojoHistory(context) {
           req.setRequestHeader("OData-Version", "4.0");
   
           req.onreadystatechange = function () {
-              if (this.readyState == 4 /* complete */) {
-                  if (this.status == 204 || this.status == 200) {
+              if (this.readyState === 4 /* complete */) {
+                  if (this.status === 204 || this.status === 200) {
                       primarycontrol.data.entity.save("saveandclose");
   
                   } else {
@@ -614,7 +614,7 @@ function DojoHistory(context) {
   function CopyXToNextQuarter(primarycontrol) {
       var txt;
       var r = confirm("Copy to Next Quarter?");
-      if (r == true) {
+      if (r === true) {
           var recordId = primarycontrol.data.entity.getId();
           var workflowId = "E0FC1BA9-0B12-49ED-BAC3-4360C3256FA5";
           var functionName = "executeWorkflow >>";
@@ -630,8 +630,8 @@ function DojoHistory(context) {
           req.setRequestHeader("OData-Version", "4.0");
   
           req.onreadystatechange = function () {
-              if (this.readyState == 4 /* complete */) {
-                  if (this.status == 204 || this.status == 200) {
+              if (this.readyState === 4 /* complete */) {
+                  if (this.status === 204 || this.status === 200) {
                       try {
                           primarycontrol.data.entity.save("saveandclose");
                       }
@@ -652,7 +652,7 @@ function DojoHistory(context) {
   function CopyYToNextQuarter(primarycontrol) {
       var txt;
       var r = confirm("Copy to Next Quarter?");
-      if (r == true) {
+      if (r === true) {
           var recordId = primarycontrol.data.entity.getId();
           var workflowId = "AB4B9788-9D08-4C27-A8B3-A66BD09875E7";
           var functionName = "executeWorkflow >>";
@@ -668,8 +668,8 @@ function DojoHistory(context) {
           req.setRequestHeader("OData-Version", "4.0");
   
           req.onreadystatechange = function () {
-              if (this.readyState == 4 /* complete */) {
-                  if (this.status == 204 || this.status == 200) {
+              if (this.readyState === 4 /* complete */) {
+                  if (this.status === 204 || this.status === 200) {
                       try {
                           primarycontrol.data.entity.save("saveandclose");
                       }
@@ -690,7 +690,7 @@ function DojoHistory(context) {
   function CopyMeToNextQuarter(primarycontrol) {
       var txt;
       var r = confirm("Copy to Next Quarter?");
-      if (r == true) {
+      if (r === true) {
           var recordId = primarycontrol.data.entity.getId();
           var workflowId = "85A29AD4-E2EF-4737-A831-1F7DAED26203";
           var functionName = "executeWorkflow >>";
@@ -706,8 +706,8 @@ function DojoHistory(context) {
           req.setRequestHeader("OData-Version", "4.0");
   
           req.onreadystatechange = function () {
-              if (this.readyState == 4 /* complete */) {
-                  if (this.status == 204 || this.status == 200) {
+              if (this.readyState === 4 /* complete */) {
+                  if (this.status === 204 || this.status === 200) {
                       try {
                           primarycontrol.data.entity.save("saveandclose");
                       }
@@ -744,7 +744,7 @@ function DojoHistory(context) {
                   isAsyncOperationCompleted = true;
                   var currentstage = result.pg_currentstatus;
                   var usersettings = Xrm.Utility.getGlobalContext().userSettings;
-                  if ((currentstage == 140310004) && primarycontrol.getAttribute("new_employeeid").getValue() != null) {
+                  if ((currentstage === 140310004) && primarycontrol.getAttribute("new_employeeid").getValue() != null) {
                       isButtonEnabled = true;
                   }
   
@@ -776,7 +776,7 @@ function DojoHistory(context) {
   function MultiCopyXToNextQuarter(selectedcontrol) {
       var txt;
       var r = confirm("Copy to Next Quarter?");
-      if (r == true) {
+      if (r === true) {
           for (var e of selectedcontrol) {
               var recordId = e.Id;
               var workflowId = "E0FC1BA9-0B12-49ED-BAC3-4360C3256FA5";
@@ -793,8 +793,8 @@ function DojoHistory(context) {
               req.setRequestHeader("OData-Version", "4.0");
   
               req.onreadystatechange = function () {
-                  if (this.readyState == 4 /* complete */) {
-                      if (this.status == 204 || this.status == 200) {
+                  if (this.readyState === 4 /* complete */) {
+                      if (this.status === 204 || this.status === 200) {
                           try {
                               //primarycontrol.data.entity.save("saveandclose");
                           }
@@ -815,7 +815,7 @@ function DojoHistory(context) {
   function MultiCopyYToNextQuarter(selectedcontrol) {
       var txt;
       var r = confirm("Copy to Next Quarter?");
-      if (r == true) {
+      if (r === true) {
           for (var e of selectedcontrol) {
               var recordId = e.Id;
               var workflowId = "AB4B9788-9D08-4C27-A8B3-A66BD09875E7";
@@ -832,8 +832,8 @@ function DojoHistory(context) {
               req.setRequestHeader("OData-Version", "4.0");
   
               req.onreadystatechange = function () {
-                  if (this.readyState == 4 /* complete */) {
-                      if (this.status == 204 || this.status == 200) {
+                  if (this.readyState === 4 /* complete */) {
+                      if (this.status === 204 || this.status === 200) {
                           try {
                               //primarycontrol.data.entity.save("saveandclose");
                           }
@@ -854,7 +854,7 @@ function DojoHistory(context) {
   function MultiCopyMeToNextQuarter(selectedcontrol) {
       var txt;
       var r = confirm("Copy to Next Quarter?");
-      if (r == true) {
+      if (r === true) {
           for (var e of selectedcontrol) {
               var recordId = e.Id;
               var workflowId = "85A29AD4-E2EF-4737-A831-1F7DAED26203";
@@ -871,8 +871,8 @@ function DojoHistory(context) {
               req.setRequestHeader("OData-Version", "4.0");
   
               req.onreadystatechange = function () {
-                  if (this.readyState == 4 /* complete */) {
-                      if (this.status == 204 || this.status == 200) {
+                  if (this.readyState === 4 /* complete */) {
+                      if (this.status === 204 || this.status === 200) {
                           try {
                               //primarycontrol.data.entity.save("saveandclose");
                           }
@@ -911,7 +911,7 @@ function DojoHistory(context) {
   //    var fourR = formContext.getAttribute("pg_fourrating").getValue();
   //    var fiveR = formContext.getAttribute("pg_fiverating").getValue();
   
-  //    if (oneR == null || twoR == null || threeR == null || fourR == null || fiveR == null) {
+  //    if (oneR === null || twoR === null || threeR === null || fourR === null || fiveR === null) {
   //        formContext.ui.setFormNotification("Please enter all the values", "ERROR", "error1");
   
   //    }
@@ -930,9 +930,9 @@ function DojoHistory(context) {
       var fourR = formContext.getAttribute("pg_fourrating").getValue();
       var fiveR = formContext.getAttribute("pg_fiverating").getValue();
   
-      if (Comparision == 1) {
+      if (Comparision === 1) {
   
-          if (oneR == null || twoR == null || threeR == null || fourR == null || fiveR == null) {
+          if (oneR === null || twoR === null || threeR === null || fourR === null || fiveR === null) {
               formContext.ui.setFormNotification("Please enter all the values", "ERROR", "error2");
               formContext.getAttribute("pg_onerating").setRequiredLevel("required");
               formContext.getAttribute("pg_tworating").setRequiredLevel("required");
@@ -951,7 +951,7 @@ function DojoHistory(context) {
               formContext.ui.setFormNotification("The ratings must be in increasing order, please check the numbers.", "ERROR", "errorNotification");
   
           }
-          //else if (oneR == null || twoR == null || threeR == null || fourR == null || fiveR == null) {
+          //else if (oneR === null || twoR === null || threeR === null || fourR === null || fiveR === null) {
           //    formContext.ui.setFormNotification("Please enter all the values", "ERROR", "error2");
           //    formcontext.getAttribute("pg_onerating").setRequiredLevel("required");
           //    formcontext.getAttribute("pg_tworating").setRequiredLevel("required");
@@ -966,8 +966,8 @@ function DojoHistory(context) {
   
   
       }
-      else if (Comparision == 2) {
-          if (oneR == null || twoR == null || threeR == null || fourR == null || fiveR == null) {
+      else if (Comparision === 2) {
+          if (oneR === null || twoR === null || threeR === null || fourR === null || fiveR === null) {
               formContext.ui.setFormNotification("Please enter all the values", "ERROR", "error2");
               formContext.getAttribute("pg_onerating").setRequiredLevel("required");
               formContext.getAttribute("pg_tworating").setRequiredLevel("required");
@@ -988,7 +988,7 @@ function DojoHistory(context) {
   
   
           }
-          //else if (oneR == null || twoR == null || threeR == null || fourR == null || fiveR==null) {
+          //else if (oneR === null || twoR === null || threeR === null || fourR === null || fiveR===null) {
           //    formContext.ui.setFormNotification("Please enter all the values", "ERROR", "error2");
           //    formcontext.getAttribute("pg_onerating").setRequiredLevel("required");
           //    formcontext.getAttribute("pg_tworating").setRequiredLevel("required");
@@ -1045,7 +1045,7 @@ function DojoHistory(context) {
       var fiverating = formcontext.getAttribute("pg_fiverating");
       var comparison = formcontext.getAttribute("pg_comparison");
       //Time to Submit
-      if (preset == 0) {
+      if (preset === 0) {
           name.setValue("Time to Submit");
           target.setValue(1.9);
           onerating.setValue(100);
@@ -1058,61 +1058,61 @@ function DojoHistory(context) {
           targetType.setValue(140310002);
       }
       //Interviews
-      else if (preset == 1) {
+      else if (preset === 1) {
           name.setValue("Interviews");
           rolebased.setValue(true);
           targetType.setValue(140310000);
       }
       //Offers Accepted
-      else if (preset == 2) {
+      else if (preset === 2) {
           name.setValue("Offers Accepted");
           rolebased.setValue(true);
           targetType.setValue(140310000);
       }
       //Job Order Growth
-      else if (preset == 3) {
+      else if (preset === 3) {
           name.setValue("Job Order Growth");
           rolebased.setValue(true);
           targetType.setValue(140310001);
       }
       //Fill Rate
-      else if (preset == 4) {
+      else if (preset === 4) {
           name.setValue("Fill Rate");
           rolebased.setValue(true);
           targetType.setValue(140310001);
       }
       //New Job Categories Won
-      else if (preset == 5) {
+      else if (preset === 5) {
           name.setValue("New Job Categories Won");
           rolebased.setValue(true);
           targetType.setValue(140310001);
       }
       //Client Submittals to Placement Ratio
-      else if (preset == 6) {
+      else if (preset === 6) {
           name.setValue("Client Submittals to Placement Ratio");
           rolebased.setValue(true);
           targetType.setValue(140310001);
       }
       //Client Interviews
-      else if (preset == 7) {
+      else if (preset === 7) {
           name.setValue("Client Interviews");
           rolebased.setValue(true);
           targetType.setValue(140310002);
       }
       //Starts
-      else if (preset == 8) {
+      else if (preset === 8) {
           name.setValue("Starts");
           rolebased.setValue(true);
           targetType.setValue(140310002);
       }
       //Views of a job board into Launch
-      else if (preset == 9) {
+      else if (preset === 9) {
           name.setValue("Views of a job board into Launch");
           rolebased.setValue(true);
           targetType.setValue(140310002);
       }
       //Team Coverage Rate
-      else if (preset == 10) {
+      else if (preset === 10) {
           name.setValue("Team Coverage Rate");
           target.setValue(85);
           onerating.setValue(0);
@@ -1126,7 +1126,7 @@ function DojoHistory(context) {
   
       }
       //Team Average Time to Submit
-      else if (preset == 11) {
+      else if (preset === 11) {
           name.setValue("Team Average Time to Submit");
           target.setValue(1.9);
           onerating.setValue(100);
@@ -1139,13 +1139,13 @@ function DojoHistory(context) {
           targetType.setValue(140310002);
       }
       //Outbound Calls
-      else if (preset == 12) {
+      else if (preset === 12) {
           name.setValue("Outbound Calls");
           rolebased.setValue(true);
           targetType.setValue(140310000);
       }
       //Revenue Goals
-      else if (preset == 13) {
+      else if (preset === 13) {
           name.setValue("Revenue Goals");
           rolebased.setValue(true);
           targetType.setValue(140310000);

@@ -10,7 +10,7 @@ function setGoalValue(context) {//onchange of actual field X Goals entity
 	  var fiverating = formcontext.getAttribute("pg_fiverating").getValue();//100
 	 // var comparison = formcontext.getAttribute("pg_comparison");
   
-	  if(actual==fiverating){//99.05//false
+	  if(actual===fiverating){//99.05//false
 		goalscale.setValue(5);
 		}
 		else if(actual<fiverating && actual>=fourrating){//9905.0<100 && 99.05>=99.10//false
@@ -140,19 +140,19 @@ enddateforQ8 = new Date(QuaterQ8.replace(/-/g, "/"));
 var quaterenddate={};
 var quaterstartdate={};
 	 var quaterenddate = new Date();
-		 if(Quater=="Q4"){
+		 if(Quater==="Q4"){
 			var quaterstartdate=startdateforQ4;
 			var quaterenddate=enddateforQ8;
 		 }
-	   else if(Quater == "Q3"){
+	   else if(Quater === "Q3"){
 		   var quaterstartdate=startdateforQ3;
 		   var quaterenddate=enddateforQ7;
 		 }
-	else if(Quater == "Q2"){
+	else if(Quater === "Q2"){
 	  quaterstartdate=startdateforQ2;
 	  quaterenddate=enddateforQ6;
 		 }
-	   else if(Quater == "Q1"){
+	   else if(Quater === "Q1"){
 		quaterstartdate=startdateforQ1;
 		quaterenddate=enddateforQ5;
 		 } 
@@ -177,17 +177,17 @@ var quaterstartdate={};
 								var cutoffDateenddate = new Date(quaterenddate);
 								var cutoffDatestartdate = new Date(quaterstartdate);
 				
-								if (anniversaryDate < cutoffDatestartdate && (usersettings.userId == formContext.getAttribute("pg_manager").getValue()[0].id) && currentstage == "90 Day / Finalize Review" && enable && finalizeCheck == 140310002) {
+								if (anniversaryDate < cutoffDatestartdate && (usersettings.userId === formContext.getAttribute("pg_manager").getValue()[0].id) && currentstage === "90 Day / Finalize Review" && enable && finalizeCheck === 140310002) {
 									// Enable the dojobutton
 									return true;
 								} 
-								if (anniversaryDate >= new Date(cutoffDatestartdate) && anniversaryDate <= new Date(cutoffDateenddate) && (usersettings.userId == formContext.getAttribute("pg_manager").getValue()[0].id) && currentstage == "90 Day / Finalize Review" && enable && finalizeCheck == 140310002) {
+								if (anniversaryDate >= new Date(cutoffDatestartdate) && anniversaryDate <= new Date(cutoffDateenddate) && (usersettings.userId === formContext.getAttribute("pg_manager").getValue()[0].id) && currentstage === "90 Day / Finalize Review" && enable && finalizeCheck === 140310002) {
 									// Enable the dojobutton
 									//var finalizeCheck = formContext.getAttribute("pg_finalreview").getValue();
 									formContext.getControl("pg_finalreview").setDisabled(true);
 								} 
 								
-								if (anniversaryDate <= new Date(cutoffDateenddate) && (usersettings.userId == formContext.getAttribute("pg_manager").getValue()[0].id) && currentstage == "90 Day / Finalize Review" && enable && finalizeCheck == 140310002) {
+								if (anniversaryDate <= new Date(cutoffDateenddate) && (usersettings.userId === formContext.getAttribute("pg_manager").getValue()[0].id) && currentstage === "90 Day / Finalize Review" && enable && finalizeCheck === 140310002) {
 									// Enable the dojobutton
 									//var finalizeCheck = formContext.getAttribute("pg_finalreview").getValue();
 									formContext.getControl("pg_finalreview").setDisabled(true);
@@ -213,7 +213,7 @@ var currentstage = formContext.data.process.getActiveStage().getName();
 var enable = formContext.getAttribute("pg_enabledojoelevation").getValue();
 var finalizeCheck = formContext.getAttribute("pg_finalreview").getValue();
 
-if ((usersettings.userId == formContext.getAttribute("pg_manager").getValue()[0].id) && currentstage == "90 Day / Finalize Review" && enable && finalizeCheck == 140310002) {
+if ((usersettings.userId === formContext.getAttribute("pg_manager").getValue()[0].id) && currentstage === "90 Day / Finalize Review" && enable && finalizeCheck === 140310002) {
 	return true;
 }
 else {
@@ -255,11 +255,11 @@ function departmentgetset(executionContext) {///main one with no errors
 								var anniversaryDate = new Date(cdm_anniversarydatetime);
 								var cutoffDate = new Date("2023-09-30T15:24:00.000Z");
 				
-								if (anniversaryDate <= cutoffDate && (usersettings.userId == formContext.getAttribute("pg_manager").getValue()[0].id) && currentstage == "90 Day / Finalize Review" && enable && finalizeCheck == 140310002) {
+								if (anniversaryDate <= cutoffDate && (usersettings.userId === formContext.getAttribute("pg_manager").getValue()[0].id) && currentstage === "90 Day / Finalize Review" && enable && finalizeCheck === 140310002) {
 									// Enable the dojobutton
 									//return true;
 								}
-if (anniversaryDate >= new Date("2023-10-01T00:00:00.000Z") && anniversaryDate <= new Date("2023-12-31T23:59:59.999Z") && (usersettings.userId == formContext.getAttribute("pg_manager").getValue()[0].id) && currentstage == "90 Day / Finalize Review" && enable && finalizeCheck == 140310002) {
+if (anniversaryDate >= new Date("2023-10-01T00:00:00.000Z") && anniversaryDate <= new Date("2023-12-31T23:59:59.999Z") && (usersettings.userId === formContext.getAttribute("pg_manager").getValue()[0].id) && currentstage === "90 Day / Finalize Review" && enable && finalizeCheck === 140310002) {
 									// Enable the dojobutton
 							   formContext.getControl("pg_finalreview").setDisabled(true);
 									

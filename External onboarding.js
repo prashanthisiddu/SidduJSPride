@@ -193,7 +193,7 @@ ExternalOnboarding.formEvents = {
 //formcontext.data.entity.save();
                                          var GUID = "7cb40efb-b66a-4b65-acdb-47f2cb6210b2";
                                           Xrm.Page.data.process.setActiveStage(GUID, function (result) {
-                                if (result == "success") {
+                                if (result === "success") {
                                
                                 } else {
                                  
@@ -914,7 +914,7 @@ ExternalOnboarding.formEvents = {
         var formcontext = context.getFormContext();
         var bpfstage = formcontext.data.process.getActiveStage().getName();
 
-        if (bpfstage == "Clear To Start") {
+        if (bpfstage === "Clear To Start") {
             var Agreement = formcontext.getAttribute("pg_agreement").getValue();
             var directdepositform = formcontext.getAttribute("pg_directdepositform").getValue();
             var trainingdocuments = formcontext.getAttribute("pg_trainingdocuments").getValue();
@@ -965,7 +965,7 @@ function DropoutforTeamsSHide(primaryControl) {
     var status = formContext.getAttribute("statuscode").getValue();
     var loggedinUserId = Xrm.Utility.getGlobalContext().userSettings.userId.replace("{", "").replace("}", "");
     var ownerid = formContext.getAttribute("ownerid").getValue()[0].id.replace("{", "").replace("}", "");
-    if (formType !== 1 && status == 1) {
+    if (formType !== 1 && status === 1) {
         return Xrm.WebApi.online.retrieveRecord("systemuser", loggedinUserId, "?$select=internalemailaddress")
             .then(function success(result1) {
                 var internalemailaddress2 = result1["internalemailaddress"];
@@ -1098,7 +1098,7 @@ var formType = formContext.ui.getFormType();
     var status = formContext.getAttribute("statuscode").getValue();
     var loggedinUserId = Xrm.Utility.getGlobalContext().userSettings.userId.replace("{", "").replace("}", "");
   var ownerid = formContext.getAttribute("ownerid").getValue()[0].id.replace("{", "").replace("}", "");
-    if (formType !==1 && status == 1) {
+    if (formType !==1 && status === 1) {
         return Xrm.WebApi.online.retrieveRecord("systemuser", loggedinUserId, "?$select=internalemailaddress")
             .then(function success(result1) {
                 var internalemailaddress2 = result1["internalemailaddress"];

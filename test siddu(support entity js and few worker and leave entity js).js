@@ -51,16 +51,16 @@ startdateforQ4 = new Date(QuaterQ4.replace(/-/g, "/"));
 
 var quaterstartdate={};
 // var quaterenddate = new Date();
-     if(Quater=="Q4"){
+     if(Quater==="Q4"){
         var quaterstartdate=startdateforQ4;
      }
-   else if(Quater == "Q3"){
+   else if(Quater === "Q3"){
        var quaterstartdate=startdateforQ3;
      }
-else if(Quater == "Q2"){
+else if(Quater === "Q2"){
   quaterstartdate=startdateforQ2;
      }
-   else if(Quater == "Q1"){
+   else if(Quater === "Q1"){
     quaterstartdate=startdateforQ1;
      }
   Xrm.WebApi.online.retrieveRecord("new_employee",review , "?$select=_pg_workerreviewid_value").then(
@@ -163,8 +163,8 @@ if (leave != "none" || leave != 1) {
                     req.setRequestHeader("OData-Version", "4.0");
             
                     req.onreadystatechange = function () {
-                        if (this.readyState == 4 /* complete */) {
-                            if (this.status == 204 || this.status == 200) {
+                        if (this.readyState === 4 /* complete */) {
+                            if (this.status === 204 || this.status === 200) {
                                 formContext.data.entity.save("saveandclose");
                                // formContext.data.ui.close();
                             } else {
@@ -227,10 +227,10 @@ if (leave != "none" || leave != 1) {
     });
     //function (context) {
        // var eventArgs = context.getEventArgs();
-        //if (eventArgs.getSaveMode() == 5) {
+        //if (eventArgs.getSaveMode() === 5) {
            // alert("Deactivated");
      //   }
-      //  if (eventArgs.getSaveMode() == 6) {
+      //  if (eventArgs.getSaveMode() === 6) {
            // alert("Activated");
        // }
     }
@@ -239,17 +239,17 @@ if (leave != "none" || leave != 1) {
 
 //formContext.getControl(eventArgs).setDisbled(true);
                // function (success){
-               // if (eventArgs.getSaveMode() == 5) {
+               // if (eventArgs.getSaveMode() === 5) {
                     //    alert("Deactivated");
                // formContext.data.save();
 
 
 function accountOnSave(econtext) {
     var eventArgs = econtext.getEventArgs();
-    if (eventArgs.getSaveMode() == 5) {
+    if (eventArgs.getSaveMode() === 5) {
         alert("Deactivated");
     }
-    if (eventArgs.getSaveMode() == 6) {
+    if (eventArgs.getSaveMode() === 6) {
         alert("Activated");
     }
 }
@@ -263,7 +263,7 @@ function AllowOnlyNumbers() {
     var phoneNo = Xrm.Page.getControl("pg_newannualcompensation").getValue();
     phoneNo = phoneNo.replace(/\D/g, '');
     Xrm.Page.getAttribute('pg_newannualcompensation').setValue(phoneNo);
-    if (phoneNo.length == 11) {
+    if (phoneNo.length === 11) {
         var formattedPhone = phoneNo.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
         Xrm.Page.getAttribute('pg_newannualcompensation').setValue(formattedPhone);
     }
@@ -323,7 +323,7 @@ function getdivisionhead(context) {
         var employee = formcontext.getAttribute("pg_employee").getValue()[0].id;
         employeeid = employee.substring(1, 37);
         var  name= formcontext.getAttribute("pg_name").getValue();
-        if (applicationselect == 10) {
+        if (applicationselect === 10) {
             Xrm.WebApi.online.retrieveMultipleRecords("incident", "?$filter=title eq '" + name + "'&$top=1").then(
                 (results) => {
                     for (var i = 0; i < results.entities.length; i++) {
@@ -405,16 +405,16 @@ function getdivisionhead(context) {
         
         var quaterenddate={};
         // var quaterenddate = new Date();
-             if(Quater=="Q4"){
+             if(Quater==="Q4"){
                var quaterenddate=enddateforQ4;
              }
-           else if(Quater == "Q3"){
+           else if(Quater === "Q3"){
                var quaterenddate=enddateforQ3;
              }
-        else if(Quater == "Q2"){
+        else if(Quater === "Q2"){
                quaterenddate=enddateforQ2;
              }
-           else if(Quater == "Q1"){
+           else if(Quater === "Q1"){
                quaterenddate=enddateforQ1;
              }
           Xrm.WebApi.online.retrieveRecord("new_employee",review , "?$select=_pg_workerreviewid_value").then(
@@ -536,16 +536,16 @@ function getdivisionhead(context) {
         
         var quaterenddate={};
         // var quaterenddate = new Date();
-             if(Quater=="Q4"){
+             if(Quater==="Q4"){
                var quaterenddate=enddateforQ4;
              }
-           else if(Quater == "Q3"){
+           else if(Quater === "Q3"){
                var quaterenddate=enddateforQ3;
              }
-        else if(Quater == "Q2"){
+        else if(Quater === "Q2"){
                quaterenddate=enddateforQ2;
              }
-           else if(Quater == "Q1"){
+           else if(Quater === "Q1"){
                quaterenddate=enddateforQ1;
              }
           Xrm.WebApi.online.retrieveRecord("new_employee",review , "?$select=_pg_workerreviewid_value").then(
@@ -689,16 +689,16 @@ enddateforQ4 = new Date(QuaterQ4.replace(/-/g, "/"));
 
 var quaterenddate={};
 // var quaterenddate = new Date();
-     if(Quater=="Q4"){
+     if(Quater==="Q4"){
        var quaterenddate=enddateforQ4;
      }
-   else if(Quater == "Q3"){
+   else if(Quater === "Q3"){
        var quaterenddate=enddateforQ3;
      }
-else if(Quater == "Q2"){
+else if(Quater === "Q2"){
        quaterenddate=enddateforQ2;
      }
-   else if(Quater == "Q1"){
+   else if(Quater === "Q1"){
        quaterenddate=enddateforQ1;
      }
   Xrm.WebApi.online.retrieveRecord("new_employee",review , "?$select=_pg_workerreviewid_value").then(
@@ -800,7 +800,7 @@ function enabletoolasseced(executionContext) {
 try{
         var formContext = executionContext.getFormContext();
   var  workmode = formcontext.getAttribute("pg_workmode").getValue();
-if (workmode==140310000  ||  workmode==140310002 ){
+if (workmode===140310000  ||  workmode===140310002 ){
 formContext.getControl("pg_newseating").setDisabled(false);
 }
 else{
@@ -817,7 +817,7 @@ function setenable(executionContext) {
 try{
         var formContext = executionContext.getFormContext();
  var  newworkmode = formcontext.getAttribute("pg_newworkmode").getValue();
-if(newworkmode==140310000  || newworkmode==140310001 ){
+if(newworkmode===140310000  || newworkmode===140310001 ){
 formContext.getControl("pg_attachbusinessheadapproval").setDisabled(false);
 }
 else{
@@ -841,7 +841,7 @@ function gettoolaccess(context) {
         var employee = formcontext.getAttribute("pg_employee").getValue()[0].id;
         employeeid = employee.substring(1, 37);
         var  name= formcontext.getAttribute("pg_name").getValue();
-        if (applicationselect == 10 && subject==101) {
+        if (applicationselect === 10 && subject===101) {
             Xrm.WebApi.online.retrieveMultipleRecords("incident", "?$filter=title eq '" + name + "'&$top=1").then(
                 (results) => {
 
@@ -893,7 +893,7 @@ function getdojomarket(context) {
         var owner = formContext.getAttribute("ownerid");
         var ownerid = owner.getValue()[0].id;
         var email = "";
-        if (applicationselect == 140310012) {
+        if (applicationselect === 140310012) {
             Xrm.WebApi.online.retrieveMultipleRecords("systemuser", "?$filter=systemuserid eq " + ownerid + "&$top=1").then(
                 function success(results) {
                     //console.log(results);
@@ -939,25 +939,25 @@ try{
   var  applicationselect = formcontext.getAttribute("pg_application").getSelectedOption().value;
 var  subject = formcontext.getAttribute("pg_subject").getSelectedOption().value;
 var priority=formcontext.getAttribute("pg_priority").getValue();
- if (applicationselect == 10 && subject ==99) {
+ if (applicationselect === 10 && subject ===99) {
 formcontext.getAttribute("pg_priority").setValue(1);
 }
-    else if (applicationselect == 10 && subject == 100) {
+    else if (applicationselect === 10 && subject === 100) {
 formcontext.getAttribute("pg_priority").setValue(2);
 }
-  else if (applicationselect == 10 && subject == 101) {
+  else if (applicationselect === 10 && subject === 101) {
 formcontext.getAttribute("pg_priority").setValue(3);
 }
-else if (applicationselect == 10 && subject== 102) {
+else if (applicationselect === 10 && subject=== 102) {
 formcontext.getAttribute("pg_priority").setValue(4);
 }
-else if (applicationselect == 10 && subject== 103) {
+else if (applicationselect === 10 && subject=== 103) {
 formcontext.getAttribute("pg_priority").setValue(4);
 }
-else if (applicationselect == 10 && subject== 104) {
+else if (applicationselect === 10 && subject=== 104) {
 formcontext.getAttribute("pg_priority").setValue(4);
 }
-else if (applicationselect == 10 && subject== 1000) {
+else if (applicationselect === 10 && subject=== 1000) {
 formcontext.getAttribute("pg_priority").setValue(4);
 }
 }
@@ -975,7 +975,7 @@ try{                                                      // ?$select=name&$top=
     var currentreportingmanagers = formcontext.getAttribute("pg_currentreportingmanagers").getValue()[0].id;
     currentreportingmanagersid = currentreportingmanagers.substring(1, 37);
       var query = "?$select=pg_name&$filter=_pg_reportstoid_value eq " + currentreportingmanagersid;
-    if (applicationselect == 10 && subject == 100) {
+    if (applicationselect === 10 && subject === 100) {
         Xrm.WebApi.online.retrieveMultipleRecords("pg_prideemployee", query).then(
             function success(results) {
                for (var i = 0; i < results.entities.length; i++) {
@@ -1009,7 +1009,7 @@ function getdesignation(context) {
     var  subject = formcontext.getAttribute("pg_subject").getSelectedOption().value;
     
         var employee = formcontext.getAttribute("pg_employee").getValue()[0].id;
-        employeeid = employee.substring(1, 37);if (applicationselect == 10 && subject == 101) {
+        employeeid = employee.substring(1, 37);if (applicationselect === 10 && subject === 101) {
 Xrm.WebApi.online.retrieveRecord("pg_prideemployee", employeeid, "?$select=_pg_title_value").then(
     function success(results) {
                   
@@ -1044,7 +1044,7 @@ var  subject = formcontext.getAttribute("pg_subject").getSelectedOption().value;
     var employee = formcontext.getAttribute("pg_employee").getValue()[0].id;
     employeeid = employee.substring(1, 37);
   
- if (applicationselect == 10 && subject ==99) {
+ if (applicationselect === 10 && subject ===99) {
      Xrm.WebApi.online.retrieveRecord("pg_prideemployee", employeeid , "?$select=_pg_reportstoid_value").then(
         function success(result) {
             var _pg_reportstoid_value = result["_pg_reportstoid_value"];
@@ -1065,7 +1065,7 @@ var  subject = formcontext.getAttribute("pg_subject").getSelectedOption().value;
     );
 }
 
-  else if (applicationselect == 10 && subject == 101) {
+  else if (applicationselect === 10 && subject === 101) {
     Xrm.WebApi.online.retrieveRecord("pg_prideemployee", employeeid, "?$select=pg_team").then(
         function success(result) {
             var pg_team = result["pg_team"];
@@ -1082,7 +1082,7 @@ var  subject = formcontext.getAttribute("pg_subject").getSelectedOption().value;
         }
     );
 }
-   else if (applicationselect == 10 && subject== 102) {
+   else if (applicationselect === 10 && subject=== 102) {
         Xrm.WebApi.online.retrieveRecord("pg_prideemployee", employeeid, "?$select=pg_doj").then(
      function success(result) {
          var pg_doj = result["pg_doj"];
@@ -1101,7 +1101,7 @@ var  subject = formcontext.getAttribute("pg_subject").getSelectedOption().value;
         }
     );
   }
-   else if (applicationselect == 10 && subject == 103) {
+   else if (applicationselect === 10 && subject === 103) {
        Xrm.WebApi.online.retrieveRecord("pg_prideemployee", employeeid, "?$select=pg_name").then(
     function success(result) {
         var pg_name = result["pg_name"];
@@ -1134,7 +1134,7 @@ Xrm.Utility.alertDialog(error.message);
 );
  }
 
-else if (applicationselect == 10 && subject == 104) {
+else if (applicationselect === 10 && subject === 104) {
 
     Xrm.WebApi.online.retrieveRecord("pg_prideemployee", employeeid, "?$select=pg_name").then(
         function success(result) {
@@ -1214,7 +1214,7 @@ var workloc = formContext.ui.tabs.get("tab_11");
     catch {
         var subjectselect = 0;
     }
-  if (applicationselect == 10 && subject ==99) {
+  if (applicationselect === 10 && subject ===99) {
       reportingmanager.setVisible(true);
       employeereportingtype.setVisible(false);
       team.setVisible(false);
@@ -1229,7 +1229,7 @@ formContext.getAttribute("pg_effectivedate").setRequiredLevel("required");
 formContext.getAttribute("pg_reasonforchange").setRequiredLevel("required");
 formContext.getAttribute("pg_currentreportingmanagers").setRequiredLevel("required");
  }
-    else if (applicationselect == 10 && subject == 100) {
+    else if (applicationselect === 10 && subject === 100) {
         reportingmanager.setVisible(false);
       employeereportingtype.setVisible(true);
       team.setVisible(false);
@@ -1241,7 +1241,7 @@ formContext.getAttribute("pg_currentreportingmanagers").setRequiredLevel("requir
 formContext.getAttribute("pg_effectivedate").setRequiredLevel("required");
 formContext.getAttribute("pg_reasonforchange").setRequiredLevel("required");
    }
-    else if (applicationselect == 10 && subject == 101) {
+    else if (applicationselect === 10 && subject === 101) {
         reportingmanager.setVisible(false);
         employeereportingtype.setVisible(false);
         team.setVisible(true);
@@ -1256,7 +1256,7 @@ formContext.getAttribute("pg_newteam").setRequiredLevel("required");
 formContext.getAttribute("pg_newdojo").setRequiredLevel("required");
 //formContext.getAttribute("pg_newshift").setRequiredLevel("required");
     }
-    else if (applicationselect == 10 && subject == 102) {
+    else if (applicationselect === 10 && subject === 102) {
         reportingmanager.setVisible(false);
         employeereportingtype.setVisible(false);
         team.setVisible(false);
@@ -1268,7 +1268,7 @@ formContext.getAttribute("pg_employee").setRequiredLevel("required");
 formContext.getAttribute("pg_effectivedate").setRequiredLevel("required");
 formContext.getAttribute("pg_reasonforchange").setRequiredLevel("required");
     }
-    else if (applicationselect == 10 && subject == 103) {
+    else if (applicationselect === 10 && subject === 103) {
         reportingmanager.setVisible(false);
       employeereportingtype.setVisible(false);
       team.setVisible(false);
@@ -1281,7 +1281,7 @@ formContext.getAttribute("pg_effectivedate").setRequiredLevel("required");
 formContext.getAttribute("pg_reasonforchange").setRequiredLevel("required");
 formContext.getAttribute("pg_newworklocation").setRequiredLevel("required");
     }
-    else if (applicationselect == 10 && subject == 104) {
+    else if (applicationselect === 10 && subject === 104) {
         reportingmanager.setVisible(false);
         employeereportingtype.setVisible(false);
         team.setVisible(false);
@@ -1295,7 +1295,7 @@ formContext.getAttribute("pg_reasonforchange").setRequiredLevel("required");
 formContext.getAttribute("pg_newworkmode").setRequiredLevel("required");
 
     }
-  else if (applicationselect == 10 && subject == 1000) {
+  else if (applicationselect === 10 && subject === 1000) {
        reportingmanager.setVisible(false);
       employeereportingtype.setVisible(false);
       team.setVisible(false);
@@ -1334,7 +1334,7 @@ try{
         subject.removeOption(options[i].value);
     }
  //datachange
-    if ((applicationselect == 10)) {
+    if ((applicationselect === 10)) {
         subject.addOption({ text: 'Reporting Manager', value: 99 });
         subject.addOption({ text: 'Employee Reporting Change', value: 100 });
         subject.addOption({ text: 'Team/Process', value: 101 });

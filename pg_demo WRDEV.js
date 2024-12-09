@@ -2,10 +2,10 @@ function BPFMoveoffphilipines(executionContext) {
     var formContext = executionContext.getFormContext();
     var activeStage = Xrm.Page.data.process.getActiveStage();
     var stageId = activeStage.getId();
-    if (stageId == "572f7cbf-38b3-4a65-838f-b7645cc97d4a") {////finance stage
+    if (stageId === "572f7cbf-38b3-4a65-838f-b7645cc97d4a") {////finance stage
         formContext.data.process.moveNext();
     }
-    else if (stageId == "55979d26-cf76-4c8e-ab04-16706c4ad9dc") {///hr stage
+    else if (stageId === "55979d26-cf76-4c8e-ab04-16706c4ad9dc") {///hr stage
         formContext.data.process.moveNext();
     }
 }
@@ -19,17 +19,17 @@ function showandhideresolve(primaryControl) {
     var caseaprovl = formContext.getControl("pg_caseapproval").setVisible(false);
     var caseapproval = formContext.getAttribute("pg_caseapproval").getValue();
     var subject = formContext.getAttribute("pg_casesubject").getValue();
-    if (application == 10 && origin == 3) {
+    if (application === 10 && origin === 3) {
         var divisionheadapproval = formContext.getAttribute("pg_divisionheadapproval").getValue();
-        if (divisionheadapproval == 1 && caseapproval == 3 || divisionheadapproval == 1 && subject == 140310004 || divisionheadapproval == 1 && subject == 140310006 || divisionheadapproval == 1 && subject == 140310003) {
+        if (divisionheadapproval === 1 && caseapproval === 3 || divisionheadapproval === 1 && subject === 140310004 || divisionheadapproval === 1 && subject === 140310006 || divisionheadapproval === 1 && subject === 140310003) {
             return true;
         }
         else {
             return false;
         }
     }
-    if (application == 140310017 && origin == 3) {
-        if (caseapproval == 3) {
+    if (application === 140310017 && origin === 3) {
+        if (caseapproval === 3) {
             return true;
         }
         else {
@@ -40,10 +40,10 @@ function showandhideresolve(primaryControl) {
     var activeStage = Xrm.Page.data.process.getActiveStage();
     var stageId = activeStage.getId();
 
-    if (stageId != "356ecd08-43c3-4585-ae94-6053984bc0a9" && origin == 3 && application == 140310020) {
+    if (stageId != "356ecd08-43c3-4585-ae94-6053984bc0a9" && origin === 3 && application === 140310020) {
         return false;
     }
-    else if (application == 140310020 && origin == 140310000) {
+    else if (application === 140310020 && origin === 140310000) {
         return true;
     }
     else {
@@ -60,20 +60,20 @@ function setdisbledonload(context) {
     var application = formContext.getAttribute("pg_application").getValue();
     var childcasecount = formContext.getAttribute("pg_childcasecount").getValue();
     var origin = formContext.getAttribute("caseorigincode").getValue();
-    if (application == 10 && origin == 3 || application == 140310020 && origin == 3) {
+    if (application === 10 && origin === 3 || application === 140310020 && origin === 3) {
         formContext.getControl("header_process_pg_noticeperiodwaiver").setDisabled(true);
     }
 
     else {
         formContext.getControl("header_process_pg_noticeperiodwaiver").setDisabled(false);
     }
-    if (application == 10 && origin == 3 && childcasecount == 0) {
+    if (application === 10 && origin === 3 && childcasecount === 0) {
 
         formContext.getAttribute("pg_caseapproval").setValue(3);
     }
     else {
     }
-    if (application == 140310020 && origin == 3) {
+    if (application === 140310020 && origin === 3) {
         formContext.getControl("header_process_pg_noticeperiodwaiver").setVisible(false);
         formContext.getControl("header_process_pg_noticeperiodwaiver_1").setVisible(false);
         formContext.getControl("header_process_pg_noticeperiodwaiver_2").setVisible(false);
@@ -82,7 +82,7 @@ function setdisbledonload(context) {
     else {
         ///formContext.getControl("header_process_pg_noticeperiodwaiver").setVisible(true);
     }
-    if (application == 10 && origin == 3) {
+    if (application === 10 && origin === 3) {
         formContext.getControl("header_process_pg_noticeperiodcheck").setVisible(false);
         formContext.getControl("header_process_pg_noticeperiodwaiver").setVisible(false);
     }
@@ -101,7 +101,7 @@ function requiredfield(executionContext) {
     var formContext = executionContext.getFormContext();
     var assetstate = formContext.getAttribute("pg_assetstate").getValue();
 
-    if (assetstate == "Lost" || assetstate == 2) {
+    if (assetstate === "Lost" || assetstate === 2) {
 
         formContext.getAttribute("pg_listassetdetails").setRequiredLevel("required");
         formContext.getAttribute("pg_deduction").setRequiredLevel("required");
@@ -111,10 +111,10 @@ function requiredfield(executionContext) {
         formContext.getControl("pg_assetvalue").setVisible(true);
 
     }
-    else if (assetstate == 0) {
+    else if (assetstate === 0) {
         formContext.getControl("pg_deduction").setVisible(false);
     }
-    else if (assetstate == 1) {
+    else if (assetstate === 1) {
         formContext.getAttribute("pg_listassetdetails").setRequiredLevel("required");
         formContext.getAttribute("pg_deduction").setRequiredLevel("required");
         formContext.getAttribute("pg_assetvalue").setRequiredLevel("required");
@@ -191,137 +191,10 @@ function TicketChangecase(executionContext) {
         var subject = 0;
     }
 
-    if (applicationselect == 10 && subject == 1000 && repmanagerchange == 1) {
-        datachange.setVisible(true);
-
-        reportingmanagersec.setVisible(true);
-        divisionheadsec.setVisible(true);
-
-        teamrsec.setVisible(false);
-        section.setVisible(false);
-        dojosec.setVisible(false);
-        workmodesec.setVisible(false);
-        worklocsec.setVisible(false);
-        salaryrevisionsec.setVisible(false);
-        salaryhrsec.setVisible(false);
-        workmodesec.setVisible(false);
-        worklochrsec.setVisible(false);
-        dojohrsec.setVisible(false);
-        teamrhrsec.setVisible(false);
-        reportinghrsec.setVisible(true);
-
-    }
-    if (applicationselect == 10 && subject == 1000 && repmanagerchange == 2) {
-        datachange.setVisible(true);
-        reportingemployeessec.setVisible(true);
-        divisionheadsec.setVisible(true);
-        teamrsec.setVisible(false);
-        section.setVisible(false);
-        dojosec.setVisible(false);
-        workmodesec.setVisible(false);
-        worklocsec.setVisible(false);
-        salaryrevisionsec.setVisible(false);
-        salaryhrsec.setVisible(false);
-        workmodesec.setVisible(false);
-        worklochrsec.setVisible(false);
-        dojohrsec.setVisible(false);
-        teamrhrsec.setVisible(false);
-        reportinghrsec.setVisible(true);
-
-    }
-    else if (applicationselect == 10 && subject == 140310003) {
-        datachange.setVisible(true);
-        reportingmanagersec.setVisible(false);
-        teamrsec.setVisible(true);
-        section.setVisible(true);
-        divisionheadsec.setVisible(false);
-        dojosec.setVisible(false);
-        workmodesec.setVisible(false);
-        worklocsec.setVisible(false);
-        salaryrevisionsec.setVisible(false);
-        teamrhrsec.setVisible(true);
-        worklochrsec.setVisible(false);
-        dojohrsec.setVisible(false);
-        reportinghrsec.setVisible(false);
-        salaryhrsec.setVisible(false);
-        workmodesec.setVisible(false);
-
-    }
-    else if (applicationselect == 10 && subject == 140310004) {
-        datachange.setVisible(true);
-        reportingmanagersec.setVisible(false);
-        teamrsec.setVisible(false);
-        divisionheadsec.setVisible(true);
-        dojosec.setVisible(true);
-        section.setVisible(false);
-        workmodesec.setVisible(false);
-        worklocsec.setVisible(false);
-        salaryrevisionsec.setVisible(false);
-        dojohrsec.setVisible(true);
-        worklochrsec.setVisible(false);
-        teamrhrsec.setVisible(false);
-        reportinghrsec.setVisible(false);
-        salaryhrsec.setVisible(false);
-        workmodesec.setVisible(false);
-
-    }
-    else if (applicationselect == 10 && subject == 140310005) {
-        datachange.setVisible(true);
-        reportingmanagersec.setVisible(false);
-        teamrsec.setVisible(false);
-        divisionheadsec.setVisible(true);
-        section.setVisible(false);
-        dojosec.setVisible(false);
-        workmodesec.setVisible(false);
-        worklocsec.setVisible(true);
-        salaryrevisionsec.setVisible(false);
-        worklochrsec.setVisible(true);
-        dojohrsec.setVisible(false);
-        teamrhrsec.setVisible(false);
-        reportinghrsec.setVisible(false);
-        salaryhrsec.setVisible(false);
-        workmodesec.setVisible(false);
-
-    }
-    else if (applicationselect == 10 && subject == 140310006) {
-        datachange.setVisible(true);
-        divisionheadsec.setVisible(true);
-        reportingmanagersec.setVisible(false);
-        teamrsec.setVisible(false);
-        section.setVisible(false);
-        dojosec.setVisible(false);
-        workmodesec.setVisible(true);
-        worklocsec.setVisible(false);
-        salaryrevisionsec.setVisible(false);
-        workmodehrsec.setVisible(true);
-        worklochrsec.setVisible(false);
-        dojohrsec.setVisible(false);
-        teamrhrsec.setVisible(false);
-        reportinghrsec.setVisible(false);
-        salaryhrsec.setVisible(false);
-
-    }
-    else if (applicationselect == 10 && subject == 140310008) {
-        datachange.setVisible(true);
-        divisionheadsec.setVisible(true);
-        reportingmanagersec.setVisible(false);
-        teamrsec.setVisible(false);
-        dojosec.setVisible(false);
-        section.setVisible(false);
-        workmodesec.setVisible(false);
-        worklocsec.setVisible(false);
-        salaryrevisionsec.setVisible(true);
-        salaryhrsec.setVisible(true);
-        workmodehrsec.setVisible(false);
-        worklochrsec.setVisible(false);
-        dojohrsec.setVisible(false);
-        teamrhrsec.setVisible(false);
-        reportinghrsec.setVisible(false);
-
-    }
+    
 
 
-    if (origin == 140310000 && applicationselect == 10 && subject == 1000 && caseTitle.includes("IT-CAM Checklist")) {
+    if (origin === 140310000 && applicationselect === 10 && subject === 1000 && caseTitle.includes("IT-CAM Checklist")) {
         datachange.setVisible(true);
         TriggertoITCAM.setVisible(true);
         checkListTab.setVisible(false);
@@ -331,7 +204,7 @@ function TicketChangecase(executionContext) {
         reportinghrsec.setVisible(false);
         formContext.getAttribute("pg_updateexchangeserveraz").setRequiredLevel("required");
     }
-    if (origin == 140310000 && applicationselect == 10 && subject == 1000 && caseTitle.includes("R&A Checklist")) {
+    if (origin === 140310000 && applicationselect === 10 && subject === 1000 && caseTitle.includes("R&A Checklist")) {
         datachange.setVisible(true);
         TriggertoRandA.setVisible(true);
         checkListTab.setVisible(false);
@@ -341,41 +214,8 @@ function TicketChangecase(executionContext) {
         reportinghrsec.setVisible(false);
         formContext.getAttribute("pg_updatepowerbireports").setRequiredLevel("required");
     }
-    if (origin == 140310000 && applicationselect == 10 && subject == 140310003 && caseTitle.includes("IT-CAM Checklist")) {
-        subgridsec.setVisible(false);
-        divisionheadsec.setVisible(false);
-        ITCAMChecklist.setVisible(true);
-        checkListTab.setVisible(false);
-        teamrsec.setVisible(false);
-        section.setVisible(false);
-        teamrhrsec.setVisible(false);
-        formContext.getAttribute("pg_updateexchangeserazure").setRequiredLevel("required");
-        formContext.getAttribute("pg_emaildomain").setRequiredLevel("required");
-        formContext.getAttribute("pg_sendnewemailcredentialstoemployee").setRequiredLevel("required");
-        formContext.getAttribute("pg_enableaccesstonewtools").setRequiredLevel("required");
-        formContext.getAttribute("pg_addtonewemaildls").setRequiredLevel("required");
-    }
-    if (origin == 140310000 && applicationselect == 10 && subject == 140310003 && caseTitle.includes("R&A Checklist")) {
-        RandAchecklist.setVisible(true);
-        checkListTab.setVisible(false);
-        divisionheadsec.setVisible(false);
-        subgridsec.setVisible(false);
-        teamrsec.setVisible(false);
-        section.setVisible(false);
-        teamrhrsec.setVisible(false);
-        formContext.getAttribute("pg_updatepowerbirepos").setRequiredLevel("required");
-    }
-    if (origin == 140310000 && applicationselect == 10 && subject == 140310003 && caseTitle.includes("Finance Checklist")) {
-        subgridsec.setVisible(false);
-        divisionheadsec.setVisible(false);
-        FinanceChecklist.setVisible(true);
-        checkListTab.setVisible(false);
-        teamrsec.setVisible(false);
-        section.setVisible(false);
-        teamrhrsec.setVisible(false);
-        formContext.getAttribute("pg_updatepasbilling").setRequiredLevel("required");
-    }
-    if (origin == 140310000 && applicationselect == 10 && subject == 140310003 && caseTitle.includes("Admin Checklist")) {
+    
+    if (origin === 140310000 && applicationselect === 10 && subject === 140310003 && caseTitle.includes("Admin Checklist")) {
         AdminChecklist.setVisible(true);
         checkListTab.setVisible(false);
         divisionheadsec.setVisible(false);
@@ -386,31 +226,16 @@ function TicketChangecase(executionContext) {
         formContext.getAttribute("pg_newshiftupdat").setRequiredLevel("required");
         formContext.getAttribute("pg_newseatallotted").setRequiredLevel("required");
     }
-    if (origin == 140310000 && applicationselect == 10 && subject == 140310005 && workmode == 140310000 || workmode == 140310002 && caseTitle.includes("IT-Helpdesk")) {
-        IThelpdesk.setVisible(true);
-        Admin.setVisible(false);
+    if (origin === 140310000 && applicationselect === 10 && subject === 140310005 && workmode === 140310000 || workmode === 140310002 && caseTitle.includes("IT-CAM Checklist")) {
+        ITCAMCheck.setVisible(true);
         checkListTab.setVisible(false);
         divisionheadsec.setVisible(false);
         subgridsec.setVisible(false);
         worklocsec.setVisible(false);
         worklochrsec.setVisible(false);
-        formContext.getAttribute("pg_updateworklocationinpayrolldata").setRequiredLevel("required");
-        formContext.getAttribute("pg_updatemsd").setRequiredLevel("required");
-        formContext.getAttribute("pg_updateindiahrms").setRequiredLevel("required");
+        formContext.getAttribute("pg_updateexchangeserverazure").setRequiredLevel("required");
     }
-    if (origin == 140310000 && applicationselect == 10 && subject == 140310005 && workmode == 140310000 || workmode == 140310002 && caseTitle.includes("Admin")) {
-        subgridsec.setVisible(false);
-        divisionheadsec.setVisible(false);
-        Admin.setVisible(true);
-        checkListTab.setVisible(false);
-        worklocsec.setVisible(false);
-        worklochrsec.setVisible(false);
-        IThelpdesk.setVisible(false);
-        formContext.getAttribute("pg_updatept").setRequiredLevel("required");
-        formContext.getAttribute("pg_updatelwf").setRequiredLevel("required");
-        formContext.getAttribute("pg_minimumwagecheck").setRequiredLevel("required");
-    }
-    if (origin == 140310000 && applicationselect == 10 && subject == 140310005 && workmode == 140310000 || workmode == 140310002 && caseTitle.includes("Finance Checklist")) {
+    if (origin === 140310000 && applicationselect === 10 && subject === 140310005 && caseTitle.includes("Finance Checklist")) {
         subgridsec.setVisible(false);
         divisionheadsec.setVisible(false);
         FinanceCheck.setVisible(true);
@@ -422,7 +247,7 @@ function TicketChangecase(executionContext) {
         formContext.getAttribute("pg_updatelwf").setRequiredLevel("required");
         formContext.getAttribute("pg_minimumwagecheck").setRequiredLevel("required");
     }
-    if (origin == 140310000 && applicationselect == 10 && subject == 140310005 && workmode == 140310000 || workmode == 140310002 && caseTitle.includes("IT-CAM Checklist")) {
+    if (origin === 140310000 && applicationselect === 10 && subject === 140310005 && caseTitle.includes("IT-CAM Checklist")) {
         ITCAMCheck.setVisible(true);
         checkListTab.setVisible(false);
         divisionheadsec.setVisible(false);
@@ -431,28 +256,7 @@ function TicketChangecase(executionContext) {
         worklochrsec.setVisible(false);
         formContext.getAttribute("pg_updateexchangeserverazure").setRequiredLevel("required");
     }
-    if (origin == 140310000 && applicationselect == 10 && subject == 140310005 && caseTitle.includes("Finance Checklist")) {
-        subgridsec.setVisible(false);
-        divisionheadsec.setVisible(false);
-        FinanceCheck.setVisible(true);
-        checkListTab.setVisible(false);
-        worklocsec.setVisible(false);
-        worklochrsec.setVisible(false);
-        formContext.getAttribute("pg_updateworklocationinpayrolldata").setRequiredLevel("required");
-        formContext.getAttribute("pg_updatept").setRequiredLevel("required");
-        formContext.getAttribute("pg_updatelwf").setRequiredLevel("required");
-        formContext.getAttribute("pg_minimumwagecheck").setRequiredLevel("required");
-    }
-    if (origin == 140310000 && applicationselect == 10 && subject == 140310005 && caseTitle.includes("IT-CAM Checklist")) {
-        ITCAMCheck.setVisible(true);
-        checkListTab.setVisible(false);
-        divisionheadsec.setVisible(false);
-        subgridsec.setVisible(false);
-        worklocsec.setVisible(false);
-        worklochrsec.setVisible(false);
-        formContext.getAttribute("pg_updateexchangeserverazure").setRequiredLevel("required");
-    }
-    if (origin == 140310000 && applicationselect == 10 && subject == 140310008 && caseTitle.includes("Trigger to Finance")) {
+    if (origin === 140310000 && applicationselect === 10 && subject === 140310008 && caseTitle.includes("Trigger to Finance")) {
         TriggertoFinance.setVisible(true);
         checkListTab.setVisible(false);
         divisionheadsec.setVisible(false);
@@ -507,7 +311,7 @@ function setreportingemployechangeforvalue(executionContext) {
     var applicationselect = formContext.getAttribute("pg_application").getValue();
     var subject = formContext.getAttribute("pg_casesubject").getValue();
     var caseTitle = formContext.getAttribute("title").getValue();
-    if (applicationselect == 10 && subject == 1000) {
+    if (applicationselect === 10 && subject === 1000) {
         Xrm.WebApi.online.retrieveMultipleRecords("pg_supportticket", "?$filter=pg_name eq '" + caseTitle + "'&$top=1").then(
             function success(results) {
                 for (var i = 0; i < results.entities.length; i++) {

@@ -313,7 +313,7 @@ function GoodFriday(context) { // onload
    
         function validateGoodFridayLeave(holidayDate, threeMonthsLaterHoliday) {
             var leavetype = formContext.getAttribute("pg_leavetype").getValue();
-            if (leavetype !== 7) {
+            if (leavetype !==7) {
                 return; 
             }
 
@@ -327,7 +327,7 @@ function GoodFriday(context) { // onload
             var startDateObj = new Date(startDate);
             var endDateObj = new Date(endDate);
 
-            if (startDateObj.getTime() !== endDateObj.getTime()) {
+            if (startDateObj.getTime() !==endDateObj.getTime()) {
                 Xrm.Utility.alertDialog("Start date and End date must be the same day for Good Friday leave.");
                 return;
             }
@@ -382,7 +382,7 @@ function GoodFriday(context) { // onload
         var leaveTypeValue = formContext.getAttribute("pg_leavetype").getValue();
         var goodFridayOption = { text: 'Floating Holiday', value: 7 };
 
-        if (leaveTypeValue !== 7) {
+        if (leaveTypeValue !==7) {
             leavetypeControl.removeOption(7); 
         }
 
@@ -426,7 +426,7 @@ function GoodFriday(context) { // onload
                                 if (leaveResults.entities.length === 0) {
                                     leavetypeControl.addOption(goodFridayOption);
                                     formContext.getControl("WebResource_GoodFriday").setVisible(true);
-                                    if (leaveTypeValue !== 7) {
+                                    if (leaveTypeValue !==7) {
                                         //  formContext.getAttribute("pg_leavetype").setValue(7);
                                     }
                                     formContext.getAttribute("pg_startdate").addOnChange(function() {
@@ -452,7 +452,7 @@ function GoodFriday(context) { // onload
 
         function validateGoodFridayLeave(holidayDate, threeMonthsLaterHoliday) {
             var leavetype = formContext.getAttribute("pg_leavetype").getValue();
-            if (leavetype !== 7) {
+            if (leavetype !==7) {
                 return; 
             }
 
@@ -468,7 +468,7 @@ function GoodFriday(context) { // onload
             var startDateObj = new Date(startDate);
             var endDateObj = new Date(endDate);
 
-            if (startDateObj.getTime() !== endDateObj.getTime()) {
+            if (startDateObj.getTime() !==endDateObj.getTime()) {
                // Xrm.Utility.alertDialog("Start date and End date must be the same day for Good Friday leave.");
                 return;
             }
@@ -534,7 +534,7 @@ function GoodFriday(context) { // onload
       var goodFridayOption = { text: 'Good Friday', value: 7 };
 
       // Check if the leave type is already "Good Friday"
-      if (leaveTypeValue !== 7) {
+      if (leaveTypeValue !==7) {
           leavetypeControl.removeOption(7); // Remove the option initially if not already selected
       }
 
@@ -576,7 +576,7 @@ function GoodFriday(context) { // onload
                           function success(leaveResults) {
                               if (leaveResults.entities.length === 0) {
                                   leavetypeControl.addOption(goodFridayOption);
-                                  if (leaveTypeValue !== 7) {
+                                  if (leaveTypeValue !==7) {
                                       formContext.getAttribute("pg_leavetype").setValue(7);
                                   }
                                   formContext.getAttribute("pg_startdate").addOnChange(validateGoodFridayLeave);
@@ -597,7 +597,7 @@ function GoodFriday(context) { // onload
 
       function validateGoodFridayLeave() {
           var leavetype = formContext.getAttribute("pg_leavetype").getValue();
-          if (leavetype !== 7) {
+          if (leavetype !==7) {
               return; // Exit if the leave type is not "Good Friday"
           }
 
@@ -613,7 +613,7 @@ function GoodFriday(context) { // onload
           var startDateObj = new Date(startDate);
           var endDateObj = new Date(endDate);
 
-          if (startDateObj.getTime() !== endDateObj.getTime()) {
+          if (startDateObj.getTime() !==endDateObj.getTime()) {
               Xrm.Utility.alertDialog("Start date and End date must be the same day for Good Friday leave.");
               return;
           }
@@ -661,7 +661,7 @@ function GoodFriday(context) { // onload
                   var pg_name = results.entities[i]["pg_name"];
                   var holidayDate = new Date(pg_holidaydate);
 
-                  if (pg_name == "Good Friday" && holidayDate >= today && holidayDate <= threeMonthsLater) {
+                  if (pg_name === "Good Friday" && holidayDate >= today && holidayDate <= threeMonthsLater) {
                       // Check if the user has taken leave on Good Friday
                       checkLeaveTaken(currentUserGuid, holidayDate).then(function (leaveTaken) {
                           if (!leaveTaken) {
@@ -950,7 +950,7 @@ function BirthDayStrtEndDiff(context) {
 //formContext.getControl("pg_enddate").setDisabled(true);
    /* if (startDate != null && endDate != null) {
       var difference = endDate - startDate;
-      if (difference !== 0) {
+      if (difference !==0) {
         alert("not possible to take leave more than 1day");
       }
     }
@@ -989,7 +989,7 @@ formContext.getControl("pg_enddate").setVisible(true);
 function Termination(context) {
 try {
   formcontext = context.getFormContext();
-  if (formcontext.ui.getFormType() == 1) {
+  if (formcontext.ui.getFormType() === 1) {
     var endDate = formcontext.getAttribute("pg_enddate").getValue();
     //Get Owner ID and get Worker Email
     var owner = formcontext.getAttribute("ownerid");
@@ -1088,7 +1088,7 @@ try {
     var daySt = startDate.getDate() + "";
     var dateFormatSTART = monthSt + "/" + daySt + "/" + yearSt;
     var difference = endDate - startDate;
-    if (difference == 0) {
+    if (difference === 0) {
       Xrm.WebApi.online.retrieveMultipleRecords("pg_publicholidays", "?$select=pg_holidaydate,pg_name").then(
         function success(results) {
           for (var i = 0; i < results.entities.length; i++) {
@@ -1101,7 +1101,7 @@ try {
             var dd = holidayDate[1];
             holidaydate = mm + '/' + dd + '/' + yyyy;
 
-            if (pg_name == "Good Friday" && dateFormatSTART == holidaydate) {
+            if (pg_name === "Good Friday" && dateFormatSTART === holidaydate) {
        
               formContext.getControl("pg_leavetype").addOption({ text: 'Good Friday', value: 7 });
               formContext.getAttribute("pg_leavetype").setValue(7);
@@ -1216,7 +1216,7 @@ if(leavetypevalue===6){
               } if (month === "12") {
                 formcontext.getAttribute("pg_birthdaymonth").setValue("December");
               }
-              if (month == mm || monthSt==month) {
+              if (month === mm || monthSt===month) {
                 formcontext.getControl("WebResource_Birthday").setVisible(true);
                 formcontext.getControl("pg_birthdaymonth").setVisible(true);
                 formcontext.ui.clearFormNotification("validation");
@@ -1226,7 +1226,7 @@ formcontext.getControl("pg_leavetype").clearNotification("validation");
                 formcontext.ui.setFormNotification("It's not your birthday month, Please select a date from your birthday month", "ERROR", "validation");
 formcontext.getControl("pg_leavetype").setNotification("It's not your birthday month", "validation");
               }
-              if(monthSt==month){
+              if(monthSt===month){
                 formcontext.ui.clearFormNotification("validation");
 formcontext.getControl("pg_leavetype").clearNotification("validation");
               }
@@ -1274,7 +1274,7 @@ function setPEOnCreate(context) {
   //check if it is create form
   var formContext = context.getFormContext();
 
-  if (formContext.ui.getFormType() == 1) {
+  if (formContext.ui.getFormType() === 1) {
       try {
           //Get Owner ID and get Worker Email
           var owner = formContext.getAttribute("ownerid");
@@ -1351,25 +1351,25 @@ function onSaveUpdateName(context) {
   //Get Type
   var typevalue = formContext.getAttribute("pg_leavetype").getValue();
   var type = "";
-  if (typevalue == 1) {
+  if (typevalue === 1) {
       type = "Paid Time Off";
   }
-  else if (typevalue == 2) {
+  else if (typevalue === 2) {
       type = "Unpaid Time Off";
   }
-  else if (typevalue == 3) {
+  else if (typevalue === 3) {
       type = "Maternity/Paternity Leave";
   }
-  else if (typevalue == 4) {
+  else if (typevalue === 4) {
       type = "Medical";
   }
-  else if (typevalue == 5) {
+  else if (typevalue === 5) {
       type = "Misc Leave";
   }
-else if (typevalue == 6) {
+else if (typevalue === 6) {
       type = "Birthday";
   }
-  else if (typevalue == 7) {
+  else if (typevalue === 7) {
     type = "Floating Holiday";
 }
   var startdate = formContext.getAttribute("pg_startdate").getValue();
@@ -1413,7 +1413,7 @@ function enableSubmit(primarycontrol) {
   var formContext = primarycontrol;
   var usersettings = Xrm.Utility.getGlobalContext().userSettings;
   var leavestatus = formContext.getAttribute("pg_leavestatus").getValue();
-  if ((usersettings.userId == formContext.getAttribute("ownerid").getValue()[0].id) && leavestatus == 1 && formContext.ui.getFormType() != 1) {
+  if ((usersettings.userId === formContext.getAttribute("ownerid").getValue()[0].id) && leavestatus === 1 && formContext.ui.getFormType() != 1) {
       return true;
   }
   else {
@@ -1516,7 +1516,7 @@ function CalculateLength(context) {
               var keyCount = data.value.length;
               var lenTxt = keyCount.toString();
               var setValueLen = count - keyCount;
-              if (dateFormatEND == dateFormatSTART) {
+              if (dateFormatEND === dateFormatSTART) {
                   formContext.getControl("pg_datelengthtoggle").setVisible(true);
                   //    formContext.getAttribute("pg_datelengthnew").setValue(1)
               }
@@ -1558,7 +1558,7 @@ var leavetypevalue = formContext.getAttribute("pg_leavetype").getValue();
           //  var dateFormatEND = yearEn + "-" + monthEn + "-" + dayEn;
           var dateFormatEND = monthEn + "-" + dayEn + "-" + yearEn;
 if(leavetypevalue!==6){
-          if (dateFormatSTART == dateFormatEND) {
+          if (dateFormatSTART === dateFormatEND) {
               formContext.getControl("pg_datelengthtoggle").setVisible(true);
               formContext.getAttribute("pg_datelengthnew").setValue(8);
 
@@ -1576,7 +1576,7 @@ if(leavetypevalue!==6){
       }
 
   }
-  else if (startDate == null && endDate != null) {
+  else if (startDate === null && endDate != null) {
 
       alert("Select start date first");
       formContext.getControl("pg_datelengthtoggle").setVisible(false);
@@ -1692,7 +1692,7 @@ function OnloadField(context) {
       var dayEn = endDate.getDate() + "";
       //  var dateFormatEND = yearEn + "-" + monthEn + "-" + dayEn;
       var dateFormatEND = monthEn + "-" + dayEn + "-" + yearEn;
-      if (dateFormatSTART == dateFormatEND) {
+      if (dateFormatSTART === dateFormatEND) {
           formContext.getControl("pg_datelengthtoggle").setVisible(true);
           formContext.getAttribute("pg_datelengthnew").setValue(1);
       }
@@ -1712,7 +1712,7 @@ function SelectstatusCancel(context) {
   var usersettings = Xrm.Utility.getGlobalContext().userSettings;
   var currentstage = context.getAttribute("statuscode").getValue();
 
-   if(currentstage==140310006 || currentstage==140310003 || currentstage== 140310005)//Approved or pending or unapproved
+   if(currentstage===140310006 || currentstage===140310003 || currentstage=== 140310005)//Approved or pending or unapproved
   {
       var confirmStrings = { cancelButtonLabel: "No", confirmButtonLabel: "Yes", text: "Are you sure you want to cancel this Leave?", title: "Confirmation" };
       var confirmOptions = { height: 200, width: 300 };
@@ -1762,7 +1762,7 @@ function HalfDayToggle(context) {
   debugger;
   var formContext = context.getFormContext();
   var halfDayToggle = formContext.getAttribute("pg_datelengthtoggle").getValue();
-  if (halfDayToggle == false) {
+  if (halfDayToggle === false) {
       formContext.getAttribute("pg_datelengthnew").setValue(8);
   }
   else {
@@ -1776,7 +1776,7 @@ function HalfDayToggle(context) {
 function StartdateCheck(context){
   var formContext = context.getFormContext();
   var currentstage = formContext.getAttribute("statuscode").getValue();
-  if(currentstage==140310003 || currentstage== 140310005)// pending or unapproved
+  if(currentstage===140310003 || currentstage=== 140310005)// pending or unapproved
   {
       var startDate = formContext.getAttribute("pg_startdate").getValue();
       var endDate = formContext.getAttribute("pg_enddate").getValue();
@@ -1816,8 +1816,8 @@ var confirmStrings = { cancelButtonLabel: "No", confirmButtonLabel: "Yes", text:
 
 
        req.onreadystatechange = function () {
-              if (this.readyState == 4 /* complete */) {
-                  if (this.status == 204 || this.status == 200) {
+              if (this.readyState === 4 /* complete */) {
+                  if (this.status === 204 || this.status === 200) {
                       try {
                           //primarycontrol.data.entity.save("saveandclose");
                       }
@@ -1849,7 +1849,7 @@ function showCancelonForm(primarycontrol) {
   var startDate = primarycontrol.getAttribute("pg_startdate").getValue();
 
   //Check if the current state and date
-  if ((startDate >= currentdate) && (currentstatus != 140310004) && (currentstate == 0)) {
+  if ((startDate >= currentdate) && (currentstatus != 140310004) && (currentstate === 0)) {
       return true;
   }
   else {

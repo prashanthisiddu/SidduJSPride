@@ -1,0 +1,1467 @@
+<html><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Dashboard</title>
+    <script src="https://alcdn.msauth.net/browser/2.14.2/js/msal-browser.min.js"></script>
+    
+    <!-- Include Microsoft Graph Client library -->
+    <script src="https://unpkg.com/@microsoft/microsoft-graph-client/lib/graph-js-sdk.js"></script>
+    <style>
+        .dashboard {
+    display: flex;
+    flex-direction: row; /* or row-reverse */
+    align-items: center; /* aligns items vertically */
+}
+
+     .leave-types .type-card {
+            text-align: center;
+            /* flex-basis: 18%; */
+            background-color: #f8f8f8;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.05);
+            height: 35px;
+    width: 20px;
+        }
+
+        .type-card p {
+            margin: 10px 0;
+        } 
+     button {
+  position: relative;
+  /* padding: 10px 20px;
+  margin: 10px; */
+  border: 2px solid steelblue;
+  background: white;
+  -moz-transition: all 300ms;
+  -o-transition: all 300ms;
+  -webkit-transition: all 300ms;
+  transition: all 300ms;
+  z-index: 1;
+  color: steelblue;
+  font-weight: 700;
+  overflow: hidden;
+}
+button:hover {
+  border-color: steelblue;
+  color:white;
+}
+button:after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  -moz-transition: all 300ms;
+  -o-transition: all 300ms;
+  -webkit-transition: all 300ms;
+  transition: all 300ms;
+  background:steelblue;
+}
+
+/* Slide from left */
+#slide::after {
+  height: 100%;
+  width: 0;
+}
+
+#slide:hover::after {
+  width: 100%;
+}
+
+/* Slide from top */
+#slidetop::after {
+  height: 0;
+  width: 100%;
+}
+
+#slidetop:hover::after {
+  height: 100%;
+}
+
+/* Fill with a rectangle */
+.fill::after {
+  height: 100%;
+  width: 100%;
+  -moz-transform: scale(0);
+  -ms-transform: scale(0);
+  -webkit-transform: scale(0);
+  transform: scale(0);
+}
+
+.fill:hover::after {
+  -moz-transform: scale(1);
+  -ms-transform: scale(1);
+  -webkit-transform: scale(1);
+  transform: scale(1);
+}
+
+/* Fill with Elipse */
+.fillelipse::after {
+  top: -25%;
+  left: -25%;
+  height: 150%;
+  width: 150%;
+  -moz-transform: scale(0);
+  -ms-transform: scale(0);
+  -webkit-transform: scale(0);
+  transform: scale(0);
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+}
+
+.fillelipse:hover::after {
+  -moz-transform: scale(1, 1);
+  -ms-transform: scale(1, 1);
+  -webkit-transform: scale(1, 1);
+  transform: scale(1, 1);
+}
+
+/* Slide Skew from the left */
+.slideskew::after {
+  width: 0;
+  height: 100%;
+  left: -25%;
+  -moz-transform: skewX(45deg);
+  -ms-transform: skewX(45deg);
+  -webkit-transform: skewX(45deg);
+  transform: skewX(45deg);
+}
+
+.slideskew:hover::after {
+  width: 150%;
+}
+
+/* Fill Skew */
+.fillskewclose {
+  color: white;
+  border-color: steelblue;
+  background-color: white;
+}
+.fillskewclose:hover {
+  color: steelblue;
+  border-color:steelblue;
+}
+
+.fillskewclose::after {
+  left: -20%;
+  right: -20%;
+  -moz-transform: skewX(-45deg) scale(1, 1);
+  -ms-transform: skewX(-45deg) scale(1, 1);
+  -webkit-transform: skewX(-45deg) scale(1, 1);
+  transform: skewX(-45deg) scale(1, 1);
+}
+
+.fillskewclose:hover::after {
+  -moz-transform: skewX(-45deg) scale(0, 1);
+  -ms-transform: skewX(-45deg) scale(0, 1);
+  -webkit-transform: skewX(-45deg) scale(0, 1);
+  transform: skewX(-45deg) scale(0, 1);
+}
+
+/* Fill Skew */
+.fillskewopen::after {
+  left: -20%;
+  right: -20%;
+  -moz-transform: skewX(45deg) scale(0, 1);
+  -ms-transform: skewX(45deg) scale(0, 1);
+  -webkit-transform: skewX(45deg) scale(0, 1);
+  transform: skewX(45deg) scale(0, 1);
+}
+
+.fillskewopen:hover::after {
+  -moz-transform: skewX(45deg) scale(1, 1);
+  -ms-transform: skewX(45deg) scale(1, 1);
+  -webkit-transform: skewX(45deg) scale(1, 1);
+  transform: skewX(45deg) scale(1, 1);
+}
+   .leave-balance, .shortcuts {
+        background-color: white;
+        padding: 10px;
+        border-radius: 3px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+        .available-leaves {
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-top: 20px; 
+        }
+
+        .available-leaves button {
+            flex: 1; 
+            margin: 0 5px; 
+            padding: 10px; 
+            border: 1px solid #9c9d9e;
+            background-color: #f9f9f9; 
+            border-radius: 5px; 
+            cursor: pointer; 
+        }
+        .leave-types {
+            display: flex;
+            gap: 5px; 
+            flex-wrap: wrap; 
+        }
+
+        .type-card {
+            border: 2px solid #007BFF; 
+            padding: 10px;
+            border-radius: 8px; 
+            text-align: center;
+            width: 150px; 
+            background-color: #f9f9f9; 
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1); 
+        }
+
+        .available-leaves {
+            border: 2px solid #007BFF; 
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 20px;
+            background-color: #f9f9f9;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .dashboard {
+            display: flex;
+            /* justify-content: space-between; */
+            gap: 8px; 
+        }
+
+        .leave-balance {
+            background-color: white;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 10px; 
+        }
+
+        .profile-card img {
+            width: 100px;
+            height: 100px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 2px solid #ddd;
+        }
+
+        .profile-card h2 {
+            margin-top: 10px;
+            font-size: 22px;
+        }
+
+        .profile-card p {
+            color: #666;
+            margin: 5px 0;
+        }
+
+        .performance-container {
+            width: 35%;
+            display: flex;
+            flex-direction: column;
+            
+            gap: 10px; 
+        }
+
+        .performance h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            width: 500px;
+        }
+
+        .performance-content {
+            background-color: white;
+            padding: 5px;
+            border-radius: 10px;
+        }
+
+        .performance-content p {
+            color: #333;
+            margin: 5px 0;
+            font-size: 4px;
+        }
+
+         .leave-balance {
+            width: 10%; 
+        }
+
+        /* .leave-balance h2 {
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .leave-types {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px; 
+        }
+
+        .leave-types .type-card {
+            text-align: center; */
+            /* flex-basis: 18%; */
+            /* background-color: #f8f8f8;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.05);
+            height: 35px;
+    width: 20px;
+        } */ */
+
+        .type-card p {
+            margin: 10px 0;
+        }
+
+        .available-leaves {
+            margin-top: 20px;
+            text-align: right;
+        }
+
+        .type-card {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 10px; 
+            height: 10px; 
+            background-color: #f0f0f0; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+               
+        }
+
+        .type-card svg {
+            
+            height: auto; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+               
+            
+        }
+
+        /* .leave-types {
+            display: flex;
+            gap: 1px; 
+            flex-wrap: wrap; 
+        } */
+
+        .type-card {
+            border: 2px solid #007BFF; 
+            padding: 10px;
+            border-radius: 2px; 
+            text-align: center;
+            /* width: 150px;  */
+            background-color: #f9f9f9; 
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1); 
+            width: 35px;  
+            height: 30px;
+        }
+
+        /* .available-leaves {
+            border: 2px solid #007BFF; 
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .leave-balance-header {
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 20px; 
+        } */
+
+        /* .leave-balance-header a {
+            text-decoration: none; 
+            color: #878d92; 
+            font-weight: bold; 
+        }
+        .outer-box {
+                padding: 20px;
+                margin: 20px;
+                /* border: 2px solid #FFA53B; */
+                /* background-color: #F0F4F8;
+                border-radius: 15px;
+                display: inline-block;
+                box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+                width: 50px;
+                height: 65px
+                
+            } */ */
+            .performance-table {
+    border-collapse: collapse; 
+    width: 100%; 
+    font-size: 10px;
+}
+
+.performance-table td {
+    padding: 5px; 
+    border: none; 
+    vertical-align: top;
+}
+
+.performance-table tr {
+    background-color: transparent; 
+}
+
+
+.performance-table span {
+    font-weight: bold; 
+}
+.leave-balance {
+            text-align: center;
+        }
+
+        .leave-balance h1 {
+            font-size: 20px;
+            color: #007bff;
+        }
+        .shortcuts {
+            /* grid-column: 4;  */
+             /* display: grid;  */
+             /* grid-template-columns: repeat(2, 1fr);  */
+             width:450px;
+             height: 300px;
+             overflow-y: auto;
+
+             
+           
+        }
+
+        .shortcut-btn {
+            background-color: #f0f4ff;
+            padding: 1px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 10px;
+            color: #007bff;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .shortcut-btn:hover {
+            background-color: #e6e8ff;
+        }
+        .outer-box {
+                padding: 20px;
+                margin: 20px;
+               
+                background-color: #F0F4F8;
+                border-radius: 15px;
+                display: inline-block;
+                box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+                width: 41px;
+              
+                
+            }
+          
+
+.buttons-container {
+    display: grid; 
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 5px; }
+
+.entity-btn {
+    text-decoration: none; 
+}
+
+
+.performance-table td {
+    font-size: 12px;
+}
+
+#employee-name {
+    font-size: 16px;
+}
+
+.performance-content {
+    font-size: 14px;
+    text-align: left; 
+}
+
+
+@media screen and (min-width: 90px) {
+    .performance-content {
+        /* font-size: 16px; */
+        /* text-align: center;  */
+    }
+
+    
+
+   
+   
+
+   
+}
+.buttons-container {
+   
+    flex-wrap: wrap; 
+    gap: 10px; 
+}
+
+.slide-button {
+    width: 150px; 
+    height: 40px; 
+    border: none; 
+    background-color: #0078d4; 
+    color: white; 
+    font-size: 16px; 
+    cursor: pointer; 
+    transition: background-color 0.3s; 
+}
+
+.slide-button:hover {
+    background-color: #005a9e; 
+}
+.buttons-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    grid-gap: 20px; 
+    justify-items: center; 
+    align-items: center; 
+    font-size: 10px;
+}
+
+button#slide {
+    width: 170px; 
+    height: 40px; 
+    font-size: 10px;
+
+  
+    
+   
+}
+
+
+
+
+    </style>
+<meta></head>
+
+<body onload="security()" style="overflow-wrap: break-word;">
+    <div class="dashboard">
+        <!-- Profile Card -->
+        <div class="profile-card">
+            <img id="profile-picture" alt="User Profile Picture" style="width: 180px; height: 300px;">
+
+        </div>
+
+        <!-- Performance Section -->
+        <div class="performance-container">
+            <div class="performance">
+                <div class="performance-content" style="background-color:steelblue;">
+                   <a href="https://pgcrmdev.crm.dynamics.com/main.aspx?appid=f2d7d078-c497-44b5-8b97-4c66b8e19353&amp;forceUCI=1&amp;pagetype=entitylist&amp;etn=new_employee&amp;viewid=ac5c4cd9-fc6e-45eb-b1e4-7d5bc05bf4bf&amp;viewType=1039"><h2><span id="employee-name" style="color: white;">Loading... </span> <img src="https://pgcrmdev.crm.dynamics.com/WebResources/pg_Arrow" alt="Arrow" style="width: 15px; height: 12px; margin-left:250px;"></h2></a>
+                </div>
+            </div>
+            <div class="performance">
+                
+                    <div class="performance-content">
+                        <table class="performance-table">
+                           
+                            <tbody><tr>
+                                <td>Dojo:</td>
+                                <td> <span id="pg-dojo">Loading...</span></td>
+                            </tr>
+                            <tr>
+                                <td>Dojo Belt Level:</td>
+                                <td><span id="pg-dojo-belt-level">Loading...</span></td>
+                            </tr>
+                            <tr>
+                                <td>Dojo Degree:</td>
+                                <td><span id="pg-dojo-degree">Loading...</span></td>
+                            </tr>
+                            <tr>
+                                <td>Last Dojo Elevation:</td>
+                                <td><span id="pg-dojo-last-elevated">Loading...</span></td>
+                            </tr>
+                            <tr>
+                                <td>Performance Period:</td>
+                                <td><span id="pg-performance-period">Loading...</span></td>
+                            </tr>
+                            <tr>
+                                <td>Email:</td>
+                                <td><span id="pg-email">Loading...</span></td>
+                            </tr>
+                            
+                            
+                            <tr>
+                                <td>Location:</td>
+                                <td><span id="user-address">Loading...</span></td>
+                            </tr>
+                            <tr>
+                                <td>Manager:</td>
+                                <td><span id="pg-manager">Loading...</span></td>
+                            </tr>
+                            <tr>
+                                <td>Leave balance:</td>
+                                <td><span id="total_available">Loading...</span></td>
+                            </tr>
+                        </tbody></table>
+                    </div>
+                </div>
+                
+            </div>
+        <!--Leave balance-->
+            <!-- <div class="leave-balance">
+
+                <h3>Leave Balance</h3>
+                <div class="outer-box" style="  padding: 20px; margin:10px;border: 2px solid #71A3F8;background-color:white;border-radius: 5px;display: inline-block;box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                    ">
+                    <div class="type-card" style="border:2px solid #71A3F8;background: #71A3F8 0% 0% no-repeat padding-box;
+                    
+                    ;">
+                <h1 style="color: white;"><span id="total_available"> Loading.....36</h1>
+                </div>
+                </div>
+                <p>Total Available</p>
+
+                <a href="">View All</a>
+            </div> -->
+        <!-- <div class="leave-balance">
+            <div class="leave-balance-header" style="display: flex; justify-content: space-between; align-items: center;">
+                <h2 style="margin: 0;">Leave Balance</h2>
+                <a href="#">View All</a>
+            </div>
+    
+                
+                <div class="leave-types"  >
+                    
+                    <div class="outer-box" style="  padding: 20px; margin: 20px;border: 2px solid #71A3F8;background-color: #F0F4F8;border-radius: 5px;display: inline-block;box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                    ">
+                    <div class="type-card" style="border:2px solid #71A3F8;background: #71A3F8 0% 0% no-repeat padding-box;
+                    
+                   ;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-calendar2-check" viewBox="0 0 16 16">
+                            <path d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0"></path>
+                            <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1z"></path>
+                            <path d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5z"></path>
+                        </svg>
+                      
+                    </div>
+                    <p style="margin-top:30px; align-content: center;">Paid leave</p>
+                    </div>
+                   
+                    <div class="outer-box" style="  padding: 20px; margin: 20px;border:2px solid palevioletred;background-color: #F0F4F8;border-radius: 15px;display: inline-block;box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                    ">
+                    
+                    <div class="type-card" style="border:2px solid palevioletred;background: palevioletred 0% 0% no-repeat padding-box;
+                    border: 2px solid palevioletred;
+                    border-radius: 10px;
+                    opacity: 1;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="40" fill="currentColor" class="bi bi-calendar-x" viewBox="0 0 16 16">
+                            <path d="M6.146 7.146a.5.5 0 0 1 .708 0L8 8.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 9l1.147 1.146a.5.5 0 0 1-.708.708L8 9.707l-1.146 1.147a.5.5 0 0 1-.708-.708L7.293 9 6.146 7.854a.5.5 0 0 1 0-.708"></path>
+                            <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"></path>
+                        </svg>
+                       
+                    </div>
+                    <p style="margin-top:30px; align-content: center;">unpaid leave</p>
+                    </div>
+                    <div class="outer-box" style="  padding: 20px; margin: 20px;border:2px solid #8A84F7;;background-color: #F0F4F8;border-radius: 15px;display: inline-block;box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                    ">
+                    <div class="type-card" style="border:2px solid #8A84F7;background: #8A84F7 0% 0% no-repeat padding-box;">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-calendar-heart" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4zM1 14V4h14v10a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1m7-6.507c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132"></path>
+                        </svg>
+                       
+                    </div>
+                    <p style="margin-top: 10px;">Maternity/Paternity</p>
+                    </div>
+                    <div class="outer-box" style="  padding: 20px; margin: 20px;border:2px solid #76D8B1;;background-color: #F0F4F8;border-radius: 15px;display: inline-block;box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                    ">
+            
+                    <div class="type-card" style="border:2px solid #76D8B1;background: #76D8B1 0% 0% no-repeat padding-box;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-heart-pulse" viewBox="0 0 16 16">
+                            <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053.918 3.995.78 5.323 1.508 7H.43c-2.128-5.697 4.165-8.83 7.394-5.857q.09.083.176.171a3 3 0 0 1 .176-.17c3.23-2.974 9.522.159 7.394 5.856h-1.078c.728-1.677.59-3.005.108-3.947C13.486.878 10.4.28 8.717 2.01zM2.212 10h1.315C4.593 11.183 6.05 12.458 8 13.795c1.949-1.337 3.407-2.612 4.473-3.795h1.315c-1.265 1.566-3.14 3.25-5.788 5-2.648-1.75-4.523-3.434-5.788-5"/>
+                            <path d="M10.464 3.314a.5.5 0 0 0-.945.049L7.921 8.956 6.464 5.314a.5.5 0 0 0-.88-.091L3.732 8H.5a.5.5 0 0 0 0 1H4a.5.5 0 0 0 .416-.223l1.473-2.209 1.647 4.118a.5.5 0 0 0 .945-.049l1.598-5.593 1.457 3.642A.5.5 0 0 0 12 9h3.5a.5.5 0 0 0 0-1h-3.162z"/>
+                          </svg>
+                       
+                    </div>
+                    <p style="margin-top:30px; align-content: center;">Medical</p>
+            </div>
+            <div class="outer-box" style="  padding: 20px; margin: 20px;border:2px solid #FFA53B;background-color: #F0F4F8;border-radius: 15px;display: inline-block;box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                    ">
+                    <div class="type-card" style="border:2px solid #FFA53B;background: #FFA53B 0% 0% no-repeat padding-box;
+                    border: 2px solid #FFA53B;
+                    border-radius: 10px;
+                    opacity: 1;">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-cake2" viewBox="0 0 16 16">
+                        <path d="m3.494.013-.595.79A.747.747 0 0 0 3 1.814v2.683q-.224.051-.432.107c-.702.187-1.305.418-1.745.696C.408 5.56 0 5.954 0 6.5v7c0 .546.408.94.823 1.201.44.278 1.043.51 1.745.696C3.978 15.773 5.898 16 8 16s4.022-.227 5.432-.603c.701-.187 1.305-.418 1.745-.696.415-.261.823-.655.823-1.201v-7c0-.546-.408-.94-.823-1.201-.44-.278-1.043-.51-1.745-.696A12 12 0 0 0 13 4.496v-2.69a.747.747 0 0 0 .092-1.004l-.598-.79-.595.792A.747.747 0 0 0 12 1.813V4.3a22 22 0 0 0-2-.23V1.806a.747.747 0 0 0 .092-1.004l-.598-.79-.595.792A.747.747 0 0 0 9 1.813v2.204a29 29 0 0 0-2 0V1.806A.747.747 0 0 0 7.092.802l-.598-.79-.595.792A.747.747 0 0 0 6 1.813V4.07c-.71.05-1.383.129-2 .23V1.806A.747.747 0 0 0 4.092.802zm-.668 5.556L3 5.524v.967q.468.111 1 .201V5.315a21 21 0 0 1 2-.242v1.855q.488.036 1 .054V5.018a28 28 0 0 1 2 0v1.964q.512-.018 1-.054V5.073c.72.054 1.393.137 2 .242v1.377q.532-.09 1-.201v-.967l.175.045c.655.175 1.15.374 1.469.575.344.217.356.35.356.356s-.012.139-.356.356c-.319.2-.814.4-1.47.575C11.87 7.78 10.041 8 8 8c-2.04 0-3.87-.221-5.174-.569-.656-.175-1.151-.374-1.47-.575C1.012 6.639 1 6.506 1 6.5s.012-.139.356-.356c.319-.2.814-.4 1.47-.575M15 7.806v1.027l-.68.907a.94.94 0 0 1-1.17.276 1.94 1.94 0 0 0-2.236.363l-.348.348a1 1 0 0 1-1.307.092l-.06-.044a2 2 0 0 0-2.399 0l-.06.044a1 1 0 0 1-1.306-.092l-.35-.35a1.935 1.935 0 0 0-2.233-.362.935.935 0 0 1-1.168-.277L1 8.82V7.806c.42.232.956.428 1.568.591C3.978 8.773 5.898 9 8 9s4.022-.227 5.432-.603c.612-.163 1.149-.36 1.568-.591m0 2.679V13.5c0 .006-.012.139-.356.355-.319.202-.814.401-1.47.576C11.87 14.78 10.041 15 8 15c-2.04 0-3.87-.221-5.174-.569-.656-.175-1.151-.374-1.47-.575-.344-.217-.356-.35-.356-.356v-3.02a1.935 1.935 0 0 0 2.298.43.935.935 0 0 1 1.08.175l.348.349a2 2 0 0 0 2.615.185l.059-.044a1 1 0 0 1 1.2 0l.06.044a2 2 0 0 0 2.613-.185l.348-.348a.94.94 0 0 1 1.082-.175c.781.39 1.718.208 2.297-.426"/>
+                      </svg>
+                        
+                    </div>
+                    <h5 style="margin-top:30px; align-content: center;">Birthday Leave</h5>
+            </div>
+            <div class="outer-box" style="padding: 20px; margin: 20px; border: 2px solid #1EA6D3; border-radius: 15px; display: inline-block; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); text-align: center;">
+                <div class="type-card" style="border: 2px solid #1EA6D3; background-color: #1EA6D3; border-radius: 15px; display: inline-block; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-suitcase" viewBox="0 0 16 16">
+                    <path d="M6 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 6 5m2 0a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m2 0a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 10 5"/>
+                    <path d="M6.5 0a.5.5 0 0 0-.5.5V3H5a2 2 0 0 0-2 2v8a2 2 0 0 0 1.031 1.75A1.003 1.003 0 0 0 5 16a1 1 0 0 0 1-1h4a1 1 0 1 0 1.969-.25A2 2 0 0 0 13 13V5a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-.5-.5zM9 3H7V1h2zm3 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z"/>
+                  </svg>
+                </div>
+              
+              
+                <p style="margin: 0; text-align: center; display: inline;">Other</p>
+            </div>
+            </div>
+                <div class="available-leaves" style="border:2px solid white; margin-top: 20px;">
+                    <button id="total_available">Total Available:</button>
+                    <button id="total_used">Total Used:</button>
+                </div>
+                </div>
+                <div class="leave-balance">
+                    <h3>Leave Balance</h3>
+                    <h1>36</h1>
+                    <p>Total Available</p>
+                </div>
+
+                   
+</div> -->
+
+<div class="shortcuts">
+    <h2>Shortcut</h2>
+    <div class="buttons-container">
+        <a id="slide_supportticket" class="entity-btn" data-entity="pg_supportticket" href="#">
+            <button id="slide">
+                <img src="https://pgcrmdev.crm.dynamics.com/WebResources/pg_Path42323" alt="Arrow" style="width: 20px; height: 20px; vertical-align: middle;"> Support Request
+            </button>
+        </a>
+        <a id="slide" class="entity-btn" data-entity="pg_onboarding" href="#">
+            <button id="slide"> <img src="https://pgcrmdev.crm.dynamics.com/WebResources/pg_Path42319" alt="Arrow" style="width: 20px; height: 20px; vertical-align: middle;">Onboarding</button>
+        </a>
+        <a id="slide_externalonboarding" class="entity-btn" data-entity="pg_externalonboarding" href="#">
+            <button id="slide"> <img src="https://pgcrmdev.crm.dynamics.com/WebResources/pg_Group158" alt="Arrow" style="width: 20px; height: 20px; vertical-align: middle;">External Onboarding</button>
+        </a>
+        <a id="slide_changemanagement" class="entity-btn" data-entity="pg_changemanagement" href="#">
+            <button id="slide"> <img src="https://pgcrmdev.crm.dynamics.com/WebResources/pg_svgvieweroutput" alt="Arrow" style="width: 20px; height: 20px; vertical-align: middle;">Change Management</button>
+        </a>
+        <a id="slide_offboarding" class="entity-btn" data-entity="pg_offboarding" href="#">
+            <button id="slide"><img src="https://pgcrmdev.crm.dynamics.com/WebResources/pg_svgvieweroutput1" alt="Arrow" style="width: 20px; height: 20px; vertical-align: middle;">Offboarding</button>
+        </a>
+        <a id="slide_pip" class="entity-btn" data-entity="pg_pip" href="#">
+            <button id="slide"><img src="https://pgcrmdev.crm.dynamics.com/WebResources/pg_Group167" alt="Arrow" style="width: 20px; height: 20px; vertical-align: middle;">PIP</button>
+        </a>
+        <a id="slide_decisionrequired" class="entity-btn" data-entity="pg_decisionrequired" href="#">
+            <button id="slide"><img src="https://pgcrmdev.crm.dynamics.com/WebResources/pg_Group164" alt="Arrow" style="width: 20px; height: 20px; vertical-align: middle;">Decision Required</button>
+        </a>
+        <a id="slide_auditform" class="entity-btn" data-entity="pg_auditform" href="#">
+            <button id="slide"><img src="https://pgcrmdev.crm.dynamics.com/WebResources/pg_Group173" alt="Arrow" style="width: 20px; height: 20px; vertical-align: middle;">Audit Form</button>
+        </a>
+        <a id="slide_surveyform" class="entity-btn" data-entity="pg_surveyform" href="#">
+            <button id="slide"><img src="https://pgcrmdev.crm.dynamics.com/WebResources/pg_Group175" alt="Arrow" style="width: 20px; height: 20px; vertical-align: middle;">Survey Form</button>
+        </a>
+    </div>
+</div>
+</div>
+<script>
+
+function security(roleId) {
+    fetchOwnerAndEmployeeData()
+                  var userId = window.parent.Xrm.Utility.getGlobalContext().userSettings.userId;
+
+
+userId = userId.replace(/[{}]/g, "");
+// const graphEndpoint = `https://graph.microsoft.com/v1.0/users/${userId}/photo/$value`;
+
+//     fetch(graphEndpoint, {
+//         headers: {
+//             'Authorization': `Bearer ${your_access_token}`,
+            
+//         }
+//     })
+//     .then(response => {
+//         if (response.ok) {
+//             return response.blob();
+//             console("responsed")
+//         } else {
+//             throw new Error('Failed to retrieve profile picture');
+//         }
+//     })
+//     .then(blob => {
+        
+//         const imageUrl = URL.createObjectURL(blob);
+//         document.getElementById('profile-picture').src = imageUrl; 
+//         console("yess image fetched")
+//     })
+//     .catch(error => {
+//         console.error('Error fetching manager profile picture:', error);
+//     });
+//     const request = {
+//     scopes: ["User.Read"]
+// };
+
+// msalInstance.acquireTokenSilent(request).then(tokenResponse => {
+//     const accessToken = tokenResponse.accessToken;
+
+//     fetch(graphEndpoint, {
+//         headers: {
+//             'Authorization': `Bearer ${accessToken}`
+//         }
+//     }).then(response => {
+//         return response.json();
+//     }).then(data => {
+//         console.log(data); // Handle the data from Graph API
+//     }).catch(error => {
+//         console.error('Error fetching data from Graph API', error);
+//     });
+// }).catch(error => {
+//     console.error('Token acquisition failed', error);
+// });
+
+
+window.parent.Xrm.WebApi.retrieveMultipleRecords("systemuserroles", "?$filter=systemuserid eq " + userId).then(
+    function success(result) {
+        if (result.entities.length > 0) {
+            result.entities.forEach(function (userRole) {
+                var roleId = userRole["roleid"];
+                
+               
+                roleId = String(roleId).replace(/[{}]/g, "");
+                console.log(roleId, "Role ID");
+            });
+        } else {
+            console.log("No roles found for the current user.");
+        }
+    },
+    function error(error) {
+        console.log("Error retrieving roles: " + error.message);
+    }
+);
+
+
+
+
+
+
+                    
+                    roleId = String(roleId).replace(/[{}]/g, "");
+                    console.log(roleId, "Role ID");
+                    var currentAppUrl = window.parent.Xrm.Utility.getGlobalContext().getCurrentAppUrl();
+var apiUrl = window.parent.Xrm.Page.context.getClientUrl()
+console.log(apiUrl)
+// Extract the appId from the URL
+var urlParams = new URLSearchParams(currentAppUrl.split('?')[1]);
+var currentAppId = urlParams.get('appid');
+
+console.log("Current App Id: " + currentAppId);
+var entityMetadataMap = {};
+var button="";
+var viewid="";
+
+var req = new XMLHttpRequest();
+req.open("GET", window.parent.Xrm.Page.context.getClientUrl() + "/api/data/v9.1/entities?$select=logicalname,name&$filter=contains(name, 'pg_')", true);
+req.setRequestHeader("OData-MaxVersion", "4.0");
+req.setRequestHeader("OData-Version", "4.0");
+req.setRequestHeader("Accept", "application/json");
+req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+req.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
+req.onreadystatechange = function() {
+    if (this.readyState === 4) {
+        req.onreadystatechange = null;
+        if (this.status === 200) {
+            var results = JSON.parse(this.response);
+            for (var i = 0; i < results.value.length; i++) {
+                var logicalname = results.value[i]["logicalname"];
+                var name = results.value[i]["name"];
+                console.log(name)
+                console.log(logicalname)
+                entityMetadataMap[logicalname] = name;
+                
+            }
+        } else {
+            Xrm.Utility.alertDialog(this.statusText);
+        }
+    }
+};
+req.send();
+document.querySelectorAll('.entity-btn').forEach(button => {
+    button.addEventListener('click', function() {
+       
+        var selectedEntityLogicalName = this.getAttribute('data-entity');
+        console.log(selectedEntityLogicalName)
+       
+        if (entityMetadataMap[selectedEntityLogicalName]) {
+            console.log("Selected Entity Logical Name: " + selectedEntityLogicalName);
+            console.log("Selected Entity Display Name: " + name[selectedEntityLogicalName]);
+
+            
+             button=selectedEntityLogicalName
+            //  this.setAttribute('href', URL);
+            var URL = `${apiUrl}/main.aspx?appid=${currentAppId}&pagetype=entitylist&etn=${button}`;
+console.log(URL)
+this.setAttribute('href', URL);
+
+             var req = new XMLHttpRequest();
+req.open("GET", window.parent.Xrm.Page.context.getClientUrl() + "/api/data/v9.1/savedqueries?$select=name,querytype,returnedtypecode,isdefault,roledisplayconditionsxml,savedqueryid&$filter=isdefault eq true", true);
+req.setRequestHeader("OData-MaxVersion", "4.0");
+req.setRequestHeader("OData-Version", "4.0");
+req.setRequestHeader("Accept", "application/json");
+req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+req.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
+req.onreadystatechange = function() {
+    if (this.readyState === 4) {
+        req.onreadystatechange = null;
+        if (this.status === 200) {
+            var results = JSON.parse(this.response);
+            var defaultViewId = null;
+            for (var i = 0; i < results.value.length; i++) {
+              var view = results.value[i];
+              var returnedtypecode = results.value[i]["returnedtypecode"];
+
+              if(selectedEntityLogicalName===returnedtypecode){
+
+                var name = results.value[i]["name"];
+                var querytype = results.value[i]["querytype"];
+                var querytype_formatted = results.value[i]["querytype@OData.Community.Display.V1.FormattedValue"];
+                var returnedtypecode = results.value[i]["returnedtypecode"];
+                var roledisplayconditionsxml = results.value[i]["roledisplayconditionsxml"];
+               viewid = results.value[i]["savedqueryid"];
+               var isdefault = results.value[i]["isdefault"];
+               console.log(isdefault)
+                console.log(viewid)
+                if(isdefault){
+                  defaultViewId=viewid
+                  console.log("d_vid",defaultViewId)
+                }
+               
+            }
+          }
+        } else {
+            Xrm.Utility.alertDialog(this.statusText);
+        }
+    }
+};
+req.send();
+            //  getViews(button);
+        } else {
+            console.log("Error: Selected entity not found in metadata.");
+        }
+    });
+});
+
+// function getViews(entityLogicalName) {
+//     var req = new XMLHttpRequest();
+//     // Endpoint to retrieve views for the specified entity
+//     req.open("GET", "/api/data/v9.1/entities?$select=logicalname" + button + "')/Views?$select=ViewId,ViewName", true);
+//     req.setRequestHeader("OData-MaxVersion", "4.0");
+//     req.setRequestHeader("OData-Version", "4.0");
+//     req.setRequestHeader("Accept", "application/json");
+//     req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+//     req.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
+
+//     req.onreadystatechange = function() {
+//         if (this.readyState === 4) {
+//             req.onreadystatechange = null;
+//             if (this.status === 200) {
+//                 var results = JSON.parse(this.response);
+//                 results.value.forEach(function(view) {
+//                     console.log("View ID: " + view.ViewId);
+//                     console.log("View Name: " + view.ViewName);
+//                 });
+//             } else {
+//                 console.log("Error retrieving views: " + this.statusText);
+//             }
+//         }
+//     };
+//     req.send();
+// }
+
+
+           
+            console.log(button)
+                  defaultViewId=isdefault
+// var URL = `${apiUrl}/main.aspx?appid=${currentAppId}&pagetype=entitylist&etn=${button}&viewid=${defaultViewId}&viewType=1039`;
+var URL = `${apiUrl}/main.aspx?appid=${currentAppId}&pagetype=entitylist&etn=${button}`;
+
+console.log(URL)
+
+
+window.location.href=URL;
+
+}
+
+// Dynamically assign the URL to the button
+// document.getElementById("supportTicketLink").href = supportTicketURL;
+
+                  
+            
+                
+// // Get the current app URL
+// var currentAppUrl = Xrm.Utility.getGlobalContext().getCurrentAppUrl();
+// var apiUrl = window.parent.Xrm.Page.context.getClientUrl()
+// // Extract the appId from the URL
+// var urlParams = new URLSearchParams(currentAppUrl.split('?')[1]);
+// var currentAppId = urlParams.get('appid');
+
+// console.log("Current App Id: " + currentAppId);
+
+// // Use the currentAppId in your logic
+// var supportTicketURL = `${apiUrl}/main.aspx?appid=${currentAppId}&forceUCI=1&pagetype=entitylist&etn=pg_supportticket&viewid=c00ae4c2-98d7-4c23-a234-dce97f26863a&viewType=1039`;
+
+// // Dynamically assign the URL to the button
+// document.getElementById("supportTicketLink").href = supportTicketURL;
+
+
+
+// getUserMenuItems();
+
+var userId = window.parent.Xrm.Utility.getGlobalContext().userSettings.userId.replace(/[{}]/g, "");
+        console.log(userId, "u_id")
+        var roles=window.parent.Xrm.Utility.getGlobalContext().userSettings.roles
+        console.log(roles)
+        // var formContext = window.parent.Xrm.Utility.getGlobalContext();
+        // var accountId = formContext.data.entity.getId();
+        console.log(accountId +"Account id ")
+        function fetchOwnerAndEmployeeData() {
+            var req = new XMLHttpRequest();
+            
+           
+            var apiUrl = window.parent.Xrm.Page.context.getClientUrl() + "/api/data/v9.1/systemusers(" + userId + ")?$select=systemuserid";
+            console.log(apiUrl ,"api")
+            
+            req.open("GET", apiUrl, true);
+
+            
+            req.setRequestHeader("OData-MaxVersion", "4.0");
+            req.setRequestHeader("OData-Version", "4.0");
+            req.setRequestHeader("Accept", "application/json");
+            req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+
+            req.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    req.onreadystatechange = null;
+
+                    if (this.status === 200) {
+                       
+                        var result = JSON.parse(this.responseText);
+                        var ownerId = result.systemuserid;
+                        console.log(ownerId ,"o_id");
+
+                        
+                        UserAddress(userId);
+                        getAccountIdByUserId(userId)
+                        fetchNewEmployeesByOwner(ownerId);
+                        LeavebalanceByOwnerId(ownerId)
+                        getManagerName(managerId);
+                        // UserProfileGraph(userId)
+                        // fetchOwnerProfileImage(ownerId)
+                        fetchLoggedInUserProfilePicture()
+
+                    } else {
+                        console.error("Error fetching owner data: " + this.statusText);
+                    }
+                }
+            };
+
+           
+            req.send();
+        }
+
+        function getAccountIdByUserId(userId) {
+    var apiUrl =  window.parent.Xrm.Utility.getGlobalContext().getClientUrl() + 
+                 "/api/data/v9.1/accounts?$filter=_ownerid_value ne null" + userId + 
+                 "&$select=accountid";
+
+    var req = new XMLHttpRequest();
+    req.open("GET", apiUrl, true);
+    req.setRequestHeader("OData-MaxVersion", "4.0");
+    req.setRequestHeader("OData-Version", "4.0");
+    req.setRequestHeader("Accept", "application/json");
+    req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+
+    req.onreadystatechange = function () {
+        if (this.readyState === 4) {
+            req.onreadystatechange = null;
+            if (this.status === 200) {
+                var results = JSON.parse(this.responseText);
+                if (results.value.length > 0) {
+                    var accountId = results.value[0].accountid; // Get the first account id
+                    console.log("Account ID: " + accountId);
+                } else {
+                    console.log("No accounts found for this user.");
+                }
+            } else {
+                console.error("Error fetching account: " + this.statusText);
+            }
+        }
+    };
+
+    req.send();
+}
+
+
+
+    // function fetchUserProfilePicture(userId) {
+    // var req = new XMLHttpRequest();
+    //  debugger;
+   
+    // var apiUrl = window.parent.Xrm.Page.context.getClientUrl() + "/api/data/v9.1/systemusers(" + userId + ")?$select=entityimage";
+
+    
+    // req.open("GET", apiUrl, true);
+
+    // req.setRequestHeader("OData-MaxVersion", "4.0");
+    // req.setRequestHeader("OData-Version", "4.0");
+    // req.setRequestHeader("Accept", "application/json");
+    // req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+
+  
+    // req.onreadystatechange = function () {
+    //     if (this.readyState === 4) {
+    //         req.onreadystatechange = null;
+
+    //         if (this.status === 200) {
+                
+    //             var result = JSON.parse(this.responseText);
+    //             var profileImageBase64 = result.entityimage;
+
+    //             if (profileImageBase64) {
+                    
+    //                 document.getElementById('profile-picture').src = "data:image/jpeg;base64," + profileImageBase64;
+    //             } else {
+    //                 console.warn("Profile picture not available for this user.");
+    //                 document.getElementById('profile-picture').src = "path-to-default-image.jpg";  
+    //             }
+    //         } else {
+    //             console.error("Error fetching user profile picture: " + this.statusText);
+    //         }
+    //     }
+    // };
+
+    
+    // req.send();
+    // }
+    function UserAddress(userId) {
+    var req = new XMLHttpRequest();
+    var apiUrl = window.parent.Xrm.Page.context.getClientUrl() + "/api/data/v9.1/systemusers(" + userId + ")?$select=address1_line1,address1_city,address1_stateorprovince,address1_postalcode,address1_country";
+
+    req.open("GET", apiUrl, true);
+
+    req.setRequestHeader("OData-MaxVersion", "4.0");
+    req.setRequestHeader("OData-Version", "4.0");
+    req.setRequestHeader("Accept", "application/json");
+    req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+
+    req.onreadystatechange = function () {
+        if (this.readyState === 4) {
+            req.onreadystatechange = null;
+
+            if (this.status === 200) {
+                var result = JSON.parse(this.responseText);
+                
+                var addressLine1 = result.address1_line1;
+                var city = result.address1_city;
+                var state = result.address1_stateorprovince;
+                var postalCode = result.address1_postalcode;
+                var country = result.address1_country;
+
+                if (addressLine1 || city || state || postalCode || country) {
+                    var fullAddress = 
+                        (addressLine1 ? addressLine1 + ", " : "") + 
+                        (city ? city + ", " : "") + 
+                        (state ? state + ", " : "") + 
+                        (postalCode ? postalCode + ", " : "") + 
+                        (country ? country : "");
+
+                    document.getElementById('user-address').textContent = fullAddress;
+                } else {
+                    console.warn("Address not available for this user.");
+                    document.getElementById('user-address').textContent = "Address not available";
+                }
+            } else {
+                console.error("Error fetching user address: " + this.statusText);
+            }
+        }
+    };
+
+    req.send();
+}
+function fetchOwnerProfileImage(ownerId) {
+    const ownerEndpoint = `/api/data/v9.1/systemusers(${ownerId})?$select=fullname,entityimage`;
+
+    fetch(ownerEndpoint, {
+        headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Accept': 'application/json',
+            'OData-MaxVersion': '4.0',
+            'OData-Version': '4.0'
+        }
+    })
+    .then(response => response.json())
+    .then(owner => {
+        if (owner.entityimage) {
+            // The profile picture is in base64 format
+            const imageSrc = `data:image/jpeg;base64,${owner.entityimage}`;
+            document.getElementById('profile-picture').src = imageSrc; 
+            console.log("image fected")
+            // Assuming you have an <img> element for the profile picture
+        } else {
+            console.log('No profile image found for this owner.');
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching owner profile image:', error);
+    });
+}
+
+        function fetchNewEmployeesByOwner(ownerId) {
+            var req = new XMLHttpRequest();
+
+           
+            var apiUrl = window.parent.Xrm.Page.context.getClientUrl() + "/api/data/v9.1/new_employees?$filter=_ownerid_value eq " + ownerId + "&$select=emailaddress,new_name,pg_dojo,pg_dojobeltlevelos,pg_dojodegreeos,pg_dojolastelevated,_pg_manager_value,pg_performanceperiod";
+            
+            req.open("GET", apiUrl, true);
+
+            req.setRequestHeader("Prefer", "odata.include-annotations=OData.Community.Display.V1.FormattedValue");
+
+            req.setRequestHeader("OData-MaxVersion", "4.0");
+            req.setRequestHeader("OData-Version", "4.0");
+            req.setRequestHeader("Accept", "application/json");
+            req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+
+            
+            req.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    req.onreadystatechange = null;
+
+                    if (this.status === 200) {
+                        
+                        var employeesData = JSON.parse(this.responseText).value;
+                        
+
+                        
+                        employeesData.forEach(function(employee) {
+                        
+document.getElementById('employee-name').textContent = employee.new_name;
+document.getElementById('pg-email').textContent = employee.emailaddress;
+
+
+
+// Check if the formatted value is available, otherwise fallback to the raw value
+document.getElementById('pg-dojo').textContent = employee['pg_dojo@OData.Community.Display.V1.FormattedValue'] 
+    ? employee['pg_dojo@OData.Community.Display.V1.FormattedValue'] 
+    : employee.pg_dojo;
+
+if (employee['pg_dojobeltlevelos@OData.Community.Display.V1.FormattedValue']) {
+    document.getElementById('pg-dojo-belt-level').textContent = employee['pg_dojobeltlevelos@OData.Community.Display.V1.FormattedValue'];
+} else {
+    document.getElementById('pg-dojo-belt-level').textContent = employee.pg_dojobeltlevelos; // fallback to raw value
+}
+
+// For the Dojo Degree
+if (employee['pg_dojodegreeos@OData.Community.Display.V1.FormattedValue']) {
+    document.getElementById('pg-dojo-degree').textContent = employee['pg_dojodegreeos@OData.Community.Display.V1.FormattedValue'];
+} else {
+    document.getElementById('pg-dojo-degree').textContent = employee.pg_dojodegreeos; // fallback to raw value
+}
+
+
+const lastElevatedDate = new Date(employee.pg_dojolastelevated); 
+const options = { year: 'numeric', month: 'long', day: 'numeric' };
+const formattedLastElevatedDate = lastElevatedDate.toLocaleDateString('en-US', options);
+document.getElementById('pg-dojo-last-elevated').textContent = formattedLastElevatedDate;
+
+
+document.getElementById('pg-performance-period').textContent = employee.pg_performanceperiod;
+document.getElementById('pg-manager').textContent = employee._pg_manager_value;
+var managerId = employee._pg_manager_value; 
+            document.getElementById('pg-manager').textContent = managerId;
+
+            
+            if (managerId) {
+                getManagerName(managerId); 
+            } else {
+                console.error("Manager ID not found.");
+            }
+
+console.log(employee._pg_manager_value);
+
+                            
+
+                        });
+                    } else {
+                        console.error("Error fetching employees data: " + this.statusText);
+                    }
+                }
+            };
+
+           
+            req.send();
+        }
+
+        function UserProfileGraph(userId) {
+            debugger;
+    // const graphEndpoint = `https://graph.microsoft.com/v1.0/users/${userId}/photo/$value`;
+
+    // fetch(graphEndpoint, {
+    //     headers: {
+    //         'Authorization': `Bearer ${your_access_token}`,
+            
+    //     }
+    // })
+    // .then(response => {
+    //     if (response.ok) {
+    //         return response.blob();
+    //         console("responsed")
+    //     } else {
+    //         throw new Error('Failed to retrieve profile picture');
+    //     }
+    // })
+    // .then(blob => {
+        
+    //     const imageUrl = URL.createObjectURL(blob);
+    //     document.getElementById('profile-picture').src = imageUrl; 
+    //     console("yess image fetched")
+    // })
+    // .catch(error => {
+    //     console.error('Error fetching manager profile picture:', error);
+    // });
+}
+                            
+
+                      
+        
+        function getManagerName(managerId) {
+        // Clean up the managerId if it has curly braces
+        managerId = String(managerId).replace(/[{}]/g, "");
+        console.log(managerId, "Manager ID");
+
+        // Create an XMLHttpRequest to get the manager's details
+        var req = new XMLHttpRequest();
+        req.open("GET", `/api/data/v9.1/systemusers(${managerId})?$select=fullname`, true);
+
+        req.setRequestHeader("OData-MaxVersion", "4.0");
+        req.setRequestHeader("OData-Version", "4.0");
+        req.setRequestHeader("Accept", "application/json");
+        req.setRequestHeader("Prefer", 'odata.include-annotations="*"');
+
+        req.onreadystatechange = function () {
+            if (this.readyState === 4) {
+                req.onreadystatechange = null;
+                if (this.status === 200) {
+                    var result = JSON.parse(this.response);
+                    console.log("Manager Full Name:", result.fullname);
+                    document.getElementById('pg-manager').textContent = result.fullname; 
+                } else {
+                    console.error("Error fetching manager details:", this.statusText);
+                }
+            }
+        };
+        req.send();
+    }
+
+    
+   
+    getManagerName();
+
+
+        function LeavebalanceByOwnerId(ownerId) {
+            var req = new XMLHttpRequest();
+
+           
+            var apiUrl = window.parent.Xrm.Page.context.getClientUrl() + "/api/data/v9.1/pg_leavebalances?$filter=_ownerid_value eq " + ownerId + "&$select=_ownerid_value,pg_name,pg_totalavailablehours,pg_totalused";
+           console.log(apiUrl,"leaveurl")
+            req.open("GET", apiUrl, true);
+
+            
+            req.setRequestHeader("OData-MaxVersion", "4.0");
+            req.setRequestHeader("OData-Version", "4.0");
+            req.setRequestHeader("Accept", "application/json");
+            req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+
+            
+            req.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    req.onreadystatechange = null;
+
+                    if (this.status === 200) {
+                        
+                        var employeesData = JSON.parse(this.responseText).value;
+                        
+
+                        
+                        employeesData.forEach(function(Balance) {
+                            document.getElementById('total_available').textContent =Balance.pg_totalavailablehours ;
+                            console.log(Balance.pg_totalavailablehours)
+                            document.getElementById('total_used').textContent =Balance.pg_totalused ;
+                            console.log(Balance.pg_totalavailablehours)
+                            console.log("owner_id", ownerId)
+                           
+
+                        });
+                    } else {
+                        console.error("Error fetching employees data: " + this.statusText);
+                    }
+                }
+            };
+
+           
+            req.send();
+        }
+        microsoftTeams.authentication.getAuthToken({
+    successCallback: function (result) {
+        var accessToken = result;
+        fetchLoggedInUserProfilePicture(accessToken); // Pass the token to the image fetch function
+    },
+    failureCallback: function (error) {
+        console.error("Authentication failed: " + error);
+    }
+});
+// Function to fetch the logged-in user's profile picture
+function fetchLoggedInUserProfilePicture() {
+    var req = new XMLHttpRequest();
+    
+    // The API URL to get the current user's profile picture
+    var apiUrl = "https://graph.microsoft.com/beta/$metadata#users('fcd69427-b44c-48f9-9a39-02e7b6f4d225')/profile/account";
+
+    req.open("GET", apiUrl, true);
+
+    // Set the required headers, including the access token obtained from authentication
+    req.setRequestHeader("Authorization", "Bearer " + accessToken);
+    req.setRequestHeader("Accept", "image/jpeg");
+
+    req.responseType = "blob"; // Set the response type to blob since we expect an image
+
+    req.onreadystatechange = function () {
+        if (this.readyState === 4) {
+            if (this.status === 200) {
+                // Create a blob URL from the response and set it to the image source
+                var imageUrl = URL.createObjectURL(this.response);
+                document.getElementById('profile-picture').src = imageUrl;
+                console.log("image fetched")
+            } else {
+                console.error("Error fetching user profile picture: " + this.statusText);
+            }
+        }
+    };
+
+    req.send();
+}
+
+
+       
+        fetchOwnerAndEmployeeData();
+       fetchUserProfilePicture(userId)
+       
+
+
+
+    </script>
+     <script>
+        var req = new XMLHttpRequest();
+
+         var apiUrl = window.parent.Xrm.Page.context.getClientUrl() + "api/data/v9.1/appmodules?$select=appmoduleid,url";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+    </script>
+
+</body></html>

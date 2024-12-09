@@ -44,7 +44,7 @@ function QMGFIELDCHECK(context) {
        var Q = formcontext.getAttribute("pg_paperworkauditedandsharedtoqmgpayroll").getValue();
        var R = formcontext.getAttribute("pg_paperworkuploadedinsharepoint").getValue();
     
-         if (A!==140310001 || B!==140310001 || C!==140310001 || D!==140310001 || E!==140310001 || F!==140310001 || G!==140310001 || H!==140310001 || I!==140310001 || J!==140310001 || K!==140310001 || L!==140310001 || M!==140310001 || N!==140310001 || O!==140310001 || P!==140310001 || Q!==140310001 || R!==140310001){
+         if (A!===140310001 || B!===140310001 || C!===140310001 || D!===140310001 || E!===140310001 || F!===140310001 || G!===140310001 || H!===140310001 || I!===140310001 || J!===140310001 || K!===140310001 || L!===140310001 || M!===140310001 || N!===140310001 || O!===140310001 || P!===140310001 || Q!===140310001 || R!===140310001){
          alertStrings = { confirmButtonLabel: "OK", text: "Please complete HR Checklist.", title: "Cannot Move to Next Stage" };
                     alertOptions = { height: 200, width: 300 };
                     Xrm.Navigation.openAlertDialog(alertStrings, alertOptions);
@@ -150,7 +150,7 @@ function GetUserTeams(context) {
     if (Type != createform) {
   var owner = formContext.getAttribute("ownerid").getValue();
  var ownerName = owner[0].name; 
-        if (type === 140310000 && country === 140310000 && status === 1) {///type == 140310001 changed to 140310000
+        if (type === 140310000 && country === 140310000 && status === 1) {///type === 140310001 changed to 140310000
             Xrm.WebApi.online.retrieveRecord("systemuser", loggedinUserId, "?$select=internalemailaddress").then(
                 function success(result1) {
                     var internalemailaddress2 = result1["internalemailaddress"];
@@ -178,7 +178,7 @@ function GetUserTeams(context) {
                                     var internalemailaddress = response.value[i]["internalemailaddress"];
                                     users.push(internalemailaddress);
                                 }
- if (internalemailaddress2 !== internalemailaddress && username !==ownerName) {
+ if (internalemailaddress2 !=== internalemailaddress && username !===ownerName) {
                             
                                     formContext.getControl("pg_firstname").setDisabled(true);
         formContext.getControl("pg_lastname").setDisabled(true);          
@@ -266,7 +266,7 @@ var userSettings = Xrm.Utility.getGlobalContext().userSettings;
     if (Type != createform) {
   var owner = formContext.getAttribute("ownerid").getValue();
  var ownerName = owner[0].name; 
-        if (username !==ownerName && country===140310001) {
+        if (username !===ownerName && country===140310001) {
             formContext.getControl("pg_firstname").setDisabled(true);
             formContext.getControl("pg_middlename").setDisabled(true);
             formContext.getControl("pg_lastname").setDisabled(true);
@@ -321,7 +321,7 @@ var userSettings = Xrm.Utility.getGlobalContext().userSettings;
         }
 
     }
-if(country === 140310000 && type !== 140310000){
+if(country === 140310000 && type !=== 140310000){
 //alert("Child ticket should be closed before moving to the next stage");
 }
 }
@@ -364,7 +364,7 @@ function formatWholeNumberField(executionContext) {
     var formContext = executionContext.getFormContext();
     var wholeNumberField = formContext.getAttribute("pg_launchreq").getValue();
     
-    if (wholeNumberField !== null && wholeNumberField !== undefined) {
+    if (wholeNumberField !=== null && wholeNumberField !=== undefined) {
     
         var formattedValue = wholeNumberField.replace(/\D/g, "");
         formContext.getAttribute("pg_launchreq").setValue(formattedValue);
@@ -393,8 +393,8 @@ function EATOMOVE(executionContext) {
    var h = formContext.getAttribute("pg_issueappointmentletter").getValue();
       var activeStage = formContext.data.process.getActiveStage();
       var stageId = activeStage.getId();
-  if (Type !== createform) {
-    if (Type !== createform) {
+  if (Type !=== createform) {
+    if (Type !=== createform) {
         if (stageId === "434713b1-7d96-43df-b36c-d325daef06d7") {
             formContext.data.process.moveNext();
         } else if (stageId === "4da369a2-7910-4f16-8cee-0bcfd281685d" && country === 140310000) { //qmg us
@@ -446,9 +446,9 @@ function compareusers(context) {
     var createform = 1;
     var Type = formContext.ui.getFormType();
   var status = formContext.getAttribute("statuscode").getValue();
-    if (Type !== createform) {
+    if (Type !=== createform) {
 
-        if (type === 140310000 && country === 140310000 && status === 1) {///type == 140310001 changed to 140310000
+        if (type === 140310000 && country === 140310000 && status === 1) {///type === 140310001 changed to 140310000
 
             var Reportingmanager = formContext.getAttribute("pg_reportingmanagername").getValue()[0].id;
             Xrm.WebApi.online.retrieveRecord("systemuser", loggedinUserId, "?$select=internalemailaddress").then(
@@ -593,9 +593,9 @@ Xrm.Navigation.openConfirmDialog(confirmStrings, confirmOptions).then(
             req.setRequestHeader("OData-Version", "4.0");
 
             req.onreadystatechange = function () {
-                if (this.readyState == 4 /* complete */) {
+                if (this.readyState === 4 /* complete */) {
 
-                    if (this.status == 200 || this.status == 204) {
+                    if (this.status === 200 || this.status === 204) {
 
                         formContext.data.entity.save("saveandclose");
 
@@ -663,7 +663,7 @@ function Resolvebutton(primaryControl) {  //main form
    var itteamcreateemailid = formContext.getAttribute("pg_itteamcreateemailid").getValue();
    var itteamringcentralaccess = formContext.getAttribute("pg_itteamringcentralaccess").getValue();
    var itteamcreateloginpassword = formContext.getAttribute("pg_itteamcreateloginpassword").getValue();
-    if ((stageId === "af2bd53b-5965-470a-a555-bd6d02ee2211" && type === 140310000) || (type === 140310012 && legalemployeeagrement ===true) || (type === 140310004 && itteamcreateemailid ===true && itteamringcentralaccess===true && itteamcreateloginpassword===true) || (type !== 140310000 && country !==140310000) || (type === 140310005 && country===140310000)) {///completed stage
+    if ((stageId === "af2bd53b-5965-470a-a555-bd6d02ee2211" && type === 140310000) || (type === 140310012 && legalemployeeagrement ===true) || (type === 140310004 && itteamcreateemailid ===true && itteamringcentralaccess===true && itteamcreateloginpassword===true) || (type !=== 140310000 && country !===140310000) || (type === 140310005 && country===140310000)) {///completed stage
         return true;
     }
     else {
@@ -676,17 +676,17 @@ function managerSH(executionContext) {
     var formContext = executionContext.getFormContext();
     var pgvoicesupport = formContext.getAttribute("pg_voicesupport").getValue();
     var managesemployees = formContext.getAttribute("pg_managesemployees").getValue();
-    if (pgvoicesupport === 140310002 || pgvoicesupport === 140310003) { // iif voicesupport==US OR UK
+    if (pgvoicesupport === 140310002 || pgvoicesupport === 140310003) { // iif voicesupport===US OR UK
         formContext.getControl("pg_voipareacode").setVisible(true);
     formContext.getControl("pg_voipareacode1").setVisible(true);
     }
-    /////else if(voicesupport==140310000 || voicesupport ==140310001)  { // iif voicesupport==US OR UK
+    /////else if(voicesupport===140310000 || voicesupport ===140310001)  { // iif voicesupport===US OR UK
 
     else {
         formContext.getControl("pg_voipareacode").setVisible(false);
     formContext.getControl("pg_voipareacode1").setVisible(false);
     }
-    if (managesemployees === 1) { // iif managesemployees==0
+    if (managesemployees === 1) { // iif managesemployees===0
         formContext.getControl("pg_employeetobemapped").setVisible(true);
     }
     else {
@@ -745,11 +745,11 @@ debugger;
        var a = formContext.getAttribute("pg_checkallotherchildticketsare1oocomplete").getValue();
    var b = formContext.getAttribute("pg_checkfullbgvcompletion").getValue();
    var c = formContext.getAttribute("pg_checkappointmentletterissuance").getValue();
-         if (stageId === "4a81cbce-6ed8-442d-a4fc-8ee873101d56") {///hr stage///currentstage == 140310003 && country != 140310000
+         if (stageId === "4a81cbce-6ed8-442d-a4fc-8ee873101d56") {///hr stage///currentstage === 140310003 && country != 140310000
       
             formContext.data.process.moveNext();
         }
-        else if (stageId === "11a1353a-8929-4e64-84fb-f0fb16960dcc"){/// || stageId == "cb5fde85-072a-4bc2-b107-0af5fbe55e2d") {////audit stage//currentstage == 140310004 && country != 140310000
+        else if (stageId === "11a1353a-8929-4e64-84fb-f0fb16960dcc"){/// || stageId === "cb5fde85-072a-4bc2-b107-0af5fbe55e2d") {////audit stage//currentstage === 140310004 && country != 140310000
       
             formContext.data.process.moveNext();
         }
@@ -763,12 +763,12 @@ debugger;
             formContext.data.process.moveNext();
 
         }
- else if(stageId === "408d7424-cb76-4326-b1ec-5f3287f3bdc1"){// && a===true && b===true && c!==null){ ////india hrops stage
+ else if(stageId === "408d7424-cb76-4326-b1ec-5f3287f3bdc1"){// && a===true && b===true && c!===null){ ////india hrops stage
       
             formContext.data.process.moveNext();
 
         }
-  else if(stageId === "5b1a3c2d-a34b-4f8a-aadf-a0af017d93ef" && childcount!== 0){ ////dropoutindia
+  else if(stageId === "5b1a3c2d-a34b-4f8a-aadf-a0af017d93ef" && childcount!=== 0){ ////dropoutindia
       
       alertStrings = { confirmButtonLabel: "OK", text: "Please complete the child ticket fully and accurately, to proceed to the next stage.", title: "Cannot Move to Next Stage" };
                 alertOptions = { height: 200, width: 300 };
@@ -781,8 +781,8 @@ debugger;
         else if (stageId === "dd998249-4176-4511-8fea-1b3fff8d4dcc" && childcount === 0 || stageId === "b9732caf-4eb2-47d5-aa2a-e53e6575054e") {////dropoutta stage
             formContext.data.process.moveNext();
         }
-        else if ( stageId === "6bb2f036-a279-466a-b004-72a93e20ba6c" || currentstage === 140310002 && country !== 140310000) {
-            formContext.data.process.moveNext();//stageId == "0baac90f-f95e-4581-83a1-f7753b429186" child ticket
+        else if ( stageId === "6bb2f036-a279-466a-b004-72a93e20ba6c" || currentstage === 140310002 && country !=== 140310000) {
+            formContext.data.process.moveNext();//stageId === "0baac90f-f95e-4581-83a1-f7753b429186" child ticket
         }
     }
 }
@@ -828,7 +828,7 @@ Onboarding.formEvents = {
 
         if (bpfstage === "Child Ticket" || bpfstage === "Dropout Child Ticket" || bpfstage === "Legal" || bpfstage === "IT" || bpfstage === "HR") {
 
-            if (bpfArguments.getDirection() === "Next" && formcontext.getAttribute("pg_childtickets").getValue() !== null && formcontext.getAttribute("pg_childtickets").getValue() !== 0) {
+            if (bpfArguments.getDirection() === "Next" && formcontext.getAttribute("pg_childtickets").getValue() !=== null && formcontext.getAttribute("pg_childtickets").getValue() !=== 0) {
                 bpfArguments.preventDefault();
                 alertStrings = { confirmButtonLabel: "OK", text: "Please complete the Child Ticket fully and accurately, to proceed to the next stage.", title: "Cannot Move to Next Stage" };
                 alertOptions = { height: 200, width: 300 };
@@ -860,7 +860,7 @@ Onboarding.formEvents = {
    var Q = formcontext.getAttribute("pg_paperworkauditedandsharedtoqmgpayroll").getValue();
    var R = formcontext.getAttribute("pg_paperworkuploadedinsharepoint").getValue();
 
-     if ((bpfArguments.getDirection() === "Next") && (A!=140310001 || B!==140310001 || C!==140310001 || D!==140310001 || E!==140310001 || F!==140310001 || G!==140310001 || H!==140310001 || I!==140310001 || J!==140310001 || K!==140310001 || L!==140310001 || M!==140310001 || N!==140310001 || O!==140310001 || P!==140310001 || Q!==140310001 || R!==140310001)){
+     if ((bpfArguments.getDirection() === "Next") && (A!=140310001 || B!===140310001 || C!===140310001 || D!===140310001 || E!===140310001 || F!===140310001 || G!===140310001 || H!===140310001 || I!===140310001 || J!===140310001 || K!===140310001 || L!===140310001 || M!===140310001 || N!===140310001 || O!===140310001 || P!===140310001 || Q!===140310001 || R!===140310001)){
    bpfArguments.preventDefault();
      alertStrings = { confirmButtonLabel: "OK", text: "Please complete audit of all requests.", title: "Cannot Move to Next Stage" };
                 alertOptions = { height: 200, width: 300 };
@@ -893,11 +893,11 @@ a = formcontext.getAttribute("pg_emergencycontactinformation").getValue();
             p = formcontext.getAttribute("pg_i9form").getValue();
             q = formcontext.getAttribute("pg_everifyreport").getValue();
     r = formcontext.getAttribute("pg_eeocform").getValue();
-            if ((bpfArguments.getDirection() === "Next") && (a !== 140310001 || b !== 140310001 || c !== 140310001 || d !== 140310001 ||
-                e !== 140310001 || f !== 140310001 || g !== 140310001 || h !== 140310001 ||
-                i !== 140310001 || j !== 140310001 || k !== 140310001 || l !== 140310001 ||
-                m !== 140310001 || n !== 140310001 || o !== 140310001 || p !== 140310001 ||
-                q !== 140310001 || r !== 140310001)) {
+            if ((bpfArguments.getDirection() === "Next") && (a !=== 140310001 || b !=== 140310001 || c !=== 140310001 || d !=== 140310001 ||
+                e !=== 140310001 || f !=== 140310001 || g !=== 140310001 || h !=== 140310001 ||
+                i !=== 140310001 || j !=== 140310001 || k !=== 140310001 || l !=== 140310001 ||
+                m !=== 140310001 || n !=== 140310001 || o !=== 140310001 || p !=== 140310001 ||
+                q !=== 140310001 || r !=== 140310001)) {
                 bpfArguments.preventDefault();
                 alertStrings = { confirmButtonLabel: "OK", text: "Please complete audit of all requests.", title: "Cannot Move to Next Stage" };
                 alertOptions = { height: 200, width: 300 };
@@ -920,8 +920,8 @@ a = formcontext.getAttribute("pg_emergencycontactinformation").getValue();
             z = formcontext.getAttribute("pg_issueappointmentletter").getValue();
 
 
-            if ((bpfArguments.getDirection() === "Next") && (s !== true || t !== true || u !== true ||
-                v !== true || w !== true || x !== true || y!==true|| z !== true)) {
+            if ((bpfArguments.getDirection() === "Next") && (s !=== true || t !=== true || u !=== true ||
+                v !=== true || w !=== true || x !=== true || y!===true|| z !=== true)) {
                 bpfArguments.preventDefault();
                 alertStrings = { confirmButtonLabel: "OK", text: "Please complete HR of all requests.", title: "Cannot Move to Next Stage" };
                 alertOptions = { height: 200, width: 300 };
@@ -938,7 +938,7 @@ a = formcontext.getAttribute("pg_emergencycontactinformation").getValue();
 function formname() {  //main form
     debugger;
     var name = formContext.ui.formSelector.getCurrentItem().getLabel();
-    if (name == "Main Form") {
+    if (name === "Main Form") {
         return true;
     }
     else {
@@ -975,9 +975,9 @@ function SubmittoHR(primaryControl) {   //mainform
                 req.setRequestHeader("OData-Version", "4.0");
 
                 req.onreadystatechange = function () {
-                    if (this.readyState == 4 /* complete */) {
+                    if (this.readyState === 4 /* complete */) {
 
-                        if (this.status == 200 || this.status == 204) {
+                        if (this.status === 200 || this.status === 204) {
  
                             formContext.data.entity.save("saveandclose");
 
@@ -1171,7 +1171,7 @@ function TAONBOARDFORM(executionContext) {                       //mainFORM
     var typename = formContext.getAttribute("pg_type").getText();
     var status = formContext.getAttribute("statuscode").getSelectedOption().value;
     var isthisacandidateareferra = formContext.getControl("pg_isthisacandidateareferral").getValue();
-    if (isthisacandidateareferra == "Yes") {
+    if (isthisacandidateareferra === "Yes") {
         formContext.getControl("pg_refferedby").setVisible(true);
         formContext.getAttribute("pg_refferedby").setRequiredLevel("required");
     }
@@ -1179,29 +1179,29 @@ function TAONBOARDFORM(executionContext) {                       //mainFORM
         formContext.getControl("pg_refferedby").setVisible(false);
     }
 
-    if (ratetype === 1) { // iif ratetype==salaried
+    if (ratetype === 1) { // iif ratetype===salaried
         formContext.getControl("pg_salary").setVisible(true);
        formContext.getControl("pg_salary1").setVisible(true);
     }
-    else if (ratetype === 2) {           // iif ratetype==hourly
+    else if (ratetype === 2) {           // iif ratetype===hourly
         formContext.getControl("pg_hourlyrate").setVisible(true);
    formContext.getControl("pg_hourlyrate1").setVisible(true);
     }
-    if (ratetype !== 1) {
+    if (ratetype !=== 1) {
         formContext.getControl("pg_salary").setVisible(false);
     formContext.getControl("pg_salary1").setVisible(false);
     }
-    if (ratetype !== 2) {
+    if (ratetype !=== 2) {
         formContext.getControl("pg_hourlyrate").setVisible(false);
   formContext.getControl("pg_hourlyrate1").setVisible(false);
     }
-    if (prideinbalance === 1) { // iif prideinbalance==yes
+    if (prideinbalance === 1) { // iif prideinbalance===yes
         formContext.getControl("pg_prideinbalancereason").setVisible(true);
     }
     else {
         formContext.getControl("pg_prideinbalancereason").setVisible(false);
     }
-    if (dropoutcomments !== null) {
+    if (dropoutcomments !=== null) {
         formContext.getAttribute("pg_dropoutintiated").setValue(true);
     }
     else if (dropoutcomments === null) {
@@ -1256,13 +1256,13 @@ var pgaofsubdepartmentjobfamily = formContext.getAttribute('pg_pgaofsubdepartmen
     else {
         formContext.getControl("pg_rocketshippersdepartment1").setVisible(false);
     }
-    if (dojo === 140310010 || pgaofsubdepartmentjobfamily == 140310008) {             //Pride Advisory
+    if (dojo === 140310010 || pgaofsubdepartmentjobfamily === 140310008) {             //Pride Advisory
         formContext.getControl("pg_advisoryservicesdepartment1").setVisible(true);
     }
     else {
         formContext.getControl("pg_advisoryservicesdepartment1").setVisible(false);
     }
-    if (PGdepartment === 140310001) { // if deprtment==AOF
+    if (PGdepartment === 140310001) { // if deprtment===AOF
         formContext.getControl("pg_pgaofsubdepartmentjobfamily1").setVisible(true);
  
     }
@@ -1270,25 +1270,25 @@ var pgaofsubdepartmentjobfamily = formContext.getAttribute('pg_pgaofsubdepartmen
         formContext.getControl("pg_pgaofsubdepartmentjobfamily1").setVisible(false);
 
     }
-    if (PGdepartment === 140310006) { // if deprtment==IT
+    if (PGdepartment === 140310006) { // if deprtment===IT
         formContext.getControl("pg_pgitsubdepartmentjobfamily1").setVisible(true);
     }
     else {
         formContext.getControl("pg_pgitsubdepartmentjobfamily1").setVisible(false);
     }
-    if (PHdepartment === 140310000) { // iif pridehealthdeprtment==NATIONAL FULFILLMENT
+    if (PHdepartment === 140310000) { // iif pridehealthdeprtment===NATIONAL FULFILLMENT
         formContext.getControl("pg_phcnationalfulfillmentsubdepartmentjobfam1").setVisible(true);
     }
     else {
         formContext.getControl("pg_phcnationalfulfillmentsubdepartmentjobfam1").setVisible(false);
     }
-    if (RTdepartment === 140310008) { // iif RTA==SAT EAST
+    if (RTdepartment === 140310008) { // iif RTA===SAT EAST
         formContext.getControl("pg_rtasateastsubdepartmentjobfamily1").setVisible(true);
     }
     else {
         formContext.getControl("pg_rtasateastsubdepartmentjobfamily1").setVisible(false);
     }
-    if (RTdepartment === 140310003) { // iif RTA==rtae2eprofessionalsubdepartmentjobfamily
+    if (RTdepartment === 140310003) { // iif RTA===rtae2eprofessionalsubdepartmentjobfamily
         formContext.getControl("pg_rtae2eprofessionalsubdepartmentjobfamily1").setVisible(true);
     }
     else {
@@ -1405,7 +1405,7 @@ else{
         ChildTickets.setVisible(false);
 
     }
- if (stageId === "408d7424-cb76-4326-b1ec-5f3287f3bdc1" && country == 140310001) {
+ if (stageId === "408d7424-cb76-4326-b1ec-5f3287f3bdc1" && country === 140310001) {
         formContext.getAttribute("pg_currentstage").setValue(140310006);
         HROps.setVisible(true);
 
@@ -1413,7 +1413,7 @@ else{
     else {
         HROps.setVisible(false);
     }
-    if (stageId === "601fe287-7df7-4244-b549-ca01134f5382" && country == 140310001) {
+    if (stageId === "601fe287-7df7-4244-b549-ca01134f5382" && country === 140310001) {
         formContext.getAttribute("pg_currentstage").setValue(140310003);
         HR.setVisible(true);
 
@@ -1443,7 +1443,7 @@ else{
     }
     var OnboardingDocument = formContext.ui.tabs.get("Onboarding_Document");
     var formType = formContext.ui.getFormType();
-    if (formType === 2 || formType !== 1) {
+    if (formType === 2 || formType !=== 1) {
         OnboardingDocument.setVisible(true);
     }
     else {
@@ -1468,20 +1468,20 @@ else{
     if (type === 140310000) {
         USOnboarding.setVisible(false);
     }
-    if (type !== 140310000) {
+    if (type !=== 140310000) {
         TAOnboarding.setVisible(false);
     
     }
    var createform = 1;
     var Type = formContext.ui.getFormType();
-    if (Type !== createform && type === 140310000 && country === 140310000) {
+    if (Type !=== createform && type === 140310000 && country === 140310000) {
 
 
  formContext.getControl("header_process_pg_dropoutintiated").setDisabled(true);
  formContext.getControl("header_process_pg_dropoutintiated_2").setDisabled(true);
         formContext.getControl("header_process_pg_dropoutintiated_2").setVisible(false);
 }
-    if (Type !== createform && type === 140310000 && country === 140310001) {
+    if (Type !=== createform && type === 140310000 && country === 140310001) {
    formContext.getControl("header_process_statuscode").setVisible(false);
  formContext.getControl("header_process_pg_dropoutintiated").setVisible(false);
      formContext.getControl("header_process_pg_country").setVisible(false);
@@ -1498,7 +1498,7 @@ else{
 
 var diversitytype=formContext.getAttribute("pg_diversitytype").getValue();
 var Diversehire = formContext.getAttribute("pg_diversehire").getValue();
-if(type === 140310000 && country === 140310001 || type !== 140310000){
+if(type === 140310000 && country === 140310001 || type !=== 140310000){
    formContext.getControl("pg_diversehire").setVisible(false);
    formContext.getControl("pg_diversitytype").setVisible(false);
   formContext.getControl("pg_diversecategory").setVisible(false);
@@ -1507,7 +1507,7 @@ if(type === 140310000 && country === 140310001 || type !== 140310000){
         formContext.getControl("pg_diversecategory_gender").setVisible(false);
    formContext.getControl("pg_diversecategory_age").setVisible(false);
 }
-if(Diversehire===140310000 && type !== 140310000){///// && type == 140310000
+if(Diversehire===140310000 && type !=== 140310000){///// && type === 140310000
  formContext.getControl("pg_diversitytype1").setVisible(false);
 formContext.getControl("pg_diversecategory1").setVisible(false);
   formContext.getControl("pg_diversecategory_lgbtqia1").setVisible(false);
@@ -1515,10 +1515,10 @@ formContext.getControl("pg_diversecategory1").setVisible(false);
         formContext.getControl("pg_diversecategory_gender1").setVisible(false);
    formContext.getControl("pg_diversecategory_age1").setVisible(false);
 }
-if(type !== 140310000 && country === 140310001){
+if(type !=== 140310000 && country === 140310001){
   formContext.getControl("pg_diversehire").setVisible(false);
 }
-if(Diversehire===140310000 && type !== 140310000){///// && type == 140310000
+if(Diversehire===140310000 && type !=== 140310000){///// && type === 140310000
 
   formContext.getControl("pg_diversitytype").setVisible(false);
  formContext.getControl("pg_diversecategory").setVisible(false);
@@ -1529,7 +1529,7 @@ if(Diversehire===140310000 && type !== 140310000){///// && type == 140310000
 
 }
 
-if(diversitytype!==null && Diversehire===140310000 && type !== 140310000){///&& type == 140310000
+if(diversitytype!===null && Diversehire===140310000 && type !=== 140310000){///&& type === 140310000
 
   formContext.getControl("pg_diversecategory").setVisible(false);
    formContext.getControl("pg_diversecategory_lgbtqia").setVisible(false);
@@ -1538,7 +1538,7 @@ if(diversitytype!==null && Diversehire===140310000 && type !== 140310000){///&& 
    formContext.getControl("pg_diversecategory_age").setVisible(false);
 
 }
-if(type === 140310000 || type !== 140310000){///&& type == 140310000
+if(type === 140310000 || type !=== 140310000){///&& type === 140310000
 
   formContext.getControl("pg_diversecategory").setVisible(false);
   formContext.getControl("pg_diversecategory_lgbtqia").setVisible(false);
@@ -1546,7 +1546,7 @@ if(type === 140310000 || type !== 140310000){///&& type == 140310000
         formContext.getControl("pg_diversecategory_gender").setVisible(false);
    formContext.getControl("pg_diversecategory_age").setVisible(false);
 }
-if(Diversehire===140310000 && type === 140310000){///// && type == 140310000
+if(Diversehire===140310000 && type === 140310000){///// && type === 140310000
 
   formContext.getControl("pg_diversitytype1").setVisible(true);
 }
@@ -1558,14 +1558,14 @@ else{
         formContext.getControl("pg_diversecategory_gender1").setVisible(false);
    formContext.getControl("pg_diversecategory_age1").setVisible(false);
 }
-if(type !== 140310000 && Diversehire===140310000){
+if(type !=== 140310000 && Diversehire===140310000){
 IndiaQFORM.getControl("pg_diversitytype").setVisible(true);
 }
-else if(type !== 140310000 && Diversehire!==140310000){
+else if(type !=== 140310000 && Diversehire!===140310000){
 IndiaQFORM.getControl("pg_diversitytype").setVisible(false);
 }
 
-if(country === 140310001 && diversitytype!==null && type !== 140310000){
+if(country === 140310001 && diversitytype!===null && type !=== 140310000){
 if(diversitytype.includes(140310000)){
 
   IndiaQFORM.getControl("pg_diversecategory").setVisible(true);
@@ -1609,7 +1609,7 @@ IndiaQFORM.getControl("pg_diversecategory_age").setVisible(false);
 }
 
  //Diversecategory.clearOptions();
-if(country === 140310001 && diversitytype!==null && type === 140310000){
+if(country === 140310001 && diversitytype!===null && type === 140310000){
 if(diversitytype.includes(140310000)){
   formContext.getControl("pg_diversecategory1").setVisible(true);
 
@@ -1652,7 +1652,7 @@ formContext.getControl("pg_diversecategory_age1").setVisible(false);
 }
    var Onboardingtab = formContext.ui.tabs.get("Onboardingtab");
   var childticket = formContext.ui.tabs.get("tab_2");////////child tickets tab
-  if (Type !== createform && country === 140310000 && type === 140310000) {
+  if (Type !=== createform && country === 140310000 && type === 140310000) {
 hrbgc.setVisible(true);
 
 
@@ -1661,13 +1661,13 @@ else{
 hrbgc.setVisible(false);
 }
 
-  if (Type !== createform && country === 140310000 && type !== 140310000) {
+  if (Type !=== createform && country === 140310000 && type !=== 140310000) {
  var US = childticket.sections.get("US").setVisible(true);   
 }
 else{
      var US = childticket.sections.get("US").setVisible(false);  
 }
-  if (Type !== createform && country === 140310000 && type === 140310005) {
+  if (Type !=== createform && country === 140310000 && type === 140310005) {
      var USITCAM = Onboardingtab.sections.get("Onboardingtab_section_15").setVisible(true);
 }
 else{
@@ -1812,7 +1812,7 @@ var Manager = childtickettab.sections.get("Manager");
  var EmployeeAgreement = formContext.ui.quickForms.get("EmployeeAgreement");//////EmployeeAgreement
     var createform = 1;
     var Type = formContext.ui.getFormType();
-    if (Type !== createform) {
+    if (Type !=== createform) {
         if (name === null || name.includes("IndiaInternal Onboarding") || name.includes("USInternal Onboarding")) {
             var type = formContext.getAttribute("pg_type").setValue(140310000);
         }
@@ -2062,7 +2062,7 @@ var Manager = childtickettab.sections.get("Manager");
             ////    HRInternalChecklist.setVisible(false);
             formContext.getControl("pg_deactivatexyme").setVisible(false);
         }
-        else if ((type === 140310007 && country === 140310001 && status === 140310003) || (type === 140310007 && country === 140310001 && status === 140310004) || (type === 140310007 && country === 140310001 && status === 140310001) || (type == 140310007 && country == 140310001 && status == 140310002)) {
+        else if ((type === 140310007 && country === 140310001 && status === 140310003) || (type === 140310007 && country === 140310001 && status === 140310004) || (type === 140310007 && country === 140310001 && status === 140310001) || (type === 140310007 && country === 140310001 && status === 140310002)) {
             Onboarding.setVisible(true);
             dropchildtickettab.setVisible(false);
             TAOnboarding.setVisible(false);
@@ -2103,7 +2103,7 @@ var Manager = childtickettab.sections.get("Manager");
             formContext.getControl("pg_removenameinmmmsingerslist").setVisible(false);//EMPLOYEENGAGEMENT
             formContext.getControl("pg_deactivatedojostoreprofile").setVisible(false);
         }
-        else if ((type === 140310010 && country === 140310001 && status === 140310003) || (type === 140310010 && country === 140310001 && status === 140310004) || (type == 140310010 && country == 140310001 && status == 140310001) || (type == 140310010 && country == 140310001 && status == 140310002)) {
+        else if ((type === 140310010 && country === 140310001 && status === 140310003) || (type === 140310010 && country === 140310001 && status === 140310004) || (type === 140310010 && country === 140310001 && status === 140310001) || (type === 140310010 && country === 140310001 && status === 140310002)) {
             Onboarding.setVisible(true);
             dropchildtickettab.setVisible(false);
             TAOnboarding.setVisible(false);
@@ -2251,7 +2251,7 @@ Manager.setVisible(false);
  US.setVisible(true);
 
       formContext.getControl("pg_prideglobaldepartment").setVisible(true);
-if(dojo == 140310000){
+if(dojo === 140310000){
   global.getControl("pg_prideglobaldepartment").setVisible(true);
 
 }
@@ -2282,7 +2282,7 @@ else if(dojo === 140310004){
   global.getControl("pg_prideglobaldepartment").setVisible(false);
  
 }
- if(dojo === 140310010 || pgaofsubdepartmentjobfamily==140310008){
+ if(dojo === 140310010 || pgaofsubdepartmentjobfamily===140310008){
 
   global.getControl("pg_advisoryservicesdepartment").setVisible(true);
   global.getControl("pg_pridenowdepartment").setVisible(false);
@@ -2290,31 +2290,31 @@ else if(dojo === 140310004){
 else{
  global.getControl("pg_advisoryservicesdepartment").setVisible(false);
 }
-    if (PGdepartment === 140310001) { // if deprtment==AOF
+    if (PGdepartment === 140310001) { // if deprtment===AOF
         global.getControl("pg_pgaofsubdepartmentjobfamily").setVisible(true);
     }
     else {
         global.getControl("pg_pgaofsubdepartmentjobfamily").setVisible(false);
     }
-    if (PGdepartment === 140310006) { // if deprtment==IT
+    if (PGdepartment === 140310006) { // if deprtment===IT
         global.getControl("pg_pgitsubdepartmentjobfamily").setVisible(true);
     }
     else {
         global.getControl("pg_pgitsubdepartmentjobfamily").setVisible(false);
     }
-    if (PHdepartment === 140310000) { // iif pridehealthdeprtment==NATIONAL FULFILLMENT
+    if (PHdepartment === 140310000) { // iif pridehealthdeprtment===NATIONAL FULFILLMENT
         global.getControl("pg_phcnationalfulfillmentsubdepartmentjobfam").setVisible(true);
     }
     else {
         global.getControl("pg_phcnationalfulfillmentsubdepartmentjobfam").setVisible(false);
     }
-    if (RTdepartment === 140310008) { // iif RTA==SAT EAST
+    if (RTdepartment === 140310008) { // iif RTA===SAT EAST
         global.getControl("pg_rtasateastsubdepartmentjobfamily").setVisible(true);
     }
     else {
         global.getControl("pg_rtasateastsubdepartmentjobfamily").setVisible(false);
     }
-    if (RTdepartment === 140310003) { // iif RTA==rtae2eprofessionalsubdepartmentjobfamily
+    if (RTdepartment === 140310003) { // iif RTA===rtae2eprofessionalsubdepartmentjobfamily
         global.getControl("pg_rtae2eprofessionalsubdepartmentjobfamily").setVisible(true);
     }
     else {
@@ -2395,13 +2395,13 @@ US.setVisible(true);
     else {
         formContext.getControl("pg_rocketshippersdepartment").setVisible(false);
     }
-    if (dojo === 140310010 || pgaofsubdepartmentjobfamily == 140310008) {             //Pride Advisory
+    if (dojo === 140310010 || pgaofsubdepartmentjobfamily === 140310008) {             //Pride Advisory
         formContext.getControl("pg_advisoryservicesdepartment").setVisible(true);
     }
     else {
         formContext.getControl("pg_advisoryservicesdepartment").setVisible(false);
     }
-    if (PGdepartment === 140310001) { // if deprtment==AOF
+    if (PGdepartment === 140310001) { // if deprtment===AOF
         formContext.getControl("pg_pgaofsubdepartmentjobfamily").setVisible(true);
  
     }
@@ -2409,25 +2409,25 @@ US.setVisible(true);
         formContext.getControl("pg_pgaofsubdepartmentjobfamily").setVisible(false);
 
     }
-    if (PGdepartment === 140310006) { // if deprtment==IT
+    if (PGdepartment === 140310006) { // if deprtment===IT
         formContext.getControl("pg_pgitsubdepartmentjobfamily").setVisible(true);
     }
     else {
         formContext.getControl("pg_pgitsubdepartmentjobfamily").setVisible(false);
     }
-    if (PHdepartment === 140310000) { // iif pridehealthdeprtment==NATIONAL FULFILLMENT
+    if (PHdepartment === 140310000) { // iif pridehealthdeprtment===NATIONAL FULFILLMENT
         formContext.getControl("pg_phcnationalfulfillmentsubdepartmentjobfam").setVisible(true);
     }
     else {
         formContext.getControl("pg_phcnationalfulfillmentsubdepartmentjobfam").setVisible(false);
     }
-    if (RTdepartment === 140310008) { // iif RTA==SAT EAST
+    if (RTdepartment === 140310008) { // iif RTA===SAT EAST
         formContext.getControl("pg_rtasateastsubdepartmentjobfamily").setVisible(true);
     }
     else {
         formContext.getControl("pg_rtasateastsubdepartmentjobfamily").setVisible(false);
     }
-    if (RTdepartment === 140310003) { // iif RTA==rtae2eprofessionalsubdepartmentjobfamily
+    if (RTdepartment === 140310003) { // iif RTA===rtae2eprofessionalsubdepartmentjobfamily
         formContext.getControl("pg_rtae2eprofessionalsubdepartmentjobfamily").setVisible(true);
     }
     else {
@@ -2463,7 +2463,7 @@ USITCAM.setVisible(false);
   Manager.setVisible(false);
             India.setVisible(false);
 US.setVisible(true);
-if(ratetype==1){
+if(ratetype===1){
      USQFORM.getControl("pg_salary").setVisible(true);
 EmployeeAgreement.getControl("pg_salary").setVisible(true);
 }
@@ -2471,7 +2471,7 @@ else {
         USQFORM.getControl("pg_salary").setVisible(false);
 EmployeeAgreement.getControl("pg_salary").setVisible(false);
     }
-if(ratetype==2){
+if(ratetype===2){
      USQFORM.getControl("pg_hourlyrate").setVisible(true);
 EmployeeAgreement.getControl("pg_hourlyrate").setVisible(true);
 }
@@ -2479,13 +2479,13 @@ else {
         USQFORM.getControl("pg_hourlyrate").setVisible(false);
 EmployeeAgreement.getControl("pg_hourlyrate").setVisible(false);
     }
-if(prideinbalance ==true){
+if(prideinbalance ===true){
      USQFORM.getControl("pg_prideinbalancereason").setVisible(true);
 }
 else {
         USQFORM.getControl("pg_prideinbalancereason").setVisible(false);
     }
-if(isthisacandidaterefferral ==true){
+if(isthisacandidaterefferral ===true){
      USQFORM.getControl("pg_refferedby").setVisible(true);
 }
 else {
@@ -2542,7 +2542,7 @@ else {
    var lastname = formContext.getAttribute("pg_lastname").getValue();
         var firstname = formContext.getAttribute("pg_firstname").getValue();
  var Middlename = "";
-if( formContext.getAttribute("pg_middlename").getValue()==null){
+if( formContext.getAttribute("pg_middlename").getValue()===null){
 var Middlename="";
 
 }
@@ -2551,19 +2551,19 @@ var Middlename="";
     }
     
     var status = formContext.getAttribute("statuscode").getSelectedOption().value;
-    if (status === 140310001 && type !== 140310000 || status === 140310002 || status === 140310003 || status === 140310005 && valueCountry !== 140310000 || status === 140310004 && valueCountry !== 140310000 || status === 1 && type !== 140310000 || status === 1 && type !== 140310005 && valueCountry !== 140310000 || status === 1 && type !== 140310004 && valueCountry !== 140310000) {
+    if (status === 140310001 && type !=== 140310000 || status === 140310002 || status === 140310003 || status === 140310005 && valueCountry !=== 140310000 || status === 140310004 && valueCountry !=== 140310000 || status === 1 && type !=== 140310000 || status === 1 && type !=== 140310005 && valueCountry !=== 140310000 || status === 1 && type !=== 140310004 && valueCountry !=== 140310000) {
         var Name = Country + " - " + "Internal Onboarding - " + typename + " - " + firstname + "  " + lastname + "  " + Middlename;
         var formName = formContext.getAttribute("pg_name").setValue(Name);
     }
-    else if (type === 140310000 && valueCountry !== 140310001) {
+    else if (type === 140310000 && valueCountry !=== 140310001) {
         var Name = Country + " - " + "Internal Onboarding - " + firstname + "  " + lastname + "  " + Middlename;
         var formName = formContext.getAttribute("pg_name").setValue(Name);
     }
-    else if (type === 140310000 && valueCountry !== 140310000) {
+    else if (type === 140310000 && valueCountry !=== 140310000) {
         var Name = Country + " - " + "Internal Onboarding - " + firstname + "  " + lastname;
         var formName = formContext.getAttribute("pg_name").setValue(Name);
     }
-    else if (status === 1 && type !== 140310005 || status === 140310005 && valueCountry === 140310000) {
+    else if (status === 1 && type !=== 140310005 || status === 140310005 && valueCountry === 140310000) {
         var Name = Country + " - " + "Internal Onboarding - " + typename + " - " + firstname + "  " + lastname;
         var formName = formContext.getAttribute("pg_name").setValue(Name);
     }

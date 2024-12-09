@@ -64,7 +64,7 @@ function ResolveOff(context) {
 function enableSend(primarycontrol) {
     var formContext = primarycontrol;
     var usersettings = Xrm.Utility.getGlobalContext().userSettings;
-    if ((!usersettings.userId == formContext.getAttribute("ownerid").getValue()[0].id)) {
+    if ((!usersettings.userId === formContext.getAttribute("ownerid").getValue()[0].id)) {
         return true;
     }
     else {

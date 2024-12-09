@@ -33,21 +33,6 @@ function GetandSetSubCategory(context) {///how to get and set the multioption se
  
  
  
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
  function gettoolaccess(context) {
     debugger;
     try{
@@ -58,7 +43,7 @@ function GetandSetSubCategory(context) {///how to get and set the multioption se
         var employee = formcontext.getAttribute("pg_employee").getValue()[0].id;
         employeeid = employee.substring(1, 37);
         var  name= formcontext.getAttribute("pg_name").getValue();
-        if (applicationselect == 10 && subject==101) {
+        if (applicationselect === 10 && subject===101) {
             Xrm.WebApi.online.retrieveMultipleRecords("incident", "?$filter=title eq '" + name + "'&$top=1").then(
                 function success(results){
                     for (var i = 0; i < results.entities.length; i++) {
@@ -119,7 +104,7 @@ function gettoolaccess(context) {
         //var employee = formcontext.getAttribute("pg_employee").getValue()[0].id;
         //employeeid = employee.substring(1, 37);
         var  name= formcontext.getAttribute("pg_name").getValue();
-        if ( subject ==101) {
+        if ( subject ===101) {
             Xrm.WebApi.online.retrieveMultipleRecords("incident", "?$filter=title eq '" + employeeid + "'&$top=1").then(
                 function success(results){
                     for (var i = 0; i < results.entities.length; i++) {
@@ -179,13 +164,13 @@ function getshift(context) {
         var employee = formcontext.getAttribute("pg_employee").getValue()[0].id;
         employeeid = employee.substring(1, 37);
 
-     if (applicationselect == 10 && subject ==140310003) { 
+     if (applicationselect === 10 && subject ===140310003) { 
 var datachange = formcontext.ui.tabs.get("tab_13").setVisible(true);
 //var teamrsec =  datachange.sections.get("tab_13_section_3").setVisible(true);
 //var section =  datachange.sections.get("Summary_section_6").setVisible(true);
 
 }
- if (applicationselect == 10 && subject ==140310003) {
+ if (applicationselect === 10 && subject ===140310003) {
    Xrm.WebApi.online.retrieveRecord("incident", employeeid, "?$select=pg_newshift").then(
                 function success(result) {
                     var pg_newshift = result["pg_newshift"];
@@ -198,7 +183,7 @@ var shift=new Array();
             shift[0].id = pg_newshift;
 
             shift[0].name = pg_newshift_formatted;
-if(pg_newshift == "" || pg_newshift != "null"){
+if(pg_newshift === "" || pg_newshift != "null"){
     formContext.getControl("pg_newseating").setDisabled(false);
     
     }
@@ -219,13 +204,6 @@ catch(err)  {
 } 
 
 
-
-
-
-
-
-
-
   
 function getseating(context) {
 debugger;
@@ -237,7 +215,7 @@ var employee = formcontext.getAttribute("pg_employee").getValue()[0].id;
 employeeid = employee.substring(1, 37);
 var incident = formcontext.getAttribute("title").getValue();
 //incidentid = incident.substring(1, 37);
-if(applicationselect == 10 && subject ==140310003) {
+if(applicationselect === 10 && subject ===140310003) {
 Xrm.WebApi.online.retrieveRecord("incident",employeeid, "?$select=pg_newshift").then(
     function success(result) {
         var pg_newseating = result["pg_newseating"];
@@ -297,7 +275,7 @@ var employee = formcontext.getAttribute("pg_employee").getValue()[0].id;
 employeeid = employee.substring(1, 37);
 var incident = formcontext.getAttribute("title").getValue();
 //incidentid = incident.substring(1, 37);
-if(applicationselect == 10 && subject ==140310003) {
+if(applicationselect === 10 && subject ===140310003) {
 Xrm.WebApi.online.retrieveRecord("pg_supportticket",incident, "?$select=pg_name").then(
     function success(result) {
         var pg_name = result["pg_name"];
@@ -369,7 +347,7 @@ debugger;
 //var formName = formContext.ui.formSelector.getCurrentItem().getLabel();
 var activeProcess = formContext.data.process.getActiveProcess();
 var activeProcessID = activeProcess.getId();
-             if (applicationselect == 10){
+             if (applicationselect === 10){
 formContext.data.process.setActiveProcess('FF35E0D6-C0C4-4D0A-9EC7-3AEC0DFCE423', 'success');
              }
              else{
@@ -392,9 +370,9 @@ formContext = executionContext.getFormContext();
 var formName = Xrm.Page.ui.formSelector.getCurrentItem().getLabel();
 var activeProcess = Xrm.Page.data.process.getActiveProcess();
 var activeProcessID = activeProcess.getId();
-             if (formType != 1 && formName == 'Donor Cycle' && activeProcessID.toUpperCase() != 'DEEC5EF0-9F6D-4D6D-8878-65E7473A9921')
+             if (formType != 1 && formName === 'Donor Cycle' && activeProcessID.toUpperCase() != 'DEEC5EF0-9F6D-4D6D-8878-65E7473A9921')
 formContext.data.process.setActiveProcess('DEEC5EF0-9F6D-4D6D-8878-65E7473A9921', 'success');
-             else if (formName == 'Annual Fund Donor Cycle' && activeProcessID.toUpperCase() != '7CBE0333-7D3F-49F1-AAAF-0B2C746C67FB')
+             else if (formName === 'Annual Fund Donor Cycle' && activeProcessID.toUpperCase() != '7CBE0333-7D3F-49F1-AAAF-0B2C746C67FB')
 formContext.data.process.setActiveProcess('7CBE0333-7D3F-49F1-AAAF-0B2C746C67FB', 'success');
 }
 
