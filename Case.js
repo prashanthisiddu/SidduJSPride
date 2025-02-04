@@ -1,36 +1,52 @@
-function GetandSetSubCategory(context) {///how to get and set the multioption select field in from one entity to another
+function GetandSetSubCategory(context) {
     var formContext = context.getFormContext();
     var title = formContext.getAttribute("title").getValue();
     var ticketnumber = formContext.getAttribute("ticketnumber").getValue();
-    var var_pg_subcategoryy = formContext.getControl("pg_subcategoryy");
-    var filter = "?$select=pg_subcategory,pg_subcategoryy&$filter=pg_name eq '" + title + "' and pg_casenumber eq '" + ticketnumber + "'";
- 
+
+    // Validate inputs
+    if (!title || !ticketnumber) {
+        console.log("Title or ticket number is missing. Aborting operation.");
+        return;
+    }
+
+    // Escape special characters in the filter
+    var escapedTitle = title ? title.replace(/'/g, "''") : "";
+    var escapedTicketNumber = ticketnumber ? ticketnumber.replace(/'/g, "''") : "";
+
+    // Construct filter query
+    var filter = "?$select=pg_subcategory,pg_clientoperationsubcategory&$filter=pg_name eq '" + escapedTitle + "' and pg_casenumber eq '" + escapedTicketNumber + "'";
+
     Xrm.WebApi.online.retrieveMultipleRecords("pg_supportticket", filter).then(
         function success(results) {
             if (results.entities.length > 0) {
- 
                 var pg_subcategory = results.entities[0]["pg_subcategory"];
-                var pg_subcategory_formatted = results.entities[0]["pg_subcategory@OData.Community.Display.V1.FormattedValue"];
-                var pg_subcategoryy = results.entities[0]["pg_subcategoryy"];
-                var pg_subcategoryy_formatted = results.entities[0]["pg_subcategoryy@OData.Community.Display.V1.FormattedValue"];
+                var pg_clientoperationsubcategory = results.entities[0]["pg_clientoperationsubcategory"];
+
+                // Set the subcategory attribute
                 formContext.getAttribute("pg_subcategory").setValue(pg_subcategory);
-                if (pg_subcategoryy.includes(",")) {
-                    let operationSubcategory = Array.from(pg_subcategoryy.split(","), Number);
-                    formContext.getAttribute("pg_subcategoryy").setValue(operationSubcategory);
-                    //formContext.getAttribute("pg_subcategoryy").setValue([Number(value)]);              
+
+                // Handle multi-select option set
+                if (pg_clientoperationsubcategory) {
+                    if (pg_clientoperationsubcategory.includes(",")) {
+                        let operationSubcategory = pg_clientoperationsubcategory.split(",").map(Number);
+                        formContext.getAttribute("pg_clientoperationsubcategory").setValue(operationSubcategory);
+                    } else {
+                        formContext.getAttribute("pg_clientoperationsubcategory").setValue([Number(pg_clientoperationsubcategory)]);
+                    }
                 } else {
-                    formContext.getAttribute("pg_subcategoryy").setValue([Number(pg_subcategoryy)]);
+                    formContext.getAttribute("pg_clientoperationsubcategory").setValue(null);
                 }
             } else {
                 console.log("No records found for the provided criteria.");
             }
         },
         function (error) {
-            Xrm.Utility.alertDialog(error.message);
+            console.error("Error retrieving records:", error.message);
+            Xrm.Utility.alertDialog("An error occurred while retrieving the records: " + error.message);
         }
     );
 }
- 
+
  
  
  function gettoolaccess(context) {
@@ -204,138 +220,7 @@ catch(err)  {
 } 
 
 
-  
-function getseating(context) {
-debugger;
-try{
-formcontext = context.getFormContext();
-var  applicationselect = formcontext.getAttribute("pg_application").getSelectedOption().value;
-var  subject = formcontext.getAttribute("pg_casesubject").getSelectedOption().value;
-var employee = formcontext.getAttribute("pg_employee").getValue()[0].id;
-employeeid = employee.substring(1, 37);
-var incident = formcontext.getAttribute("title").getValue();
-//incidentid = incident.substring(1, 37);
-if(applicationselect === 10 && subject ===140310003) {
-Xrm.WebApi.online.retrieveRecord("incident",employeeid, "?$select=pg_newshift").then(
-    function success(result) {
-        var pg_newseating = result["pg_newseating"];
-        var pg_newshift = result["pg_newshift"];
-        var pg_newshift_formatted = result["pg_newshift@OData.Community.Display.V1.FormattedValue"];
-        Xrm.WebApi.online.retrieveRecord("incident", employeeid, "?$select=title").then(
-            function success(result) {
-                var title = result["title"];
-            },
-            function(error) {
-                Xrm.Utility.alertDialog(error.message);
-            }
-        );
-        Xrm.WebApi.online.retrieveRecord("pg_supportticket", "00000000-0000-0000-0000-000000000000", "?$select=pg_newseating,pg_newshift").then(
-            function success(result) {
-                var pg_newseating = result["pg_newseating"];
-                var pg_newshift = result["pg_newshift"];
-                var pg_newshift_formatted = result["pg_newshift@OData.Community.Display.V1.FormattedValue"];
-            },
-            function(error) {
-                Xrm.Utility.alertDialog(error.message);
-            }
-        );
-        var seating= new Array();
-   
-               seating[0] = new Object();
-   
-               seating[0].id = pg_newseating;
-               var shift=new Array();
 
-               shift[0] = new Object();
-   
-               shift[0].id = pg_newshift;
-   
-               shift[0].name = pg_newshift_formatted;
-            },
-            function (error) {
-                Xrm.Utility.alertDialog(error.message);
-              
-            }
-        );
-    }
-    }
-    catch(err)
-    {
-    }
-} 
-
-           
-function getseating(context) {
-debugger;
-try{
-formcontext = context.getFormContext();
-var  applicationselect = formcontext.getAttribute("pg_application").getSelectedOption().value;
-var  subject = formcontext.getAttribute("pg_casesubject").getSelectedOption().value;
-var employee = formcontext.getAttribute("pg_employee").getValue()[0].id;
-employeeid = employee.substring(1, 37);
-var incident = formcontext.getAttribute("title").getValue();
-//incidentid = incident.substring(1, 37);
-if(applicationselect === 10 && subject ===140310003) {
-Xrm.WebApi.online.retrieveRecord("pg_supportticket",incident, "?$select=pg_name").then(
-    function success(result) {
-        var pg_name = result["pg_name"];
-        var name= new Array();
-   
-        name[0] = new Object();
-   
-        name[0].id = pg_name;
-    },
-    function(error) {
-        Xrm.Utility.alertDialog(error.message);
-    }
-);
-Xrm.WebApi.online.retrieveRecord("incident",employeeid, "?$select=?$select=title").then(
-    function success(result) {
-        var title = result["title"];
-      
-        var titlle= new Array();
-   
-               titlle[0] = new Object();
-   
-               titlle[0].id = title;
-Xrm.WebApi.online.retrieveRecord("pg_supportticket",  name[0].id, "?$select=pg_newseating,pg_newshift").then(
-            function success(result) {
-                var pg_newseating = result["pg_newseating"];
-                var pg_newshift = result["pg_newshift"];
-                var pg_newshift_formatted = result["pg_newshift@OData.Community.Display.V1.FormattedValue"];
-var seating= new Array();
-   
-               seating[0] = new Object();
-   
-               seating[0].id = pg_newseating;
-               var shift=new Array();
-
-               shift[0] = new Object();
-   
-               shift[0].id = pg_newshift;
-   
-               shift[0].name = pg_newshift_formatted;
-                           
-                
-},
-function (error) {
-console.log(error.message);
-}
-);
-
-},
-function (error) {
-console.log(error.message);
-}
-
-);
-
-}
-}
-catch(err)  {
-
-}
-}
 
 
 function formBasedBPF(executionContext)

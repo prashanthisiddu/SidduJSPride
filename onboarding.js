@@ -13,8 +13,44 @@ function disableAllFieldsOnInactiveStage(executionContext) {//To disable all fie
     }
 }
 
+function validateMobileNumber(executionContext) {
+    
+    var formContext = executionContext.getFormContext();
+    var mobileNumber = formContext.getAttribute("pg_mobilenumber").getValue();
+    var mobileNumberPattern = /^\d{10}$/;
+
+if (!mobileNumberPattern.test(mobileNumber)) {
+        
+        Xrm.Navigation.openAlertDialog({
+            text: "Please enter a valid 10-digit mobile number."
+        });
+
+formContext.getAttribute("pg_mobilenumber").setValue(null);
+
+ executionContext.getEventArgs().preventDefault();
+    }
+}
+ 
+function ONBOBPFStageChange(context) {
+    debugger;
+    var formContext = context.getFormContext();
+    formContext.data.process.addOnStageChange(ONBOTabChangesonBPFStage);
+    ONBOTabChangesonBPFStage(context);
+ }
+ function ONBOTabChangesonBPFStage(context) {
+    var formContext = context.getFormContext();
+    var activeStage = formContext.data.process.getActiveStage();
+    var stageId = activeStage.getId();
+    if (stageId === "0baac90f-f95e-4581-83a1-f7753b429186" || stageId === "6bb2f036-a279-466a-b004-72a93e20ba6c" || stageId === "dd998249-4176-4511-8fea-1b3fff8d4dcc" || stageId === "5b1a3c2d-a34b-4f8a-aadf-a0af017d93ef" || stageId === "b9732caf-4eb2-47d5-aa2a-e53e6575054e") {
+        formContext.getAttribute("pg_currentstage").setValue(140310002);
+    }
+    if (stageId === "408d7424-cb76-4326-b1ec-5f3287f3bdc1") {
+        formContext.getAttribute("pg_currentstage").setValue(140310006);
+    }
+ }
 
 
+ 
 function switchProcess(executionContext) {
     var formContext = executionContext.getFormContext();
     var CREATE_FORM_TYPE = 1;
@@ -878,7 +914,7 @@ function Resolve(context) {
 
 
 
-var Onboarding;          //onload
+var Onboarding;          //onload//Onboarding.formEvents.form_load
 Onboarding = {};
 Onboarding.formEvents = {
   form_load: function (context) {

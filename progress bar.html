@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        #progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+        }
+        #progress-bar {
+            width: 0%;
+            height: 20px;
+            background-color: #4caf50; /* Default color (green) */
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="progress-container">
+        <div id="progress-bar"></div>
+    </div>
+
+    <script>
+        // Function to update the progress bar's width and color
+        function updateProgress(value) {
+            var progressBar = document.getElementById("progress-bar");
+
+            // Set the progress bar width
+            progressBar.style.width = value + "%";
+
+            // Change color based on the value
+            if (value < 30) {
+                progressBar.style.backgroundColor = "#f44336"; // Red for low progress
+            } else if (value >= 30 && value < 70) {
+                progressBar.style.backgroundColor = "#ff9800"; // Orange for medium progress
+            } else {
+                progressBar.style.backgroundColor = "#4caf50"; // Green for high progress
+            }
+        }
+    </script>
+</body>
+</html>

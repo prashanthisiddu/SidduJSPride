@@ -36,30 +36,6 @@ function getEmailReportto2(context) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function OffBasedonWMode(executionContext)
 {
     debugger;

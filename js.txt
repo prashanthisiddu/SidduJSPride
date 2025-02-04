@@ -52,46 +52,7 @@ var  datachangetype = formContext.getAttribute("pg_datachangetype").getSelectedO
       salaryrevision.setVisible(false);
 
     }
-    else if (applicationselect === 10 && datachangetype === 140310002) {
-        reportingmanager.setVisible(false);
-        employeereportingtype.setVisible(false);
-        team.setVisible(true);
-        dojo.setVisible(false);
-        workmode.setVisible(false);
-        costallo.setVisible(false);
-        workloc.setVisible(false);
-        salaryrevision.setVisible(false);
-    }
-    else if (applicationselect === 10 && datachangetype === 140310003) {
-        reportingmanager.setVisible(false);
-        employeereportingtype.setVisible(false);
-        team.setVisible(false);
-        dojo.setVisible(true);
-        workmode.setVisible(false);
-        costallo.setVisible(false);
-        workloc.setVisible(false);
-        salaryrevision.setVisible(false);
-    }
-    else if (applicationselect === 10 && datachangetype === 140310004) {
-        reportingmanager.setVisible(false);
-      employeereportingtype.setVisible(false);
-      team.setVisible(false);
-      dojo.setVisible(false);
-      workmode.setVisible(false);
-      costallo.setVisible(false);
-      workloc.setVisible(true);
-      salaryrevision.setVisible(false);
-    }
-    else if (applicationselect === 10 && datachangetype === 140310005) {
-        reportingmanager.setVisible(false);
-        employeereportingtype.setVisible(false);
-        team.setVisible(false);
-        dojo.setVisible(false);
-        workmode.setVisible(true);
-        costallo.setVisible(false);
-        workloc.setVisible(false);
-        salaryrevision.setVisible(false);
-    }
+ 
     else if (applicationselect === 10 && datachangetype === 140310006) {
         reportingmanager.setVisible(false);
       employeereportingtype.setVisible(false);
@@ -380,9 +341,6 @@ debugger;
           }
  
 }
-    
-  
-
   else if(casetitle.includes("Employee Development")){
       var deactivatexyme= formContext.getAttribute("pg_deactivatexyme").getValue();     
       var updatebonuseligibilityinbonusfile=formContext.getAttribute("pg_updatebonuseligibilityinbonusfile").getValue();
@@ -422,12 +380,6 @@ debugger;
      
      var updatedateofexitinpfportal=formContext.getAttribute("pg_updatedateofexitinpfportal").getValue();
   
-   if (updatetallywithenddate ===1  || updatetallywithenddate=== null) {
-            formContext.getAttribute("statuscode").setValue(1);
-             }
-            else  {
-            formContext.getAttribute("statuscode").setValue(5);
-          }
  if (moveemployeefrompayrolltof ===1  || moveemployeefrompayrolltof=== null) {
            formContext.getAttribute("statuscode").setValue(1);
              }

@@ -1,3 +1,45 @@
+function GetandSetCountry(context) {
+    var formcontext = context.getFormContext();
+    try {
+        var emailaddress = formcontext.getAttribute("emailaddress").getValue();
+
+        if (!emailaddress) {
+            return; 
+        }
+
+        var lowercaseEmail = emailaddress.toLowerCase();
+
+        Xrm.WebApi.online.retrieveMultipleRecords(
+            "cdm_worker", 
+            `?$select=pg_country&$filter=cdm_primaryemailaddress eq '${lowercaseEmail}'`
+        ).then(
+            function success(results) {
+                if (results.entities.length > 0) {
+                    var pg_country = results.entities[0]["pg_country"]; 
+                    formcontext.getAttribute("pg_country").setValue(pg_country); // Set country field
+                } else {
+                    console.log("No matching worker found for the provided email address.");
+                }
+            },
+            function(error) {
+                console.error("Error retrieving data: " + error.message); // Log errors
+            }
+        );
+    } catch (error) {
+        console.error("Unexpected error: " + error.message); // Log unexpected errors
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
 function setGoalValue(context) {//onchange of actual field X Goals entity
 	var formcontext = context.getFormContext();
 	
@@ -25,17 +67,7 @@ function setGoalValue(context) {//onchange of actual field X Goals entity
 		else if(actual<tworating){
 		  goalscale.setValue(1);
 		}
-	  }
-
-
-
-
-
-
-
-
-
-
+}
 
 
 

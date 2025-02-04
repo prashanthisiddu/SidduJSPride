@@ -214,27 +214,6 @@ function TicketChangecase(executionContext) {
         reportinghrsec.setVisible(false);
         formContext.getAttribute("pg_updatepowerbireports").setRequiredLevel("required");
     }
-    
-    if (origin === 140310000 && applicationselect === 10 && subject === 140310003 && caseTitle.includes("Admin Checklist")) {
-        AdminChecklist.setVisible(true);
-        checkListTab.setVisible(false);
-        divisionheadsec.setVisible(false);
-        subgridsec.setVisible(false);
-        teamrsec.setVisible(false);
-        section.setVisible(false);
-        teamrhrsec.setVisible(false);
-        formContext.getAttribute("pg_newshiftupdat").setRequiredLevel("required");
-        formContext.getAttribute("pg_newseatallotted").setRequiredLevel("required");
-    }
-    if (origin === 140310000 && applicationselect === 10 && subject === 140310005 && workmode === 140310000 || workmode === 140310002 && caseTitle.includes("IT-CAM Checklist")) {
-        ITCAMCheck.setVisible(true);
-        checkListTab.setVisible(false);
-        divisionheadsec.setVisible(false);
-        subgridsec.setVisible(false);
-        worklocsec.setVisible(false);
-        worklochrsec.setVisible(false);
-        formContext.getAttribute("pg_updateexchangeserverazure").setRequiredLevel("required");
-    }
     if (origin === 140310000 && applicationselect === 10 && subject === 140310005 && caseTitle.includes("Finance Checklist")) {
         subgridsec.setVisible(false);
         divisionheadsec.setVisible(false);

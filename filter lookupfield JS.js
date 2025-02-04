@@ -24,7 +24,7 @@ function EmployeeLookupFilter(executionContext) {
     var formContext = executionContext.getFormContext();
   
     var Country = formContext.getAttribute("pg_country").getValue();
-    if (Country !=== null) {
+    if (Country !== null) {
         formContext.getControl("pg_employee").addPreSearch(function() {
             addLookupFilter(formContext);
         });
@@ -36,7 +36,7 @@ function EmployeeLookupFilter(executionContext) {
  
 function addLookupFilter(formContext) {  
     var Country = formContext.getAttribute("pg_country").getValue();
-    if (Country !=== null) {
+    if (Country !== null) {
         var FetchXml = "<filter type='and'><condition attribute='pg_country' operator='eq' value='" + Country + "' /></filter>";
         formContext.getControl("pg_employee").addCustomFilter(FetchXml, "pg_prideemployee");
     }
@@ -46,20 +46,10 @@ function addLookupFilter(formContext) {
 
 
 
-
-
-
-
-
-
-
-
-
-
 function form_Load(context) {//quickcreate
     var formContext = context.getFormContext();
     var surveyformID = formContext.getAttribute("pg_surveyanswerid").getValue(); 
-    if (surveyformID !=== null) {
+    if (surveyformID !== null) {
         Xrm.WebApi.online.retrieveRecord("pg_surveyform", ""+surveyformID[0].id.replace('{','').replace('}','')+"", "?$select=pg_checkin,pg_country").then(
             function success(result) {
                 var pg_checkin = result["pg_checkin"];
@@ -87,7 +77,7 @@ function addLookupFilter(formContext, pg_checkin, pg_country) {
    else if (pg_checkin === 140310001 && pg_country === 140310000) {
         FetchXml = "<filter type='and'><condition attribute='pg_checkin' operator='eq' value='140310001' /><condition attribute='pg_country' operator='eq' value='140310000' /></filter>";
     } 
-    else if (pg_checkin === 140310001 && pg_country !=== 140310000) {
+    else if (pg_checkin === 140310001 && pg_country !== 140310000) {
         FetchXml = "<filter type='and'><condition attribute='pg_checkin' operator='eq' value='140310001' /><condition attribute='pg_country' operator='ne' value='140310000' /></filter>";
     } 
     else if (pg_checkin === 140310002) {

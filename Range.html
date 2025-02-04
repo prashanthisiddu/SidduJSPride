@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Range bar</title>
+</head>
+<body>
+    <input type="number" id="siddu" oninput="f1()"> <hr>
+    <input type="range" value="100" min="0" max="200" id="range"> <hr> 
+     <!-- <button onclick="f1()">submit</button> -->
+ <script>
+  function f1()
+  {
+    let a = document.getElementById("siddu").value
+      document.getElementById("range").value = a
+
+  }
+ </script>
+</body>
+</html>

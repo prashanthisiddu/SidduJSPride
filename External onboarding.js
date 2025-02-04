@@ -44,17 +44,6 @@ function checkCurrentRecordHasEmailActivityOrNot(executionContext) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 function pastDate(executionContext) {
     var formContext = executionContext.getFormContext();
     var today = new Date();

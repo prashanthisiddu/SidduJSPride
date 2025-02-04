@@ -29,16 +29,6 @@ function checkAssignmentFieldIsNewOrExistingOne(context) {
 
 
 
-
-
-
-
-
-
-
-
-
-
 function GetSubgridValues(executionContext) {
     debugger;
     var formContext = executionContext.getFormContext(); 
@@ -49,7 +39,7 @@ function GetSubgridValues(executionContext) {
         function success(results) {
             if (results.entities.length > 0) {
                 var objectivesExist = results.entities.some(function(entity) {
-                    return entity.pg_objectives !=== null && entity.pg_targetdec !=== null;
+                    return entity.pg_objectives !== null && entity.pg_targetdec !==null;
                 });
 
                 if (objectivesExist) {

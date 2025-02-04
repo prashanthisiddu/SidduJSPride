@@ -193,17 +193,6 @@ function UpdateSubmitField(context) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 function CloseBTNShowHide(primaryControl) {
     var formContext = primaryControl;
   

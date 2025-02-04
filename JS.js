@@ -3,7 +3,7 @@
 //ex for promt///
 //var applicationName = prompt("Enter application name");
 
-if (applicationName !=== null) {
+if (applicationName !== null) {
     // The user clicked OK in the prompt
     console.log("Entered application name: " + applicationName);
 
@@ -203,3 +203,14 @@ Xrm.WebApi.retrieveMultipleRecords("account", fetchXml).then(
     }
 );
 
+
+
+/*
+echo "# sidduJS" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/prashanthisiddu/sidduJS.git
+git push -u origin main
+*/
