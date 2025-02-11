@@ -1,3 +1,52 @@
+function unlockAllFields(primaryControl) {   
+    var formContext = primaryControl;
+
+    // Unlock all fields
+    formContext.data.entity.attributes.forEach(function (attribute) {
+        var control = formContext.getControl(attribute.getName());
+        if (control) {
+            control.setDisabled(false);
+        }
+    });
+}
+
+
+
+function SecurityCheckforSubmit(primaryControl) {
+    var flag = false;
+
+    // Ensure primaryControl (formContext) is valid
+    if (!primaryControl) {
+        console.error("Form context is not available.");
+        return false;
+    }
+
+    var formContext = primaryControl;
+    
+    // Get user roles
+    var userRoles = Xrm.Utility.getGlobalContext().userSettings.roles.getAll();
+    
+    // Get Status Reason value safely
+    var statusAttribute = formContext.getAttribute("statuscode");
+    var statusReason = statusAttribute ? statusAttribute.getValue() : null;
+    var statecodeAttribute = formContext.getAttribute("statecode");
+    var status = statecodeAttribute ? statecodeAttribute.getValue() : null;
+    // Validate statusReason before proceeding
+    if (statusReason === null) {
+        console.error("Status reason (statuscode) attribute is missing or has no value.");
+        return false;
+    }
+
+    // Check if the user has the "Salesperson" role and status is not "Submitted"
+    if (userRoles.some(role => role.name.toLowerCase() === "salesperson") && statusReason !== 379730001 && status===0) {
+        flag = true;
+    }
+
+    return flag;
+}
+
+
+
 function disableFieldsIfNotOwner(executionContext) {//on form load
     var formContext = executionContext.getFormContext();
 
@@ -62,6 +111,8 @@ else {
 }
 })
 }
+
+
 
 
 
