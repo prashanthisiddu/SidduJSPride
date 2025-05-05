@@ -14,4 +14,11 @@ git add README.md
 git commit -m "first commit"
 git branch -M main
 git remote add origin https://github.com/prashanthisiddu/sidduJS.git
+<<<<<<< HEAD
 git push -u origin main
+=======
+git push -u origin main
+
+
+//note :: we need to install the git project manager extension so , that we n=can easily move files into git hub
+>>>>>>> 676d2f0 (Latest changes)
